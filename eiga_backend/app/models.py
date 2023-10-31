@@ -23,8 +23,8 @@ class Bangumi(models.Model):
     bangumi_id = models.CharField(max_length=32, verbose_name='id', primary_key=True)
     bangumi_name = models.CharField(max_length=32, verbose_name='番组名')
     bangumi_intro = models.CharField(max_length=text_len, verbose_name='简介')
-    bangumi_score = models.FloatField(verbose_name='评分')
-    rank = models.IntegerField(verbose_name='排名')
+    bangumi_score = models.FloatField(verbose_name='评分', null=True, blank=True)
+    rank = models.IntegerField(verbose_name='排名', null=True, blank=True)
 
     class Meta:
         db_table = 'tb_bangumi'
@@ -33,7 +33,7 @@ class Bangumi(models.Model):
     def __str__(self):
         return self.bangumi_id
 
-
+# TODO 考虑给这里加一个触发器，每次进行修改(insert,update,delete)的时候重置排名
 class Score(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     bangumi_id = models.ForeignKey(Bangumi, on_delete=models.CASCADE)
@@ -53,6 +53,7 @@ class Blog(models.Model):
     blog_title = models.CharField(max_length=32, verbose_name='标题')
     content = models.CharField(max_length=text_len, verbose_name='内容')
     time = models.DateTimeField(verbose_name='时间')
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'tb_blog'
