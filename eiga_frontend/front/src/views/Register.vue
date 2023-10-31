@@ -2,20 +2,23 @@
     <hr>
     <h1>注册页面</h1>
     <hr>
-
-    <!-- 用户账号：<input type="text" v-model="username"><span>{{ info1 }}</span><br> -->
-    用户账号：
-    <el-input v-model="username" class="inputBar" placeholder="Please input" clearable></el-input>
-    设置密码：
-    <el-input v-model="passwd1" class="inputBar" type="password" placeholder="Please input password" show-password/>
-    确认密码：
-    <el-input v-model="passwd2" class="inputBar" type="password" placeholder="Please input password again" show-password/>
-    <button>
-      <a href="/login" @click.prevent="send_post">register</a>
-    </button>
-    <button>
-      <router-link to="/login">login</router-link>
-    </button>
+    <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules"  class="ruleForm">
+      <el-form-item label="用户账号" prop="pass">
+        <el-input v-model="username" class="inputBar" placeholder="Please input" clearable></el-input>
+      </el-form-item>
+      <el-form-item label="设置密码" prop="checkPass">
+        <el-input v-model="passwd1" class="inputBar" type="password" placeholder="Please input password" show-password/>
+      </el-form-item>
+      <el-form-item label="确认密码" prop="checkPass">
+        <el-input v-model="passwd2" class="inputBar" type="password" placeholder="Please input password again" show-password/>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm(ruleFormRef)">
+          <a href="/login" @click.prevent="send_post">register</a>
+        </el-button>
+        <el-button><router-link to="/login">login</router-link></el-button>
+      </el-form-item>
+    </el-form>
   </template>
    
   <script>
@@ -27,39 +30,11 @@
         username: '',
         passwd1: '',
         passwd2: '',
-        password1: 'password',
-        password2: 'password',
-        tip1: '显示密码',
-        tip2: '显示密码',
-        num1: 0,
-        num2: 0,
         info1: '',
         info2: ''
       }
     },
     methods: {
-      pwd1() {
-        if (this.num1 === 0) {
-          this.password1 = 'text'
-          this.tip1 = '隐藏密码'
-          this.num1 = 1
-        } else {
-          this.password1 = 'password'
-          this.tip1 = '显示密码'
-          this.num1 = 0
-        }
-      },
-      pwd2() {
-        if (this.num2 === 0) {
-          this.password2 = 'text'
-          this.tip2 = '隐藏密码'
-          this.num2 = 1
-        } else {
-          this.password2 = 'password'
-          this.tip2 = '显示密码'
-          this.num2 = 0
-        }
-      },
       send_post() {
         http.post("http://127.0.0.1:8000/vue/", {
               username: this.username,
@@ -72,6 +47,7 @@
             console.log('注册失败')
             this.info1 = response.data.tip
             this.info2 = ''
+            alert("用户名已存在")
           } else if (response.data.state == 'fail2') {
             this.info1 = ''
             this.info2 = response.data.tip
@@ -91,7 +67,7 @@
     margin: 10px;
   }
   .inputBar {
-    max-width: 40%;
+    width: 300px;
   }
   span {
     color: red;

@@ -21,10 +21,6 @@ class VueViews(APIView):
  
     def post(self, request):
         """添加用户信息"""
-        # print("something")
-        # print(request.data)
-        # t= uuid.uuid4()
-        # print(t)
         # 1. 获取客户端提交的数据，实例化序列化器，获取序列化对象
         serializer = UserModelSerializer(data=request.data)
         # 2. 反序列化[验证数据、保存数据到数据库]
@@ -51,8 +47,6 @@ class VueViews(APIView):
                     info = {"state": "fail2", "tip": '两次密码输入不同，请重新输入'}
                     return HttpResponse(json.dumps(info))
                 else:
-                    # print("sss")
-                    # print(uuid.uuid4())
                     s = User.objects.create(
                         user_id=uuid.uuid4(),
                         user_name=request.data['username'],
@@ -61,6 +55,7 @@ class VueViews(APIView):
                         permission=""
                     )
                     serializer = UserModelSerializer(data=s)
+                    serializer.is_valid(raise_exception=False)
                     serializer.save()
                     # print('注册成功')
                 # print(username, passwd, passwd2)

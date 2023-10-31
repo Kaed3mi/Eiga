@@ -2,18 +2,21 @@
     <hr>
     <h1>登录页面</h1>
     <hr>
-    账号：<input type="text" v-model="username"><span>{{ info3 }}</span><br>
-    密码：<input :type="password" v-model="passwd">
-    <button @click="pwd">{{ tip }}</button>
-    <span>{{ info4 }}</span>
-    <br>
-    <button>
-      <a href="/" @click.prevent="send_post">login</a>
-    </button>
-    <button>
-      <router-link to="/reg">register</router-link>
-    </button>
-  </template>
+    <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules"  class="ruleForm">
+      <el-form-item label="用户账号" prop="pass">
+        <el-input v-model="username" class="inputBar" width autocomplete="off" placeholder="Please input" clearable/>
+      </el-form-item>
+      <el-form-item label="登录密码" prop="checkPass">
+        <el-input v-model="passwd" class="inputBar" width type="password" autocomplete="off" placeholder="Please input password" show-password/>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm(ruleFormRef)">
+          <a href="/" @click.prevent="send_post">login</a>
+        </el-button>
+        <el-button><router-link to="/reg">register</router-link></el-button>
+      </el-form-item>
+    </el-form>
+</template>
    
   <script>
   import http from "../utils/http.ts";
@@ -22,29 +25,15 @@
     name: "Login",
     data() {
       return {
-        username: '请输入用户名',
-        passwd: '请输入密码',
-        password: 'password',
-        tip: '显示密码',
-        num: 0,
+        username: '',
+        passwd: '',
+        tip: '',
         info3: '',
         info4: '',
       }
     },
     methods: {
-      pwd() {
-        if (this.num === 0) {
-          this.password = 'text'
-          this.tip = '隐藏密码'
-          this.num = 1
-        } else {
-          this.password = 'password'
-          this.tip = '显示密码'
-          this.num = 0
-        }
-      },
       send_post() {
-        console.log("hahaha")
         http.post("http://127.0.0.1:8000/vue/", {
               username: this.username,
               passwd: this.passwd,
@@ -74,7 +63,9 @@
   * {
     margin: 10px;
   }
-   
+  .inputBar {
+    width: 300px;
+  }
   span {
     color: red;
   }
