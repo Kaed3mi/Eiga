@@ -51,7 +51,7 @@
             window.location.href = "/index"
           }
         }).catch(error => {
-          console.log('请求错误！error=', error)
+          console.log('请求错误!error=', error)
         })
       },
     }
@@ -60,9 +60,6 @@
    
    
   <style scoped>
-  * {
-    margin: 10px;
-  }
   .inputBar {
     width: 300px;
   }

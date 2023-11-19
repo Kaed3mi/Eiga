@@ -50,3 +50,7 @@ class BangumiDelete(APIView):
             print(e)
             return Response(1)
         return Response(0)
+
+class BangumiQuery(APIView):
+    def post(self, request):
+        bangumi_id = str()

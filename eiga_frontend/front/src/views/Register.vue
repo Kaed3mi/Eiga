@@ -63,9 +63,6 @@
   </script>
    
   <style scoped>
-  * {
-    margin: 10px;
-  }
   .inputBar {
     width: 300px;
   }
