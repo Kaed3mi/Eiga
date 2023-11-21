@@ -5,11 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="84ca8fa4-230b-4f9e-b5ba-68f2c12d34c8" name="变更" comment="">
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eiga_backend/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/eiga_backend/app/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eiga_backend/app/views/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/eiga_backend/app/views/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eiga_backend/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/eiga_backend/db.sqlite3" afterDir="false" />
+=======
       <change afterPath="$PROJECT_DIR$/eiga_frontend/front/src/components/VerticalMenu.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/7837dfca-d0ab-4a38-8201-3e2694b83f85.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/fb528efc-23a2-4365-9c26-0928ebea879c.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> refs/remotes/origin/main
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +99,7 @@
       <workItem from="1699022676335" duration="805000" />
       <workItem from="1699576686911" duration="11000" />
       <workItem from="1700492495648" duration="4214000" />
-      <workItem from="1700524724924" duration="3777000" />
+      <workItem from="1700524724924" duration="4421000" />
     </task>
     <servers />
   </component>

@@ -7,10 +7,10 @@ text_len = 8000
 class User(models.Model):
     user_id = models.CharField(max_length=32, verbose_name='id', primary_key=True)
     user_name = models.CharField(max_length=32, verbose_name='用户名')
-    email = models.CharField(max_length=32, verbose_name='邮箱', blank=True)
+    email = models.CharField(max_length=32, verbose_name='邮箱')
     password = models.CharField(max_length=32, verbose_name='密码')
     permission = models.CharField(max_length=32, verbose_name='权限', null=True, blank=True)
-
+    avatar = models.CharField(max_length=60, verbose_name='头像', null=True, blank=True, default="default")
     class Meta:
         db_table = 'tb_user'
         verbose_name = '学生'
