@@ -47,8 +47,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { reactive, ref } from 'vue'
-  import type { FormInstance, FormRules } from 'element-plus'
+  import { onMounted, reactive, ref } from 'vue'
+  import { FormInstance, FormRules, getPositionDataWithUnit } from 'element-plus'
   import http from "../utils/http.ts";
   import { Plus } from '@element-plus/icons-vue'
   import type { UploadProps } from 'element-plus'
@@ -97,6 +97,25 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
 }
 
+const getData = () => {
+            http.post(
+                "http://127.0.0.1:8000/user_query/",
+                { user_id: localStorage.getItem("user_id") },
+            ).then(
+                response => {
+                    console.log(response.data)
+                    ruleForm.email = response.data.email
+                    ruleForm.password = response.data.password
+                    ruleForm.password_confirm = response.data.password
+                    ruleForm.username = response.data.username
+                    console.log(ruleForm.email)
+                    console.log(ruleForm.password)
+                    console.log(ruleForm.password_confirm)
+                    console.log(ruleForm.username)
+                }
+            )
+        }
+onMounted(getData)
   const rules = reactive<FormRules<RuleForm>>({
     username: [
       { required: true, message: 'Please input your username', trigger: 'blur' },

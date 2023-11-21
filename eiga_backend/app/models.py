@@ -10,7 +10,7 @@ class User(models.Model):
     email = models.CharField(max_length=32, verbose_name='邮箱')
     password = models.CharField(max_length=32, verbose_name='密码')
     permission = models.CharField(max_length=32, verbose_name='权限', null=True, blank=True)
-
+    avatar = models.CharField(max_length=60, verbose_name='头像', null=True, blank=True, default="default")
     class Meta:
         db_table = 'tb_user'
         verbose_name = '学生'

@@ -21,7 +21,9 @@ import app.views.user as user
 urlpatterns = [
     path('vue/', vueViews.VueViews.as_view()),
     path('user_register/', user.UserRegister.as_view()),
-    path('user_login/', user.UserLogin.as_view())
+    path('user_login/', user.UserLogin.as_view()),
+    path('user_query/', user.UserInfoQuery.as_view()),
+    path('upload_avatar/', user.upload_avatar, name='upload_avatar')
 ]
 # import app.views.user as user
 # from django.contrib import admin

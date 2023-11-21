@@ -39,7 +39,14 @@
             console.log('登录成功')
             this.exception = ''
             this.tip = response.data.tip
-            window.location.href = "/index"
+            console.log(response.data.user_id)
+            console.log(response.data.username)
+            console.log(response.data.permission)
+            localStorage.setItem("login_status", true);
+            localStorage.setItem("user_id", response.data.user_id);
+            localStorage.setItem("username", response.data.username);
+            localStorage.setItem("permission", response.data.permission);
+            window.location.href = "/Home"
           } else {
             console.log('登录失败')
             this.exception = response.data.exception
