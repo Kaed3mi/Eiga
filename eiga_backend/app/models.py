@@ -7,7 +7,7 @@ text_len = 8000
 class User(models.Model):
     user_id = models.CharField(max_length=32, verbose_name='id', primary_key=True)
     user_name = models.CharField(max_length=32, verbose_name='用户名')
-    email = models.CharField(max_length=32, verbose_name='邮箱', null=True, blank=True)
+    email = models.CharField(max_length=32, verbose_name='邮箱', blank=True)
     password = models.CharField(max_length=32, verbose_name='密码')
     permission = models.CharField(max_length=32, verbose_name='权限', null=True, blank=True)
 

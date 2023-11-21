@@ -16,9 +16,12 @@ Including another URLconf
 """
 from django.urls import path
 import app.views.vueViews as vueViews
+import app.views.user as user
  
 urlpatterns = [
     path('vue/', vueViews.VueViews.as_view()),
+    path('user_register/', user.UserRegister.as_view()),
+    path('user_login/', user.UserLogin.as_view())
 ]
 # import app.views.user as user
 # from django.contrib import admin

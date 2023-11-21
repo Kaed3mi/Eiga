@@ -28,8 +28,15 @@ class VueViews(APIView):
  
         username = request.data['username']
         print(username)
-        passwd = request.data['passwd']
-        print(passwd)
+        password = request.data['password']
+        print(password)
+        email = request.data['email']
+        print(email)
+        userinfo = User.objects.filter(user_name=username)
+        print("userinfo")
+        print(userinfo.__len__() > 0)
+
+
         if request.data.get('passwd2', ''):
             userinfo = User.objects.filter(user_name=username)
             print("userinfo")
@@ -42,7 +49,7 @@ class VueViews(APIView):
                 return HttpResponse(json.dumps(info))
             else:
                 passwd2 = request.data['passwd2']
-                if passwd2 != passwd:
+                if passwd2 != password:
                     # print('两次密码输入不同，请重新输入')
                     info = {"state": "fail2", "tip": '两次密码输入不同，请重新输入'}
                     return HttpResponse(json.dumps(info))
@@ -62,7 +69,7 @@ class VueViews(APIView):
         else:
             userinfo = User.objects.filter(user_name=username)
             if userinfo.exists():
-                if User.objects.get(user_name=username).password == passwd:
+                if User.objects.get(user_name=username).password == password:
                     # print('登录成功')
                     pass
                 else:

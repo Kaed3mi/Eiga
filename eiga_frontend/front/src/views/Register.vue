@@ -2,7 +2,8 @@
     <hr>
     <h1>注册页面</h1>
     <hr>
-    <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules"  class="ruleForm">
+    <UserInfoInput></UserInfoInput>
+    <!-- <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules"  class="ruleForm">
       <el-form-item label="用户账号" prop="pass">
         <el-input v-model="username" class="inputBar" placeholder="Please input" clearable></el-input>
       </el-form-item>
@@ -18,13 +19,17 @@
         </el-button>
         <el-button><router-link to="/login">login</router-link></el-button>
       </el-form-item>
-    </el-form>
+    </el-form> -->
   </template>
    
   <script>
   import http from "../utils/http";
+  import UserInfoInput from '../components/UserInfoInput.vue'
   export default {
     name: "Register",
+    components: {
+      UserInfoInput
+    },
     data() {
       return {
         username: '',
