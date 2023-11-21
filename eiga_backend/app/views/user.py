@@ -13,6 +13,7 @@ class UserRegister(APIView):
         email = str(request.data.get('email'))
         password = str(request.data.get('password'))
         permission = "user"
+        user_id = email
         print(request.data)
         user_info = User.objects.filter(email=email)
         if user_info.__len__() > 0:
@@ -43,7 +44,7 @@ class UserLogin(APIView):
         email = str(request.data.get('email'))
         password = str(request.data.get('password'))
         print(email + " " + password)
-        user_info = User.objects.fliter(email=email)
+        user_info = User.objects.get(email=email)
         print(user_info)
         if user_info.__len__() == 0:
             print("user not exist")

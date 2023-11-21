@@ -5,21 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="84ca8fa4-230b-4f9e-b5ba-68f2c12d34c8" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/eiga_frontend/front/src/components/UserInfoInput.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/identifier.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Mukamuka.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Mukamuka.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eiga_backend/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/eiga_backend/app/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eiga_backend/app/views/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/eiga_backend/app/views/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eiga_backend/app/views/vueViews.py" beforeDir="false" afterPath="$PROJECT_DIR$/eiga_backend/app/views/vueViews.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eiga_backend/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/eiga_backend/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eiga_backend/eiga_backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/eiga_backend/eiga_backend/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eiga_frontend/front/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/eiga_frontend/front/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eiga_frontend/front/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/eiga_frontend/front/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eiga_frontend/front/src/views/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/eiga_frontend/front/src/views/Login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eiga_frontend/front/src/views/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/eiga_frontend/front/src/views/Register.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +78,7 @@
       <workItem from="1699022676335" duration="805000" />
       <workItem from="1699576686911" duration="11000" />
       <workItem from="1700492495648" duration="4214000" />
-      <workItem from="1700524724924" duration="3777000" />
+      <workItem from="1700524724924" duration="4421000" />
     </task>
     <servers />
   </component>
