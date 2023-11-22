@@ -1,5 +1,5 @@
 <template>
-    <el-form
+  <el-form
       ref="ruleFormRef"
       :model="ruleForm"
       :rules="rules"
@@ -7,77 +7,79 @@
       class="demo-ruleForm"
       :size="formSize"
       status-icon
-    >
+  >
 
-        <el-form-item label="用户名:" prop="username">
-            <el-input v-model="ruleForm.username" placeholder="请输入昵称"/>
-        </el-form-item>
-      
-        <el-form-item label="邮箱:" prop="email">
-            <el-input v-model="ruleForm.email" placeholder="请输入邮箱" clearable="true"/>
-        </el-form-item>
+    <el-form-item label="用户名:" prop="username">
+      <el-input v-model="ruleForm.username" placeholder="请输入昵称"/>
+    </el-form-item>
 
-        <el-form-item label="密码" prop="password">
-            <el-input v-model="ruleForm.password" placeholder="请输入密码" type="password" show-password="true"/>
-        </el-form-item>
-      
-        <el-form-item label="确认密码" prop="password_confirm">
-            <el-input v-model="ruleForm.password_confirm" placeholder="请确认密码" type="password" show-password="true"/>
-        </el-form-item>
+    <el-form-item label="邮箱:" prop="email">
+      <el-input v-model="ruleForm.email" placeholder="请输入邮箱" clearable="true"/>
+    </el-form-item>
 
-        <el-form-item label="Instant delivery" prop="delivery">
-        <el-switch v-model="ruleForm.delivery" />
-        </el-form-item>
+    <el-form-item label="密码" prop="password">
+      <el-input v-model="ruleForm.password" placeholder="请输入密码" type="password" show-password="true"/>
+    </el-form-item>
 
-        <el-form-item>
-            <el-button type="primary" @click="submitForm(ruleFormRef)">Create</el-button>
-            <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
-        </el-form-item>
-    </el-form>
-    <el-upload
-    class="avatar-uploader"
-    action="http://127.0.0.1:8000/upload_avatar/"
-    :show-file-list="false"
-    :on-success="handleAvatarSuccess"
-    :before-upload="beforeAvatarUpload"
-    >
-    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-    <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-    </el-upload>
+    <el-form-item label="确认密码" prop="password_confirm">
+      <el-input v-model="ruleForm.password_confirm" placeholder="请确认密码" type="password" show-password="true"/>
+    </el-form-item>
+
+    <el-form-item label="Instant delivery" prop="delivery">
+      <el-switch v-model="ruleForm.delivery"/>
+    </el-form-item>
+
+    <el-form-item>
+      <el-button type="primary" @click="submitForm(ruleFormRef)">Create</el-button>
+      <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+    </el-form-item>
+  </el-form>
+  <el-upload
+      class="avatar-uploader"
+      action="http://127.0.0.1:8000/upload_avatar/"
+      :show-file-list="false"
+      :on-success="handleAvatarSuccess"
+      :before-upload="beforeAvatarUpload"
+  >
+    <img v-if="imageUrl" :src="imageUrl" class="avatar"/>
+    <el-icon v-else class="avatar-uploader-icon">
+      <Plus/>
+    </el-icon>
+  </el-upload>
 </template>
 
 <script lang="ts" setup>
-  import { onMounted, reactive, ref } from 'vue'
-  import { FormInstance, FormRules, getPositionDataWithUnit } from 'element-plus'
-  import http from "../utils/http.ts";
-  import { Plus } from '@element-plus/icons-vue'
-  import type { UploadProps } from 'element-plus'
+import {onMounted, reactive, ref} from 'vue'
+import {FormInstance, FormRules, getPositionDataWithUnit} from 'element-plus'
+import http from "../utils/http.ts";
+import {Plus} from '@element-plus/icons-vue'
+import type {UploadProps} from 'element-plus'
 
-  interface RuleForm {
-    username: string
-    email: string
-    password: string
-    password_confirm: string
-  }
-  
-  const formSize = ref('default')
-  const ruleFormRef = ref<FormInstance>()
-  const ruleForm = reactive<RuleForm>({
-      username: '',
-      email: '',
-      password: '',
-      password_confirm: '',
-  })
+interface RuleForm {
+  username: string
+  email: string
+  password: string
+  password_confirm: string
+}
 
-import { ElMessage } from 'element-plus'
+const formSize = ref('default')
+const ruleFormRef = ref<FormInstance>()
+const ruleForm = reactive<RuleForm>({
+  username: '',
+  email: '',
+  password: '',
+  password_confirm: '',
+})
+
+import {ElMessage} from 'element-plus'
 
 const imageUrl = ref('')
 
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
-  response,
-  uploadFile
+    response,
+    uploadFile
 ) => {
-    imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+  imageUrl.value = URL.createObjectURL(uploadFile.raw!)
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -93,90 +95,90 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
       console.log("Please input email")
       return false;
     }
-  return true
+    return true
   }
 }
 
 const getData = () => {
-            http.post(
-                "http://127.0.0.1:8000/user_query/",
-                { user_id: localStorage.getItem("user_id") },
-            ).then(
-                response => {
-                    console.log(response.data)
-                    ruleForm.email = response.data.email
-                    ruleForm.password = response.data.password
-                    ruleForm.password_confirm = response.data.password
-                    ruleForm.username = response.data.username
-                    console.log(ruleForm.email)
-                    console.log(ruleForm.password)
-                    console.log(ruleForm.password_confirm)
-                    console.log(ruleForm.username)
-                }
-            )
-        }
-onMounted(getData)
-  const rules = reactive<FormRules<RuleForm>>({
-    username: [
-      { required: true, message: 'Please input your username', trigger: 'blur' },
-      { min: 4, max: 20, message: 'Name length should be 4 to 20', trigger: 'blur' },
-    ],
-    email: [
-      { required: true, message: 'Please input your email address',trigger: 'change'},
-      { type: 'email', message: "Invaild email address formate",trigger: 'change' }
-    ],
-    password: [
-      { required: true, message: 'Please input your password', trigger: 'blur'},
-      { min: 5, max: 30, message: 'Password length should be 5 to 30', trigger: 'blur'}
-    ],
-    password_confirm: [
-      { required: true, message: 'Please repeat your password', trigger: 'blur'},
-      { min: 5, max: 30, message: 'Password length should be 5 to 30', trigger: 'blur'}
-    ],
-  })
-  
-  const submitForm = async (formEl: FormInstance | undefined) => {
-    if (!formEl) return
-    await formEl.validate((valid, fields) => {
-      if (valid) {
-        if (checkPassword()) {
-            console.log('submit!')
-            send_post()
-        } else {
-            ruleForm.password = ''
-            ruleForm.password_confirm = ''
-        }
-      } else {
-        console.log('error submit!', fields)
+  http.post(
+      "http://127.0.0.1:8000/user_query/",
+      {user_id: localStorage.getItem("user_id")},
+  ).then(
+      response => {
+        console.log(response.data)
+        ruleForm.email = response.data.email
+        ruleForm.password = response.data.password
+        ruleForm.password_confirm = response.data.password
+        ruleForm.username = response.data.username
+        console.log(ruleForm.email)
+        console.log(ruleForm.password)
+        console.log(ruleForm.password_confirm)
+        console.log(ruleForm.username)
       }
-    })
-  }
-  
-  const resetForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return
-    formEl.resetFields()
-  }
+  )
+}
+onMounted(getData)
+const rules = reactive<FormRules<RuleForm>>({
+  username: [
+    {required: true, message: 'Please input your username', trigger: 'blur'},
+    {min: 4, max: 20, message: 'Name length should be 4 to 20', trigger: 'blur'},
+  ],
+  email: [
+    {required: true, message: 'Please input your email address', trigger: 'change'},
+    {type: 'email', message: "Invaild email address formate", trigger: 'change'}
+  ],
+  password: [
+    {required: true, message: 'Please input your password', trigger: 'blur'},
+    {min: 5, max: 30, message: 'Password length should be 5 to 30', trigger: 'blur'}
+  ],
+  password_confirm: [
+    {required: true, message: 'Please repeat your password', trigger: 'blur'},
+    {min: 5, max: 30, message: 'Password length should be 5 to 30', trigger: 'blur'}
+  ],
+})
 
-  const checkPassword =() =>{
-    if (ruleForm.password == ruleForm.password_confirm) {
-        console.log("password is the same")
-        return true;
+const submitForm = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      if (checkPassword()) {
+        console.log('submit!')
+        send_post()
+      } else {
+        ruleForm.password = ''
+        ruleForm.password_confirm = ''
+      }
     } else {
-        alert("the password isn't the same")
-        return false;
+      console.log('error submit!', fields)
     }
-  }
+  })
+}
 
-  const send_post = () => {
-    http.post("http://127.0.0.1:8000/user_register/", {
-              username: ruleForm.username,
-              password: ruleForm.password,
-              email: ruleForm.email,
-            },
-        )
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.resetFields()
+}
+
+const checkPassword = () => {
+  if (ruleForm.password == ruleForm.password_confirm) {
+    console.log("password is the same")
+    return true;
+  } else {
+    alert("the password isn't the same")
+    return false;
   }
+}
+
+const send_post = () => {
+  http.post("http://127.0.0.1:8000/user_register/", {
+        username: ruleForm.username,
+        password: ruleForm.password,
+        email: ruleForm.email,
+      },
+  )
+}
 </script>
-  
+
 <style scoped>
 .avatar-uploader {
   display: flex;

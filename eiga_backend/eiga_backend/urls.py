@@ -17,13 +17,15 @@ Including another URLconf
 from django.urls import path
 import app.views.vueViews as vueViews
 import app.views.user as user
- 
+import app.views.bangumi as bangumi
+
 urlpatterns = [
     path('vue/', vueViews.VueViews.as_view()),
     path('user_register/', user.UserRegister.as_view()),
     path('user_login/', user.UserLogin.as_view()),
     path('user_query/', user.UserInfoQuery.as_view()),
-    path('upload_avatar/', user.upload_avatar, name='upload_avatar')
+    path('upload_avatar/', user.upload_avatar, name='upload_avatar'),
+    path('bangumi_query/', bangumi.BangumiQuery.as_view())
 ]
 # import app.views.user as user
 # from django.contrib import admin
