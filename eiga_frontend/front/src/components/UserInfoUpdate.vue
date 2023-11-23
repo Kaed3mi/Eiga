@@ -12,7 +12,7 @@
         <el-form-item label="用户名:" prop="username">
             <el-input v-model="ruleForm.username" placeholder="请输入昵称"/>
         </el-form-item>
-      
+
         <el-form-item label="邮箱:" prop="email">
             <el-input v-model="ruleForm.email" placeholder="请输入邮箱" clearable="true"/>
         </el-form-item>
@@ -20,7 +20,7 @@
         <el-form-item label="密码" prop="password">
             <el-input v-model="ruleForm.password" placeholder="请输入密码" type="password" show-password="true"/>
         </el-form-item>
-      
+
         <el-form-item label="确认密码" prop="password_confirm">
             <el-input v-model="ruleForm.password_confirm" placeholder="请确认密码" type="password" show-password="true"/>
         </el-form-item>
@@ -34,7 +34,7 @@
             <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
         </el-form-item>
     </el-form>
-    
+
     <el-upload
     class="avatar-uploader"
     action="http://127.0.0.1:8000/upload_avatar/"
@@ -64,7 +64,7 @@
     password: string
     password_confirm: string
   }
-  
+
   const formSize = ref('default')
   const ruleFormRef = ref<FormInstance>()
   const ruleForm = reactive<RuleForm>({
@@ -149,7 +149,7 @@ onMounted(getData)
       { min: 5, max: 30, message: 'Password length should be 5 to 30', trigger: 'blur'}
     ],
   })
-  
+
   const submitForm = async (formEl: FormInstance | undefined) => {
     if (!formEl) return
     await formEl.validate((valid, fields) => {
@@ -166,7 +166,7 @@ onMounted(getData)
       }
     })
   }
-  
+
   const resetForm = (formEl: FormInstance | undefined) => {
     if (!formEl) return
     formEl.resetFields()
@@ -191,7 +191,7 @@ onMounted(getData)
         )
   }
 </script>
-  
+
 <style scoped>
 .avatar-uploader {
   display: flex;

@@ -51,6 +51,18 @@ class BangumiDelete(APIView):
             return Response(1)
         return Response(0)
 
+
 class BangumiQuery(APIView):
-    def post(self, request):
-        bangumi_id = str()
+    def get(self, request):
+        bangumi_id = request.GET.get('bangumi_id')
+        print('query bangumi: id=' + bangumi_id)
+        try:
+            obj = Bangumi.objects.get(bangumi_id=bangumi_id)
+        except Exception as e:
+            print(e)
+            return Response(1)
+        return Response({
+            'bangumi_name': obj.bangumi_name,
+            'bangumi_intro': obj.bangumi_intro,
+            'bangumi_score': obj.bangumi_score
+        })
