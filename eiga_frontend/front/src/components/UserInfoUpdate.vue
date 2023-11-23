@@ -34,6 +34,7 @@
             <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
         </el-form-item>
     </el-form>
+    
     <el-upload
     class="avatar-uploader"
     action="http://127.0.0.1:8000/upload_avatar/"
