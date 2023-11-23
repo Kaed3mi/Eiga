@@ -1,3 +1,5 @@
+import base64
+
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -8,6 +10,8 @@ from rest_framework.response import Response
 from app.models import User
 from django.shortcuts import render, HttpResponse, redirect
 import json
+import os
+import shutil
 
 
 class UserRegister(APIView):
@@ -87,7 +91,10 @@ class UserInfoQuery(APIView):
             return HttpResponse(json.dumps(return_information))
         else:
             user = User.objects.get(user_id=user_id)
-            print(user)
+            print("the avatar: " + str(user.avatar))
+            avatar_path = str(user.avatar)
+            with open(avatar_path, 'rb') as f:
+                image_data = base64.b64encode(f.read())
             return_information = {
                 "state": "1",
                 "exception": "",
@@ -97,23 +104,56 @@ class UserInfoQuery(APIView):
                 "email": user.email,
                 "password": user.password,
                 "permission": user.permission,
-                "avatar": user.avatar
+                "avatar": user.avatar,
+                "avatar_path": avatar_path,
+                "image_data": str(image_data)[2:-1]
             }
             return HttpResponse(json.dumps(return_information))
+
+
+class UserUpdateInfo(APIView):
+    def post(self, request):
+        user_name = str(request.data.get('username'))
+        email = str(request.data.get('email'))
+
 
 @csrf_exempt
 def upload_avatar(request):
     if request.method == 'POST':
-        print(request.FILES.get('file'))
+        # print(request.body)
+        # print("email: " + request.POST.get('email', ''))
+        req_email = request.POST.get('email', '')
+        user_info = User.objects.get(email=req_email)
+        # print(user_info)
+        # print(request.FILES.get('file'))
         avatar = request.FILES.get('file')
-        print(avatar)
+        # print(avatar)
         if avatar:
             # 保存头像到服务器
             file_path = default_storage.save('avatars/' + avatar.name, ContentFile(avatar.read()))
             print(file_path)
+            if User.objects.get(email=req_email).avatar == "default":
+                print("the user has the default avatar and we change it to " + str(file_path))
+                user_info.avatar = str(file_path)
+                user_info.save()
+            else:
+                print("now we will delete the original avatar")
+                legacy_avatar = User.objects.get(email=req_email).avatar
+                print(legacy_avatar)
+                if os.path.exists(legacy_avatar):
+                    os.remove(legacy_avatar)
+                else:
+                    print("path didn't find check it")
+                user_info.avatar = str(file_path)
+                user_info.save()
+
             # 返回头像的 URL
-            avatar_url = f"{settings.MEDIA_URL}{file_path}"
-            return JsonResponse({'status': 'success', 'avatar_url': avatar_url})
+            avatar_url = f"{settings.MEDIA_URL}{avatar.name}"
+            with open(file_path, 'rb') as f:
+                image_data = base64.b64encode(f.read())
+            return_information = {'state': '1', 'exception': '', 'avatar_url': avatar_url,
+                                  'image_data': str(image_data)[2:-1]}
+            return HttpResponse(json.dumps(return_information))
         else:
             return JsonResponse({'status': 'error', 'message': 'No file uploaded'})
     else:

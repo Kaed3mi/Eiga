@@ -1,6 +1,6 @@
 <template>
     <hr>
-    <h1>登录页面</h1>
+    <h1>信息修改页面</h1>
     <hr>
     <UserInfoUpdate></UserInfoUpdate>
 </template>

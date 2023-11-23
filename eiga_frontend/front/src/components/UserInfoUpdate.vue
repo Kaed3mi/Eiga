@@ -38,20 +38,24 @@
     class="avatar-uploader"
     action="http://127.0.0.1:8000/upload_avatar/"
     :show-file-list="false"
+    :data="{ email: ruleForm.email, customField2: '22222' }"
     :on-success="handleAvatarSuccess"
     :before-upload="beforeAvatarUpload"
     >
-    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-    <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+      <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
     </el-upload>
+
+    <!-- <img :src="imageU" alt="My Image"> -->
 </template>
 
 <script lang="ts" setup>
   import { onMounted, reactive, ref } from 'vue'
-  import { FormInstance, FormRules, getPositionDataWithUnit } from 'element-plus'
+  import { FormInstance, FormRules } from 'element-plus'
   import http from "../utils/http.ts";
   import { Plus } from '@element-plus/icons-vue'
   import type { UploadProps } from 'element-plus'
+  import defaultIcon from '../assets/default.jpg'
 
   interface RuleForm {
     username: string
@@ -72,12 +76,19 @@
 import { ElMessage } from 'element-plus'
 
 const imageUrl = ref('')
+const imageU = ref('')
 
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
   response,
   uploadFile
 ) => {
     imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+    console.log(response);
+    if (response.state === '1') {
+      console.log("saving the icon");
+      console.log(response.image_data);
+      imageU.value = `data:image/png;base64,${response.image_data}`
+    }
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -108,10 +119,13 @@ const getData = () => {
                     ruleForm.password = response.data.password
                     ruleForm.password_confirm = response.data.password
                     ruleForm.username = response.data.username
-                    console.log(ruleForm.email)
-                    console.log(ruleForm.password)
-                    console.log(ruleForm.password_confirm)
-                    console.log(ruleForm.username)
+                    if (response.data.avatar === 'default') {
+                      console.log("using default icon");
+                      imageUrl.value = defaultIcon
+                    } else {
+                      console.log("using user's icon");
+                      imageUrl.value = `data:image/png;base64,${response.data.image_data}`
+                    }
                 }
             )
         }
