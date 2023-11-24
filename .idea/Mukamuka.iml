@@ -5,7 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/eiga_backend" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/eiga_frontend/front" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.10" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.9 (base) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">

@@ -53,7 +53,7 @@ class Blog(models.Model):
     blog_title = models.CharField(max_length=32, verbose_name='标题')
     content = models.CharField(max_length=text_len, verbose_name='内容')
     time = models.DateTimeField(verbose_name='时间')
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, default="default")
 
     class Meta:
         db_table = 'tb_blog'
@@ -79,6 +79,7 @@ class Character(models.Model):
     character_id = models.CharField(max_length=32, verbose_name='id', primary_key=True)
     character_name = models.CharField(max_length=32, verbose_name='角色名')
     intro = models.CharField(max_length=text_len, verbose_name='简介')
+    image = models.CharField(max_length=32, verbose_name='图片')
 
     class Meta:
         db_table = 'tb_character'
