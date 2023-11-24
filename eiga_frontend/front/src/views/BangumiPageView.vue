@@ -43,7 +43,6 @@
 <script lang="ts">
 import VerticalMenu from '../components/VerticalMenu.vue'
 import CharacterCard from '../components/CharacterCard.vue'
-import axios from "axios";
 import http from "../utils/http";
 
 export default {

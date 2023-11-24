@@ -21,6 +21,7 @@ import app.views.user as user
 from eiga_backend import settings
 import app.views.bangumi as bangumi
 import app.views.bangumi_character as bangumi_character
+import app.views.character as character
 
 urlpatterns = [
     path('vue/', vueViews.VueViews.as_view()),
@@ -29,7 +30,8 @@ urlpatterns = [
     path('user_query/', user.UserInfoQuery.as_view()),
     path('upload_avatar/', user.upload_avatar, name='upload_avatar'),
     path('bangumi_query/', bangumi.BangumiQuery.as_view()),
-    path('bangumi_character_query/', bangumi_character.BangumiCharacterQuery.as_view())
+    path('bangumi_character_query/', bangumi_character.BangumiCharacterQuery.as_view()),
+    path('character_query/', character.CharacterQuery.as_view())
 ]
 # import app.views.user as user
 # from django.contrib import admin
