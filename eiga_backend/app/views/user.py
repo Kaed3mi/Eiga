@@ -158,3 +158,24 @@ def upload_avatar(request):
             return JsonResponse({'status': 'error', 'message': 'No file uploaded'})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+
+class UserSearch(APIView):
+    def get(self, request):
+        pattern = request.GET.get('pattern')
+        obj_list_data = []
+        print('search user: pattern=' + pattern)
+        try:
+            list = User.objects.filter(user_name__contains=pattern)
+            print(list)
+            for obj in list:
+                obj_list_data.append({
+                    "id": obj.user_id,
+                    "name": obj.user_name,
+                })
+        except Exception as e:
+            print(e)
+            return Response(1)
+        return Response({
+            'users': obj_list_data
+        })
