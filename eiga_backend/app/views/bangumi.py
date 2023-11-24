@@ -66,3 +66,24 @@ class BangumiQuery(APIView):
             'bangumi_intro': obj.bangumi_intro,
             'bangumi_score': obj.bangumi_score
         })
+
+
+class BangumiSearch(APIView):
+    def get(self, request):
+        pattern = request.GET.get('pattern')
+        bangumi_list_data= []
+        print('search bangumi: pattern=' + pattern)
+        try:
+            bangumi_list = Bangumi.objects.filter(bangumi_name__contains=pattern)
+            print(bangumi_list)
+            for bangumi in bangumi_list:
+                bangumi_list_data.append({
+                    "id": bangumi.bangumi_id,
+                    "name": bangumi.bangumi_name,
+                })
+        except Exception as e:
+            print(e)
+            return Response(1)
+        return Response({
+            'bangumis': bangumi_list_data
+        })
