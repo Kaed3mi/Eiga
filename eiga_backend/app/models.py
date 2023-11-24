@@ -93,6 +93,7 @@ class Comment(models.Model):
     comment_id = models.CharField(max_length=32, verbose_name='id', primary_key=True)
     content = models.CharField(max_length=text_len, verbose_name='内容')
     time = models.DateTimeField(verbose_name='时间')
+    user_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     bangumi_id = models.ForeignKey(Bangumi, on_delete=models.SET_NULL, null=True, blank=True)
     blog_id = models.ForeignKey(Blog, on_delete=models.SET_NULL, null=True, blank=True)
     character_id = models.ForeignKey(Character, on_delete=models.SET_NULL, null=True, blank=True)

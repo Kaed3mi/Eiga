@@ -20,9 +20,10 @@ import app.views.vueViews as vueViews
 import app.views.user as user
 from eiga_backend import settings
 import app.views.bangumi as bangumi
+import app.views.bangumi_relationship as bangumi_relationship
 import app.views.character as character
 import app.views.bangumi_character as bangumi_character
-import app.views.character as character
+import app.views.comment as comment
 
 urlpatterns = [
     path('vue/', vueViews.VueViews.as_view()),
@@ -32,10 +33,13 @@ urlpatterns = [
     path('upload_avatar/', user.upload_avatar, name='upload_avatar'),
     path('bangumi_query/', bangumi.BangumiQuery.as_view()),
     path('bangumi_character_query/', bangumi_character.BangumiCharacterQuery.as_view()),
-    path('character_query/', character.CharacterQuery.as_view())
+    path('character_query/', character.CharacterQuery.as_view()),
     path('bangumi_search/', bangumi.BangumiSearch.as_view()),
+    path('bangumi_relationship_query/', bangumi_relationship.BangumiRelationshipQuery.as_view()),
     path('character_search/', character.CharacterSearch.as_view()),
     path('user_search/', user.UserSearch.as_view()),
+    path('comment_query/', comment.CommentQuery.as_view()),
+    path('comment_search/', comment.CommentSearch.as_view()),
 ]
 # import app.views.user as user
 # from django.contrib import admin

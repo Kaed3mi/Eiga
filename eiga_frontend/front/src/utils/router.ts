@@ -56,6 +56,7 @@ const router = createRouter({
             name: 'character-view',
             component: CharacterPageView,
         },
+        {
             path: '/subject_search/',
             name: 'bangumi-subject_search',
             component: SubjectSearch,

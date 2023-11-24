@@ -22,6 +22,18 @@
                 show-score
                 text-color="#ff9900"
                 score-template="{value} points"
+                :colors="rate_colors"
+            />
+            <br/>
+            你的评分：
+            <br/>
+            <el-rate
+                v-model="user_score"
+                allow-half
+                show-score
+                text-color="#ff9900"
+                :score-template="Number(user_score) !== -1 ? Number(user_score).toFixed(1)+ 'points' : ''"
+                :colors="rate_colors"
             />
           </el-aside>
 
@@ -29,7 +41,33 @@
             简介：
             {{ bangumi_intro }}
             <el-divider border-style="dashed"/>
-            <CharacterCard :id=1></CharacterCard>
+            角色
+            <CharacterCard :id=bangumi_id></CharacterCard>
+            <el-divider border-style="dashed"/>
+            <div v-if="bangumi_relationships.length > 0">
+              <h3>关联番组</h3>
+              <el-row
+                  :gutter="20"
+              >
+                <el-col :span="24" v-for="(result, index) in bangumi_relationships" :key="index">
+                  <ListItem type="bangumi" :id="result.bangumi_id.bangumi_id" :name="result.bangumi_id.bangumi_name"
+                            :description="0"
+                            :image="''"></ListItem>
+                </el-col>
+              </el-row>
+              <el-divider border-style="dashed"/>
+            </div>
+            <div v-if="comments.length > 0">
+              <h3>评论</h3>
+              <el-row
+                  :gutter="20"
+              >
+                <el-col :span="24" v-for="(result, index) in comments" :key="index">
+                  <CommentItem :comment_id="result.comment_id"></CommentItem>
+                </el-col>
+              </el-row>
+              <el-divider border-style="dashed"/>
+            </div>
           </el-main>
 
         </el-container>
@@ -44,6 +82,9 @@
 import VerticalMenu from '../components/VerticalMenu.vue'
 import CharacterCard from '../components/CharacterCard.vue'
 import http from "../utils/http";
+import ListItem from '../components/ListItem.vue'
+import CommentItem from "../components/CommentItem.vue";
+import {ref} from 'vue'
 
 export default {
   data() {
@@ -51,15 +92,20 @@ export default {
       bangumi_id: this.$route.params.bangumiId,
       bangumi_intro: "No introduction",
       bangumi_name: "Untitled",
-      bangumi_score: 0
+      bangumi_score: 0,
+      user_score: ref(-1),
+      rate_colors: ref(['#99A9BF', '#F7BA2A', '#FF9900']),
+      bangumi_relationships: [],
+      comments: []
     }
   },
   mounted() {
     this.bangumiQuery(); // 在组件挂载后调用 fetchData 方法
+    this.bangumiCommentQuery();
+    this.bangumiRelationShipQuery();
   },
   methods: {
     bangumiQuery() {
-      console.log("i'm " + this.bangumi_id)
       http.get(
           "http://127.0.0.1:8000/bangumi_query/",
           {
@@ -75,12 +121,62 @@ export default {
           .catch(error => {
             console.error('Error fetching data:', error);
           });
+    },
+    bangumiRelationShipQuery() {
+      http.get(
+          "http://127.0.0.1:8000/bangumi_relationship_query/",
+          {
+            params: {
+              "bangumi_id": this.bangumi_id,
+            }
+          }
+      ).then(response => {
+        for (let item of response.data.bangumis) {
+          this.bangumi_relationships.push({
+            'bangumi_id': item.bangumi_id,
+          })
+        }
+        console.log("this.bangumi_relationships")
+        console.log(this.bangumi_relationships)
+      })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+    },
+    bangumiCommentQuery() {
+      http.get(
+          "http://127.0.0.1:8000/comment_search/",
+          {
+            params: {
+              "bangumi_id": this.bangumi_id,
+            }
+          }
+      ).then(response => {
+        for (let item of response.data.comments) {
+          this.comments.push({
+            'comment_id': item.comment_id,
+            'content': item.content,
+            'time': item.time,
+            'user_id': item.user_id,
+            'bangumi_id': item.bangumi_id,
+            'blog_id': item.blog_id,
+            'character_id': item.character_id,
+          })
+        }
+        console.log("this.comments")
+        console.log(this.comments)
+      })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
     }
   },
   name: "Login",
   components: {
+    CommentItem,
     VerticalMenu,
-    CharacterCard
+    CharacterCard,
+    ListItem
   }
 }
 </script>

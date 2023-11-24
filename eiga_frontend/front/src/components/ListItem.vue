@@ -5,7 +5,7 @@
         class="image"
     />
     <div style="padding: 14px">
-      <span>{{type}},{{ name }}</span>
+      <span>{{ type }},{{ name }}</span>
       <div class="bottom">
         <el-button text class="button">
           <router-link :to="'/'+type +'/'+ id">Check</router-link>
@@ -20,14 +20,13 @@ import axios from "axios";
 import http from "../utils/http";
 
 export default {
-  props: ['type','id','name', 'image', 'description'],
+  props: ['type', 'id', 'name', 'image', 'description'],
   data() {
     return {
       characters: []
     }
   },
-  methods: {
-  },
+  methods: {},
   name: "ListItem",
 }
 

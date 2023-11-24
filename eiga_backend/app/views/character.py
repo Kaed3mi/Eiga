@@ -12,8 +12,9 @@ import base64
 
 
 class CharacterQuery(APIView):
-    def post(self, request):
-        character_id = str(1)
+    def get(self, request):
+        character_id = request.GET.get('character_id')
+        print('query character: id=' + character_id)
         character = Character.objects.get(character_id=character_id)
         # print(character.image)
         with open(character.image, 'rb') as f:
@@ -21,8 +22,9 @@ class CharacterQuery(APIView):
         Json = json.loads(character.intro)
         # print(Json)
         Json["image"] = str(image_data)[2:-1]
-        # print(Json)
+        Json["character_name"] = str(character.character_name)
         return JsonResponse(Json)
+
 
 class CharacterSearch(APIView):
     def get(self, request):
