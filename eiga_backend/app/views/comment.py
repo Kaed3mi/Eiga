@@ -1,8 +1,39 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from app.models import Comment
+from app.models import Comment, User, Bangumi, Blog, Character
 from django.db.models import Q
 from app.serializers import BlogModelSerializer, BangumiModelSerializer, UserModelSerializer, CharacterModelSerializer
+import datetime
+
+
+class CommentInsert(APIView):
+    def post(self, request):
+        content = str(request.data.get('content'))
+        time = request.data.get('time')
+        user_id = str(request.data.get('user_id'))
+        bangumi_id = str(request.data.get('bangumi_id'))
+        blog_id = str(request.data.get('blog_id'))
+        character_id = str(request.data.get('character_id'))
+        print(f'time = {time}')
+        print(request.data)
+        try:
+            user = User.objects.get(user_id=user_id)
+            bangumi = Bangumi.objects.get(bangumi_id=bangumi_id)
+            blog = Blog.objects.get(blog_id=blog_id) if blog_id is not '' else None
+            character = Character.objects.get(character_id=character_id) if character_id is not '' else None
+            obj = Comment(
+                content=content,
+                time=datetime.datetime.fromtimestamp(time / 1000),
+                user_id=user,
+                bangumi_id=bangumi,
+                blog_id=blog,
+                character_id=character
+            )
+            obj.save()
+        except Exception as e:
+            print(e)
+            return Response(1)
+        return Response(0)
 
 
 class CommentQuery(APIView):
@@ -65,7 +96,6 @@ class CommentSearch(APIView):
         except Exception as e:
             print(e)
             return Response(1)
-        print(obj_list_data)
         return Response({
             'comments': obj_list_data
         })

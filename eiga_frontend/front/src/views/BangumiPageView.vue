@@ -21,7 +21,7 @@
                 disabled
                 show-score
                 text-color="#ff9900"
-                score-template="{value} points"
+                :score-template="bangumi_score.toFixed(1)+ 'points'"
                 :colors="rate_colors"
             />
             <br/>
@@ -34,6 +34,7 @@
                 text-color="#ff9900"
                 :score-template="Number(user_score) !== -1 ? Number(user_score).toFixed(1)+ 'points' : ''"
                 :colors="rate_colors"
+                @click="handleScoring"
             />
           </el-aside>
 
@@ -68,6 +69,20 @@
               </el-row>
               <el-divider border-style="dashed"/>
             </div>
+            <el-input
+                v-model="new_comment_area"
+                maxlength="400"
+                :autosize="{ minRows: 4, maxRows: 6 }"
+                placeholder="畅所欲言..."
+                show-word-limit
+                type="textarea"
+                rows="3"
+                clearable
+            >
+            </el-input>
+            <el-button type="primary" @click=commentInsert>
+              提交
+            </el-button>
           </el-main>
 
         </el-container>
@@ -93,16 +108,21 @@ export default {
       bangumi_intro: "No introduction",
       bangumi_name: "Untitled",
       bangumi_score: 0,
+      user_scored: ref(false),
       user_score: ref(-1),
       rate_colors: ref(['#99A9BF', '#F7BA2A', '#FF9900']),
       bangumi_relationships: [],
-      comments: []
+      comments: [],
+      new_comment_area: ref('')
     }
   },
   mounted() {
     this.bangumiQuery(); // 在组件挂载后调用 fetchData 方法
     this.bangumiCommentQuery();
     this.bangumiRelationShipQuery();
+    this.userScoreQuery();
+    this.bangumiScoreQuery();
+
   },
   methods: {
     bangumiQuery() {
@@ -144,6 +164,8 @@ export default {
           });
     },
     bangumiCommentQuery() {
+      console.log("i'm called")
+      this.comments = []
       http.get(
           "http://127.0.0.1:8000/comment_search/",
           {
@@ -169,6 +191,101 @@ export default {
           .catch(error => {
             console.error('Error fetching data:', error);
           });
+    },
+    commentInsert() {
+      http.post(
+          'http://127.0.0.1:8000/comment_insert/',
+          {
+            content: this.new_comment_area,
+            time: new Date().getTime(),
+            user_id: localStorage.getItem("user_id"),
+            bangumi_id: this.bangumi_id,
+            blog_id: '',
+            character_id: '',
+          },
+      ).then(response => {
+        console.log("submitted comment")
+        this.new_comment_area = ref('')
+        this.bangumiCommentQuery()
+      }).catch(error => {
+        alert("评论失败")
+        console.error('Error posting data:', error);
+      });
+    },
+    bangumiScoreQuery() {
+      http.get(
+          'http://127.0.0.1:8000/bangumi_score_query/',
+          {
+            params: {
+              bangumi_id: this.bangumi_id,
+            }
+          }
+      ).then(response => {
+        console.log("submitted score")
+        this.bangumi_score = response.data.score
+        this.bangumiCommentQuery()
+      }).catch(error => {
+        alert("评论失败")
+        console.error('Error posting data:', error);
+      });
+    },
+    userScoreQuery() {
+      http.get(
+          'http://127.0.0.1:8000/score_query/',
+          {
+            params: {
+              user_id: localStorage.getItem("user_id"),
+              bangumi_id: this.bangumi_id,
+            }
+          }
+      ).then(response => {
+        if (response.data == 1) {
+          this.user_score = ref(-1)
+        } else {
+          this.user_score = response.data.score
+          this.user_scored = ref(true)
+        }
+      }).catch(error => {
+        alert("评论失败")
+        console.error('Error posting data:', error);
+      });
+    },
+    handleScoring() {
+      if (Boolean(this.user_scored)) {
+        this.scoreUpdate();
+      } else {
+        this.scoreInsert();
+      }
+    },
+    scoreInsert() {
+      http.post(
+          'http://127.0.0.1:8000/score_insert/',
+          {
+            user_id: localStorage.getItem("user_id"),
+            bangumi_id: this.bangumi_id,
+            score: this.user_score
+          },
+      ).then(response => {
+        console.log("submitted score")
+      }).catch(error => {
+        alert("新增评分失败")
+        console.error('Error posting data:', error);
+      });
+    },
+    scoreUpdate() {
+      http.put(
+          'http://127.0.0.1:8000/score_update/',
+          {
+            user_id: localStorage.getItem("user_id"),
+            bangumi_id: this.bangumi_id,
+            score: this.user_score
+          },
+      ).then(response => {
+        console.log("updated score")
+      }).catch(error => {
+        alert("修改评分失败")
+        console.error('Error posting data:', error);
+      });
     }
   },
   name: "Login",

@@ -24,6 +24,7 @@ import app.views.bangumi_relationship as bangumi_relationship
 import app.views.character as character
 import app.views.bangumi_character as bangumi_character
 import app.views.comment as comment
+import app.views.score as score
 
 urlpatterns = [
     path('vue/', vueViews.VueViews.as_view()),
@@ -40,6 +41,11 @@ urlpatterns = [
     path('user_search/', user.UserSearch.as_view()),
     path('comment_query/', comment.CommentQuery.as_view()),
     path('comment_search/', comment.CommentSearch.as_view()),
+    path('comment_insert/', comment.CommentInsert.as_view()),
+    path('score_insert/', score.ScoreInsert.as_view()),
+    path('score_update/', score.ScoreUpdate.as_view()),
+    path('bangumi_score_query/', score.BangumiScoreQuery.as_view()),
+    path('score_query/', score.ScoreQuery.as_view()),
 ]
 # import app.views.user as user
 # from django.contrib import admin
