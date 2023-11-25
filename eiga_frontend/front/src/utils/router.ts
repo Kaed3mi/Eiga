@@ -7,6 +7,7 @@ import HomePage from "../views/HomePageView.vue"
 import InfoUpdate from "../views/InfoUpdate.vue"
 import CharacterPageView from "../views/CharacterPageView.vue"
 import SubjectSearch from "../views/SubjectSearch.vue"
+import CharaterUpdateView from "../views/CharacterUpdateView.vue"
 
 const router = createRouter({
     history: createWebHistory(),
@@ -60,6 +61,11 @@ const router = createRouter({
             path: '/subject_search/',
             name: 'bangumi-subject_search',
             component: SubjectSearch,
+        },
+        {
+            path: '/character_update/:characterId',
+            name: 'character-',
+            component: CharaterUpdateView,
         },
     ]
 })
