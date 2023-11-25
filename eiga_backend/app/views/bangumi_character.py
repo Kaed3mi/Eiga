@@ -7,13 +7,13 @@ from app.models import Character
 
 class BangumiCharacterQuery(APIView):
     def get(self, request):
-        bangumi_id = request.GET.get('bangumi_id')
+        bangumi_id = int(request.GET.get('bangumi_id'))
         character_list_data = []
-        print('query bangumiCharacter: id=' + bangumi_id)
+        print('query bangumiCharacter: id=', bangumi_id)
         try:
             character_bangumi_list = CharacterBangumi.objects.filter(bangumi_id=bangumi_id)
             for character_bangumi in character_bangumi_list:
-                character: Character = Character.objects.get(character_id=character_bangumi.character_id)
+                character: Character = Character.objects.get(character_id=character_bangumi.character_id.character_id)
                 character_list_data.append({
                     "id": character.character_id,
                     "character_name": character.character_name,

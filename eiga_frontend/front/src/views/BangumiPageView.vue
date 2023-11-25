@@ -21,7 +21,20 @@
                 disabled
                 show-score
                 text-color="#ff9900"
-                score-template="{value} points"
+                :score-template="bangumi_score.toFixed(1)+ 'points'"
+                :colors="rate_colors"
+            />
+            <br/>
+            你的评分：
+            <br/>
+            <el-rate
+                v-model="user_score"
+                allow-half
+                show-score
+                text-color="#ff9900"
+                :score-template="Number(user_score) !== -1 ? Number(user_score).toFixed(1)+ 'points' : ''"
+                :colors="rate_colors"
+                @click="handleScoring"
             />
           </el-aside>
 
@@ -29,7 +42,47 @@
             简介：
             {{ bangumi_intro }}
             <el-divider border-style="dashed"/>
-            <CharacterCard :id=1></CharacterCard>
+            角色
+            <CharacterCard :id=bangumi_id></CharacterCard>
+            <el-divider border-style="dashed"/>
+            <div v-if="bangumi_relationships.length > 0">
+              <h3>关联番组</h3>
+              <el-row
+                  :gutter="20"
+              >
+                <el-col :span="24" v-for="(result, index) in bangumi_relationships" :key="index">
+                  <ListItem type="bangumi" :id="result.bangumi_id.bangumi_id" :name="result.bangumi_id.bangumi_name"
+                            :description="0"
+                            :image="''"></ListItem>
+                </el-col>
+              </el-row>
+              <el-divider border-style="dashed"/>
+            </div>
+            <div v-if="comments.length > 0">
+              <h3>评论</h3>
+              <el-row
+                  :gutter="20"
+              >
+                <el-col :span="24" v-for="(result, index) in comments" :key="index">
+                  <CommentItem :comment_id="result.comment_id"></CommentItem>
+                </el-col>
+              </el-row>
+              <el-divider border-style="dashed"/>
+            </div>
+            <el-input
+                v-model="new_comment_area"
+                maxlength="400"
+                :autosize="{ minRows: 4, maxRows: 6 }"
+                placeholder="畅所欲言..."
+                show-word-limit
+                type="textarea"
+                rows="3"
+                clearable
+            >
+            </el-input>
+            <el-button type="primary" @click=commentInsert>
+              提交
+            </el-button>
           </el-main>
 
         </el-container>
@@ -44,6 +97,9 @@
 import VerticalMenu from '../components/VerticalMenu.vue'
 import CharacterCard from '../components/CharacterCard.vue'
 import http from "../utils/http";
+import ListItem from '../components/ListItem.vue'
+import CommentItem from "../components/CommentItem.vue";
+import {ref} from 'vue'
 
 export default {
   data() {
@@ -51,15 +107,25 @@ export default {
       bangumi_id: this.$route.params.bangumiId,
       bangumi_intro: "No introduction",
       bangumi_name: "Untitled",
-      bangumi_score: 0
+      bangumi_score: 0,
+      user_scored: ref(false),
+      user_score: ref(-1),
+      rate_colors: ref(['#99A9BF', '#F7BA2A', '#FF9900']),
+      bangumi_relationships: [],
+      comments: [],
+      new_comment_area: ref('')
     }
   },
   mounted() {
     this.bangumiQuery(); // 在组件挂载后调用 fetchData 方法
+    this.bangumiCommentQuery();
+    this.bangumiRelationShipQuery();
+    this.userScoreQuery();
+    this.bangumiScoreQuery();
+
   },
   methods: {
     bangumiQuery() {
-      console.log("i'm " + this.bangumi_id)
       http.get(
           "http://127.0.0.1:8000/bangumi_query/",
           {
@@ -75,12 +141,159 @@ export default {
           .catch(error => {
             console.error('Error fetching data:', error);
           });
+    },
+    bangumiRelationShipQuery() {
+      http.get(
+          "http://127.0.0.1:8000/bangumi_relationship_query/",
+          {
+            params: {
+              "bangumi_id": this.bangumi_id,
+            }
+          }
+      ).then(response => {
+        for (let item of response.data.bangumis) {
+          this.bangumi_relationships.push({
+            'bangumi_id': item.bangumi_id,
+          })
+        }
+        console.log("this.bangumi_relationships")
+        console.log(this.bangumi_relationships)
+      })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+    },
+    bangumiCommentQuery() {
+      console.log("i'm called")
+      this.comments = []
+      http.get(
+          "http://127.0.0.1:8000/comment_search/",
+          {
+            params: {
+              "bangumi_id": this.bangumi_id,
+            }
+          }
+      ).then(response => {
+        for (let item of response.data.comments) {
+          this.comments.push({
+            'comment_id': item.comment_id,
+            'content': item.content,
+            'time': item.time,
+            'user_id': item.user_id,
+            'bangumi_id': item.bangumi_id,
+            'blog_id': item.blog_id,
+            'character_id': item.character_id,
+          })
+        }
+        console.log("this.comments")
+        console.log(this.comments)
+      })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+    },
+    commentInsert() {
+      http.post(
+          'http://127.0.0.1:8000/comment_insert/',
+          {
+            content: this.new_comment_area,
+            time: new Date().getTime(),
+            user_id: localStorage.getItem("user_id"),
+            bangumi_id: this.bangumi_id,
+            blog_id: '',
+            character_id: '',
+          },
+      ).then(response => {
+        console.log("submitted comment")
+        this.new_comment_area = ref('')
+        this.bangumiCommentQuery()
+      }).catch(error => {
+        alert("评论失败")
+        console.error('Error posting data:', error);
+      });
+    },
+    bangumiScoreQuery() {
+      http.get(
+          'http://127.0.0.1:8000/bangumi_score_query/',
+          {
+            params: {
+              bangumi_id: this.bangumi_id,
+            }
+          }
+      ).then(response => {
+        console.log("submitted score")
+        this.bangumi_score = response.data.score
+        this.bangumiCommentQuery()
+      }).catch(error => {
+        alert("评论失败")
+        console.error('Error posting data:', error);
+      });
+    },
+    userScoreQuery() {
+      http.get(
+          'http://127.0.0.1:8000/score_query/',
+          {
+            params: {
+              user_id: localStorage.getItem("user_id"),
+              bangumi_id: this.bangumi_id,
+            }
+          }
+      ).then(response => {
+        if (response.data == 1) {
+          this.user_score = ref(-1)
+        } else {
+          this.user_score = response.data.score
+          this.user_scored = ref(true)
+        }
+      }).catch(error => {
+        alert("评论失败")
+        console.error('Error posting data:', error);
+      });
+    },
+    handleScoring() {
+      if (Boolean(this.user_scored)) {
+        this.scoreUpdate();
+      } else {
+        this.scoreInsert();
+      }
+    },
+    scoreInsert() {
+      http.post(
+          'http://127.0.0.1:8000/score_insert/',
+          {
+            user_id: localStorage.getItem("user_id"),
+            bangumi_id: this.bangumi_id,
+            score: this.user_score
+          },
+      ).then(response => {
+        console.log("submitted score")
+      }).catch(error => {
+        alert("新增评分失败")
+        console.error('Error posting data:', error);
+      });
+    },
+    scoreUpdate() {
+      http.put(
+          'http://127.0.0.1:8000/score_update/',
+          {
+            user_id: localStorage.getItem("user_id"),
+            bangumi_id: this.bangumi_id,
+            score: this.user_score
+          },
+      ).then(response => {
+        console.log("updated score")
+      }).catch(error => {
+        alert("修改评分失败")
+        console.error('Error posting data:', error);
+      });
     }
   },
   name: "Login",
   components: {
+    CommentItem,
     VerticalMenu,
-    CharacterCard
+    CharacterCard,
+    ListItem
   }
 }
 </script>
