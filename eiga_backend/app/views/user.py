@@ -110,9 +110,34 @@ class UserInfoQuery(APIView):
 
 
 class UserUpdateInfo(APIView):
+    """用于用户更新信息
+    {
+    username:
+    email:
+    password:
+    }
+    """
+
     def post(self, request):
-        user_name = str(request.data.get('username'))
+        user_id = str(request.data.get('user_id'))
+        username = str(request.data.get('username'))
         email = str(request.data.get('email'))
+        password = str(request.data.get('password'))
+        user = User.objects.filter(user_id=user_id)
+        if user.__len__() == 0:
+            print("user not exist")
+            return Response(1)
+        try:
+            if username != '':
+                user.user_name = username
+            if email != '':
+                user.email = email
+            if password != '':
+                user.password = password  # 听说这样可以确保密码以安全的方式进行哈希处理。
+            return Response(0)
+        except Exception as e:
+            print(e)
+            return Response(1)
 
 
 @csrf_exempt

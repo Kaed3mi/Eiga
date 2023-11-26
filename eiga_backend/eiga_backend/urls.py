@@ -34,6 +34,7 @@ urlpatterns = [
     path('user_query/', user.UserInfoQuery.as_view()),
     path('upload_avatar/', user.upload_avatar, name='upload_avatar'),
     path('user_search/', user.UserSearch.as_view()),
+    path('user_info_update/', user.UserUpdateInfo.as_view()),
     # bangumi
     path('bangumi_query/', bangumi.BangumiQuery.as_view()),
     path('bangumi_character_query/', bangumi_character.BangumiCharacterQuery.as_view()),
