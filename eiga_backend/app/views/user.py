@@ -17,7 +17,6 @@ import shutil
 class UserRegister(APIView):
     def post(self, request):
         # TODO need an approach to generate user_id!!!
-        user_id = str(request.data.get('user_id'))
         user_name = str(request.data.get('username'))
         email = str(request.data.get('email'))
         password = str(request.data.get('password'))
@@ -32,7 +31,6 @@ class UserRegister(APIView):
         else:
             try:
                 s = User.objects.create(
-                    user_id=user_id,
                     user_name=user_name,
                     email=email,
                     password=password,
@@ -115,9 +113,34 @@ class UserInfoQuery(APIView):
 
 
 class UserUpdateInfo(APIView):
+    """用于用户更新信息
+    {
+    username:
+    email:
+    password:
+    }
+    """
+
     def post(self, request):
-        user_name = str(request.data.get('username'))
+        user_id = str(request.data.get('user_id'))
+        username = str(request.data.get('username'))
         email = str(request.data.get('email'))
+        password = str(request.data.get('password'))
+        user = User.objects.filter(user_id=user_id)
+        if user.__len__() == 0:
+            print("user not exist")
+            return Response(1)
+        try:
+            if username != '':
+                user.user_name = username
+            if email != '':
+                user.email = email
+            if password != '':
+                user.password = password  # 听说这样可以确保密码以安全的方式进行哈希处理。
+            return Response(0)
+        except Exception as e:
+            print(e)
+            return Response(1)
 
 
 @csrf_exempt
@@ -133,7 +156,7 @@ def upload_avatar(request):
         # print(avatar)
         if avatar:
             # 保存头像到服务器
-            file_path = default_storage.save('avatars/' + avatar.name, ContentFile(avatar.read()))
+            file_path = default_storage.save('user/' + avatar.name, ContentFile(avatar.read()))
             print(file_path)
             if User.objects.get(email=req_email).avatar == "default":
                 print("the user has the default avatar and we change it to " + str(file_path))

@@ -1,6 +1,4 @@
 import mimetypes
-
-from PIL import Image
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.db.models import Q
@@ -16,6 +14,7 @@ import os
 import shutil
 import base64
 import io
+from eiga_backend.settings import ASSETS_ROOT
 
 
 class CharacterQuery(APIView):
@@ -25,7 +24,7 @@ class CharacterQuery(APIView):
         character_id = request.GET.get('character_id')
         print('query character: id=' + character_id)
         character = Character.objects.get(character_id=character_id)
-        with open(character.image, 'rb') as f:
+        with open(ASSETS_ROOT + character.image, 'rb') as f:
             image_data = base64.b64encode(f.read())
         print(character.intro)
         Json = json.loads(character.intro.replace("'", '"'))
@@ -71,16 +70,16 @@ class CharacterUpdate(APIView):
         # print(str(dic))
         print(request.data.get("attributes"))
 
-
         character_info = Character.objects.get(character_id=character_id)
         character_info.intro = str(dic)
         character_info.save()
         file_ext = mimetypes.guess_extension(image_type)
         if not file_ext:
             file_ext = '.png'
-        print('characters/' + character_id + file_ext)
+        print(ASSETS_ROOT + 'characters/' + character_id + file_ext)
         if character_info.image == None:
-            print("the user has the default avatar and we change it to " + 'characters/' + character_id + file_ext)
+            print("the user has the default avatar and we change it to " +
+                  ASSETS_ROOT + 'characters/' + character_id + file_ext)
             character_info.image = 'characters/' + character_id + file_ext
             character_info.save()
         else:
@@ -94,9 +93,10 @@ class CharacterUpdate(APIView):
             character_info.image = 'characters/' + character_id + file_ext
             character_info.save()
 
-        with open('characters/' + character_id + file_ext, 'wb') as f:
+        with open(ASSETS_ROOT + 'characters/' + character_id + file_ext, 'wb') as f:
             f.write(image_str)
         return Response(1)
+
 
 class CharacterSelect(APIView):
     def get(self, request):
@@ -107,6 +107,7 @@ class CharacterSelect(APIView):
         print(characters.__len__())
         print(list(characters))
         character_list = list(characters)
-        characters_json = [{'character_id': character.character_id, 'value': character.character_name} for character in character_list]
+        characters_json = [{'character_id': character.character_id, 'value': character.character_name} for character in
+                           character_list]
         print(characters_json)
         return Response(characters_json)

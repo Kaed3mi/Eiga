@@ -1,6 +1,15 @@
 <template>
   <div class="user-profile">
-    <VerticalMenu/>
+
+    <div class="vertical-menu">
+      <!-- 左侧导航栏 -->
+      <VerticalMenu/>
+    </div>
+    <div class="user-info-container">
+      <!-- 用户信息弹窗组件 -->
+      <UpdateUserInfo/>
+    </div>
+    
     <img :src="avatarUrl" alt="User avatar" class="avatar"/>
     <h2>{{ username }}</h2>
     <p>{{ bio }}</p>
@@ -22,12 +31,13 @@
 </template>
 <script>
 import VerticalMenu from "../components/VerticalMenu.vue";
+import UpdateUserInfo from "../components/UpdateUserInfo.vue";
 import http from "../utils/http";
 import {watch} from "vue";
 
 export default {
   name: 'UserPage',
-  components: {VerticalMenu},
+  components: {VerticalMenu, UpdateUserInfo},
   data() {
     return {
       user_id: this.$route.params.userId,
@@ -100,11 +110,10 @@ export default {
   margin-bottom: 20px;
 }
 
-.stats {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
+.user-info-container {
+  position: fixed;
+  top: 20px; /* 距离顶部的距离 */
+  right: 20px; /* 距离右侧的距离 */
 }
 
 .stat {

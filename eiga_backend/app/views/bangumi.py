@@ -6,6 +6,7 @@ from django.db.models import Q
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Bangumi
+from eiga_backend.settings import ASSETS_ROOT
 
 
 # TODO 这里的操作需要核验权限组是否达标，不过呢我还没写。
@@ -64,7 +65,7 @@ class BangumiQuery(APIView):
         try:
             obj = Bangumi.objects.get(bangumi_id=bangumi_id)
             image_url = obj.image
-            with open(image_url, 'rb') as f:
+            with open(ASSETS_ROOT + image_url, 'rb') as f:
                 image_data = base64.b64encode(f.read())
                 print(image_data)
         except Exception as e:
@@ -109,6 +110,7 @@ class BangumiSelect(APIView):
         bangumi_json = [{'bangumi_id': bangumi.bangumi_id, 'value': bangumi.bangumi_name} for bangumi in list(bangumis)]
         return Response(bangumi_json)
 
+
 class BangumiUpdate(APIView):
     def post(self, request):
         print(request.data.get('bangumi_intro'))
@@ -141,7 +143,7 @@ class BangumiUpdate(APIView):
             bangumi_info.image = 'bangumi/' + str(bangumi_id) + file_ext
             bangumi_info.save()
 
-        with open('bangumi/' + str(bangumi_id) + file_ext, 'wb') as f:
+        with open(ASSETS_ROOT + 'bangumi/' + str(bangumi_id) + file_ext, 'wb') as f:
             f.write(image_str)
 
         return Response(1)

@@ -7,9 +7,10 @@ import HomePage from "../views/HomePageView.vue"
 import InfoUpdate from "../views/InfoUpdate.vue"
 import CharacterPageView from "../views/CharacterPageView.vue"
 import SubjectSearch from "../views/SubjectSearch.vue"
-import CharaterUpdateView from "../views/CharacterUpdateView.vue"
+import CharacterUpdateView from "../views/CharacterUpdateView.vue"
 import BangumiUpdateView from "../views/BangumiUpdateView.vue"
 import UserPageView from "../views/UserPageView.vue";
+import UpdateUserInfo from "../components/UpdateUserInfo.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -72,13 +73,19 @@ const router = createRouter({
         {
             path: '/character_update/:characterId',
             name: 'character-update',
-            component: CharaterUpdateView,
+            component: CharacterUpdateView,
         },
         {
             path: '/bangumi_update/:bangumiId',
             name: 'bangumi_update-update',
             component: BangumiUpdateView,
         },
+        {
+            // かたみ同学用来测试的
+            path: '/dev',
+            name: 'dev',
+            component: UpdateUserInfo,
+        }
     ]
 })
 
