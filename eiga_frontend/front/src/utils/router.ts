@@ -8,6 +8,7 @@ import InfoUpdate from "../views/InfoUpdate.vue"
 import CharacterPageView from "../views/CharacterPageView.vue"
 import SubjectSearch from "../views/SubjectSearch.vue"
 import CharaterUpdateView from "../views/CharacterUpdateView.vue"
+import UserPageView from "../views/UserPageView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -46,6 +47,11 @@ const router = createRouter({
             path: "/Home",
             name: "homePage",
             component: HomePage
+        },
+        {
+            path: '/user/:userId',
+            name: 'UserPage',
+            component: UserPageView,
         },
         {
             path: '/bangumi/:bangumiId',

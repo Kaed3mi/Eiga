@@ -48,6 +48,7 @@ urlpatterns = [
     path('score_insert/', score.ScoreInsert.as_view()),
     path('score_update/', score.ScoreUpdate.as_view()),
     path('score_query/', score.ScoreQuery.as_view()),
+    path('get_user_scores/', score.GetUserScores.as_view()),
     # character
     path('character_search/', character.CharacterSearch.as_view()),
     path('character_query/', character.CharacterQuery.as_view()),
@@ -58,6 +59,4 @@ urlpatterns = [
 # from django.urls import path, include
 
 # urlpatterns = [
-#     path("admin/", admin.site.urls),
-#     path("user_register/", user.UserRegister.as_view())
-# ]
+#     path("admin/
