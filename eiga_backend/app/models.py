@@ -26,6 +26,7 @@ class Bangumi(models.Model):
     bangumi_intro = models.CharField(max_length=text_len, verbose_name='简介')
     bangumi_score = models.FloatField(verbose_name='评分', null=True, blank=True)
     rank = models.IntegerField(verbose_name='排名', null=True, blank=True)
+    image = models.CharField(max_length=32, verbose_name='图片')
 
     class Meta:
         db_table = 'tb_bangumi'

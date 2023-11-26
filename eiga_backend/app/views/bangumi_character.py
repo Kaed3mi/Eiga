@@ -24,3 +24,21 @@ class BangumiCharacterQuery(APIView):
         return Response({
             'characters': character_list_data,
         })
+
+
+class BangumiCharaterUpdate(APIView):
+    def post(self, request):
+        print(request.data)
+        bangumi_id = int(request.data.get('bangumi_id'))
+        characters = list(request.data.get('characters'))
+        character_bangumi_list = CharacterBangumi.objects.filter(bangumi_id=bangumi_id)
+        for character_bangumi in character_bangumi_list:
+            print("deleting " + str(character_bangumi.character_id.character_id))
+            character_bangumi.delete()
+        for relation in characters:
+            character = Character.objects.get(character_id=relation['character_id'])
+            bangumi = Bangumi.objects.get(bangumi_id=bangumi_id)
+            relate = CharacterBangumi.objects.create(character_id=character, bangumi_id=bangumi)
+            relate.save()
+        print(characters)
+        return Response(1)

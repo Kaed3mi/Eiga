@@ -12,7 +12,7 @@
             <div class="demo-image">
               <el-image
                   style="width: 300px; height: 400px"
-                  :src="'https://lain.bgm.tv/r/400/pic/cover/l/78/c9/55770_HsJfh.jpg'"
+                  :src="bangumi_image"
                   :fit="cover"
               />
             </div>
@@ -105,6 +105,7 @@ export default {
   data() {
     return {
       bangumi_id: this.$route.params.bangumiId,
+      bangumi_image: '',
       bangumi_intro: "No introduction",
       bangumi_name: "Untitled",
       bangumi_score: 0,
@@ -137,6 +138,9 @@ export default {
         this.bangumi_intro = response.data.bangumi_intro;
         this.bangumi_name = response.data.bangumi_name;
         this.bangumi_score = response.data.bangumi_score;
+        this.bangumi_image = `data:image/png;base64,${response.data.image}`;
+        console.log(this.bangumi_image);
+
       })
           .catch(error => {
             console.error('Error fetching data:', error);
