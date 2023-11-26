@@ -8,6 +8,7 @@ import InfoUpdate from "../views/InfoUpdate.vue"
 import CharacterPageView from "../views/CharacterPageView.vue"
 import SubjectSearch from "../views/SubjectSearch.vue"
 import CharaterUpdateView from "../views/CharacterUpdateView.vue"
+import BangumiUpdateView from "../views/BangumiUpdateView.vue"
 import UserPageView from "../views/UserPageView.vue";
 
 const router = createRouter({
@@ -70,8 +71,13 @@ const router = createRouter({
         },
         {
             path: '/character_update/:characterId',
-            name: 'character-',
+            name: 'character-update',
             component: CharaterUpdateView,
+        },
+        {
+            path: '/bangumi_update/:bangumiId',
+            name: 'bangumi_update-update',
+            component: BangumiUpdateView,
         },
     ]
 })

@@ -8,7 +8,7 @@
     >
       <el-card :body-style="{ padding: '0px' }">
         <img
-            src="https://lain.bgm.tv/r/400/pic/crt/l/e3/2f/18101_crt_343At.jpg?r=1410320023"
+            :src="imageUrl"
             class="image"
         />
         <div style="padding: 14px">
@@ -32,6 +32,7 @@ export default {
   props: ['id'],
   data() {
     return {
+      imageUrl: '',
       characters: []
     }
   },
@@ -49,10 +50,28 @@ export default {
           }
       ).then(response => {
         this.characters = response.data.characters;
+        console.log(response.data.characters);
+        for (let item of response.data.characters) {
+          console.log("item: " + item.id + item.character_name);
+          http.get(
+            "http://127.0.0.1:8000/character_query/",
+            {
+              params: {
+                  "character_id": item.id
+              }
+            }
+          ).then(
+            response => {
+              console.log(response.data);
+              console.log(response.data.introduce);
+              this.imageUrl = `data:image/png;base64,${response.data.image}`
+            }
+          )
+        }
       })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-          });
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
     }
   },
   name: "Login",

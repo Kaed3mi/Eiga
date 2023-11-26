@@ -1,3 +1,8 @@
+import base64
+import mimetypes
+import os
+
+from django.db.models import Q
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Bangumi
@@ -58,20 +63,26 @@ class BangumiQuery(APIView):
         print('query bangumi: id=' + bangumi_id)
         try:
             obj = Bangumi.objects.get(bangumi_id=bangumi_id)
+            image_url = obj.image
+            with open(image_url, 'rb') as f:
+                image_data = base64.b64encode(f.read())
+                print(image_data)
         except Exception as e:
             print(e)
             return Response(1)
         return Response({
             'bangumi_name': obj.bangumi_name,
             'bangumi_intro': obj.bangumi_intro,
-            'bangumi_score': obj.bangumi_score
+            'bangumi_score': obj.bangumi_score,
+            'rank': obj.rank,
+            'image': str(image_data)[2:-1]
         })
 
 
 class BangumiSearch(APIView):
     def get(self, request):
         pattern = request.GET.get('pattern')
-        bangumi_list_data= []
+        bangumi_list_data = []
         print('search bangumi: pattern=' + pattern)
         try:
             bangumi_list = Bangumi.objects.filter(bangumi_name__contains=pattern)
@@ -87,3 +98,50 @@ class BangumiSearch(APIView):
         return Response({
             'bangumis': bangumi_list_data
         })
+
+
+class BangumiSelect(APIView):
+    def get(self, request):
+        print(request.GET.get("keyword"))
+        keyword = str(request.GET.get("keyword"))
+        bangumis = Bangumi.objects.filter(Q(bangumi_name__icontains=keyword))
+        print(list(bangumis))
+        bangumi_json = [{'bangumi_id': bangumi.bangumi_id, 'value': bangumi.bangumi_name} for bangumi in list(bangumis)]
+        return Response(bangumi_json)
+
+class BangumiUpdate(APIView):
+    def post(self, request):
+        print(request.data.get('bangumi_intro'))
+        bangumi_id = int(request.data.get('bangumi_id'))
+        image_base64 = request.data.get("image")
+        image_str = base64.b64decode(image_base64.split(',')[1])
+        image_type = image_base64.split(';')[0].split(':')[1]
+        bangumi_intro = str(request.data.get("bangumi_intro"))
+        print(bangumi_intro)
+        bangumi_info = Bangumi.objects.get(bangumi_id=bangumi_id)
+        print(bangumi_info.bangumi_intro)
+        bangumi_info.bangumi_intro = bangumi_intro
+        bangumi_info.save()
+        file_ext = mimetypes.guess_extension(image_type)
+        if not file_ext:
+            file_ext = '.png'
+        print('bangumi/' + str(bangumi_id) + file_ext)
+        if bangumi_info.image == None:
+            print("the user has the default avatar and we change it to " + 'bangumi/' + str(bangumi_id) + file_ext)
+            bangumi_info.image = 'bangumi/' + str(bangumi_id) + file_ext
+            bangumi_info.save()
+        else:
+            print("now we will delete the original avatar")
+            legacy_image = bangumi_info.image
+            print(legacy_image)
+            if os.path.exists(legacy_image):
+                os.remove(legacy_image)
+            else:
+                print("path didn't find check it")
+            bangumi_info.image = 'bangumi/' + str(bangumi_id) + file_ext
+            bangumi_info.save()
+
+        with open('bangumi/' + str(bangumi_id) + file_ext, 'wb') as f:
+            f.write(image_str)
+
+        return Response(1)

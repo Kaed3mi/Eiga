@@ -40,6 +40,9 @@ urlpatterns = [
     path('bangumi_search/', bangumi.BangumiSearch.as_view()),
     path('bangumi_relationship_query/', bangumi_relationship.BangumiRelationshipQuery.as_view()),
     path('bangumi_score_query/', score.BangumiScoreQuery.as_view()),
+    path('bangumi_select/', bangumi.BangumiSelect.as_view()),
+    path('bangumi_update/', bangumi.BangumiUpdate.as_view()),
+    path('bangumi_charater_update/', bangumi_character.BangumiCharaterUpdate.as_view()),
     # comment
     path('comment_query/', comment.CommentQuery.as_view()),
     path('comment_search/', comment.CommentSearch.as_view()),
@@ -53,6 +56,7 @@ urlpatterns = [
     path('character_search/', character.CharacterSearch.as_view()),
     path('character_query/', character.CharacterQuery.as_view()),
     path('character_update/', character.CharacterUpdate.as_view()),
+    path('character_select/', character.CharacterSelect.as_view())
 ]
 # import app.views.user as user
 # from django.contrib import admin

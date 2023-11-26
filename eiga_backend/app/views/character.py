@@ -3,6 +3,7 @@ import mimetypes
 from PIL import Image
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from django.db.models import Q
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Bangumi
@@ -24,7 +25,6 @@ class CharacterQuery(APIView):
         character_id = request.GET.get('character_id')
         print('query character: id=' + character_id)
         character = Character.objects.get(character_id=character_id)
-        # print(character.image)
         with open(character.image, 'rb') as f:
             image_data = base64.b64encode(f.read())
         print(character.intro)
@@ -97,3 +97,16 @@ class CharacterUpdate(APIView):
         with open('characters/' + character_id + file_ext, 'wb') as f:
             f.write(image_str)
         return Response(1)
+
+class CharacterSelect(APIView):
+    def get(self, request):
+        print(request.GET.get("keyword"))
+        keyword = str(request.GET.get("keyword"))
+        print(keyword)
+        characters = Character.objects.filter(Q(character_name__icontains=keyword))
+        print(characters.__len__())
+        print(list(characters))
+        character_list = list(characters)
+        characters_json = [{'character_id': character.character_id, 'value': character.character_name} for character in character_list]
+        print(characters_json)
+        return Response(characters_json)
