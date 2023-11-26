@@ -92,9 +92,12 @@ class UserInfoQuery(APIView):
         else:
             user = User.objects.get(user_id=user_id)
             print("the avatar: " + str(user.avatar))
-            avatar_path = str(user.avatar)
-            # with open(avatar_path, 'rb') as f:
-            #     image_data = base64.b64encode(f.read())
+            if user.avatar == "default":
+                avatar_path = "avatars\default.jpg"
+            else:
+                avatar_path = str(user.avatar)
+            with open(avatar_path, 'rb') as f:
+                image_data = base64.b64encode(f.read())
             return_information = {
                 "state": "1",
                 "exception": "",
@@ -106,7 +109,7 @@ class UserInfoQuery(APIView):
                 "permission": user.permission,
                 "avatar": user.avatar,
                 "avatar_path": avatar_path,
-                # "image_data": str(image_data)[2:-1]
+                "image_data": str(image_data)[2:-1]
             }
             return HttpResponse(json.dumps(return_information))
 

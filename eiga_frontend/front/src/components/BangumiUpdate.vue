@@ -59,6 +59,7 @@
                     <el-table :data="bangumiTable" style="width: auto" max-height="250">
           <el-table-column prop="bangumi_id" label="ID"  />
           <el-table-column prop="bangumi_name" label="Name"  />
+          <el-table-column prop="bangumi_relation" label="Relation"  />
           <el-table-column label="Operations" >
           <template #default="scope">
             <el-button
@@ -169,12 +170,16 @@
             }
         ).then(response => {
           for (let item of response.data.bangumis) {
+            console.log("item");
+            console.log(item.relation);
+            
             this.bangumi_relationships.push({
               'bangumi_id': item.bangumi_id,
             })
             this.bangumiTable.push({
               'bangumi_id': item.bangumi_id.bangumi_id,
-              'bangumi_name': item.bangumi_id.bangumi_name
+              'bangumi_name': item.bangumi_id.bangumi_name,
+              'bangumi_relation': item.relation
             })
           }
           console.log("this.bangumi_relationships")
