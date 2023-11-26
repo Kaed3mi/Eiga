@@ -19,22 +19,30 @@
               </el-icon>
               <span>探索</span>
             </template>
-            <el-menu-item index="1-1">番组</el-menu-item>
+            <router-link :to="{ name: 'bangumi-view', params: { bangumiId: 1 }}">
+              <el-menu-item index="1-1">番组
+              </el-menu-item>
+            </router-link>
             <el-menu-item index="1-2">人物</el-menu-item>
             <el-menu-item index="1-3">标签</el-menu-item>
           </el-sub-menu>
+
           <el-menu-item index="2">
             <el-icon>
               <icon-menu/>
             </el-icon>
             <span>排行榜</span>
           </el-menu-item>
-          <el-menu-item index="3">
-            <el-icon>
-              <document/>
-            </el-icon>
-            <span>个人站</span>
-          </el-menu-item>
+
+          <router-link :to="{ name: 'UserPage', params: { userId: userId }}">
+            <el-menu-item>
+              <el-icon>
+                <document/>
+              </el-icon>
+              <span>个人站</span>
+            </el-menu-item>
+          </router-link>
+
           <el-menu-item index="4">
             <el-icon>
               <setting/>
@@ -48,19 +56,26 @@
 </template>
 
 <script lang="ts" setup>
+
+import router from '../utils/router';
 import {
   Document,
   Menu as IconMenu,
   Location,
   Setting,
 } from '@element-plus/icons-vue'
+import {watch, ref} from "vue";
 
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
+
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
+
+const userId = localStorage.getItem('user_id');
+
 </script>
 
 

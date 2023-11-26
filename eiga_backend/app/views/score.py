@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Score, User, Bangumi
-
+from app.serializers import BangumiModelSerializer
 
 # TODO 考虑要不要做游客功能，按理说游客是不能评分的
 class ScoreInsert(APIView):
@@ -90,4 +90,23 @@ class BangumiScoreQuery(APIView):
             return Response(1)
         return Response({
             'score': average_score
+        })
+
+class GetUserScores(APIView):
+    def get(self, request):
+        user_id = request.GET.get('user_id')
+        try:
+            obj_list = Score.objects.filter(user_id=user_id)
+            bangumis = []
+            for obj in obj_list:
+                # Bangumi.objects.filter(bangumi_id=obj.bangumi_id).get(0).bangumi_cover需要获得封面
+                bangumis.append({
+                    'bangumi': BangumiModelSerializer(obj.bangumi_id).data,
+                    'score': obj.score
+                })
+        except Exception as e:
+            print(e)
+            return Response(1)
+        return Response({
+            'bangumis': bangumis
         })
