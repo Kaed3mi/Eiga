@@ -147,17 +147,20 @@ class UserUpdateInfo(APIView):
         username = str(request.data.get('username'))
         email = str(request.data.get('email'))
         password = str(request.data.get('password'))
-        user = User.objects.filter(user_id=user_id)
-        if user.__len__() == 0:
+        user = User.objects.get(user_id=user_id)
+        print(user.user_name)
+        if User.objects.filter(user_id=user_id).__len__() == 0:
             print("user not exist")
             return Response(1)
         try:
+            print(username, email, password)
             if username != '':
                 user.user_name = username
             if email != '':
                 user.email = email
             if password != '':
                 user.password = password  # 听说这样可以确保密码以安全的方式进行哈希处理。
+            user.save()
             return Response(0)
         except Exception as e:
             print(e)
