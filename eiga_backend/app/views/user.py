@@ -1,4 +1,5 @@
 import base64
+import mimetypes
 
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -13,6 +14,8 @@ import json
 import os
 import shutil
 
+from eiga_backend.settings import ASSETS_ROOT
+
 
 class UserRegister(APIView):
     def post(self, request):
@@ -21,7 +24,25 @@ class UserRegister(APIView):
         email = str(request.data.get('email'))
         password = str(request.data.get('password'))
         permission = "user"
-        user_id = email
+
+        image_base64 = request.data.get("image")
+        print(image_base64)
+
+        # 数据库中头像对应路径
+        if image_base64 == "default": # 注册时并没有指定头像
+            avatar = "avatars/default.jpg"
+        else:
+            # 如果有头像的记得保存
+            image_str = base64.b64decode(image_base64.split(',')[1])
+            image_type = image_base64.split(';')[0].split(':')[1]
+            file_ext = mimetypes.guess_extension(image_type)
+            if not file_ext:
+                file_ext = '.png'
+
+            avatar = "avatars/" + email.split('.')[0] + file_ext
+            with open(ASSETS_ROOT + avatar, 'wb') as f:
+                f.write(image_str)
+
         print(request.data)
         user_info = User.objects.filter(email=email)
         if user_info.__len__() > 0:
@@ -35,7 +56,7 @@ class UserRegister(APIView):
                     email=email,
                     password=password,
                     permission=permission,
-                    avatar="default"
+                    avatar=avatar
                 )
                 s.save()
             except Exception as e:
@@ -94,7 +115,7 @@ class UserInfoQuery(APIView):
                 avatar_path = "avatars\default.jpg"
             else:
                 avatar_path = str(user.avatar)
-            with open(avatar_path, 'rb') as f:
+            with open(ASSETS_ROOT + avatar_path, 'rb') as f:
                 image_data = base64.b64encode(f.read())
             return_information = {
                 "state": "1",

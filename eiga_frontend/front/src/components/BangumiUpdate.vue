@@ -82,6 +82,7 @@
               clearable
               @select="onSelectBangumi">
               </el-autocomplete>
+              <el-input v-model="newRelation" placeholder="Please input" ></el-input>
               <el-button class="mt-4" @click="onAddBangumi">Add Item</el-button>
                 <el-divider border-style="dashed"/>
               <el-button type="primary" @click="submitUpdate">
@@ -132,6 +133,7 @@
         characterTable: [],
         bangumiObject: null,
         bangumiTable: [],
+        newRelation: '',
         imageUrl: ''
       }
     },
@@ -267,7 +269,11 @@
       onAddBangumi() {
         if (this.bangumiObject) {
           console.log({"bangumi_id": this.bangumiObject.bangumi_id, "bangumi_name": this.bangumiObject.value});
-          this.bangumiTable.push({"bangumi_id": this.bangumiObject.bangumi_id, "bangumi_name": this.bangumiObject.value})
+          this.bangumiTable.push({
+            "bangumi_id": this.bangumiObject.bangumi_id, 
+            "bangumi_name": this.bangumiObject.value,
+            'bangumi_relation': this.newRelation
+          })
         }
       },
       deleteCharacterRow(index) {
@@ -331,6 +337,12 @@
           "http://127.0.0.1:8000/bangumi_charater_update/", {
             bangumi_id: this.$route.params.bangumiId,
             characters: this.characterTable
+          }
+        )
+        http.post(
+          "http://127.0.0.1:8000/bangumi_bangumi_update/", {
+            bangumi_id: this.$route.params.bangumiId,
+            bangumis: this.bangumiTable
           }
         )
       }

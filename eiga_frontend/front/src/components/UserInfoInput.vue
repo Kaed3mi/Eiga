@@ -25,8 +25,8 @@
             <el-input v-model="ruleForm.password_confirm" placeholder="请确认密码" type="password" show-password="true"/>
         </el-form-item>
 
-        <el-form-item label="Instant delivery" prop="delivery">
-        <el-switch v-model="ruleForm.delivery" />
+        <el-form-item label="Admin" prop="Admin">
+        <el-switch v-model="ruleForm.Admin" />
         </el-form-item>
 
         <el-form-item>
@@ -36,7 +36,7 @@
     </el-form>
     <el-upload
     class="avatar-uploader"
-    action="http://127.0.0.1:8000/upload_avatar/"
+    action=""
     :show-file-list="false"
     :on-success="handleAvatarSuccess"
     :before-upload="beforeAvatarUpload"
@@ -58,6 +58,7 @@
     email: string
     password: string
     password_confirm: string
+    Admin: boolean
   }
   
   const formSize = ref('default')
@@ -67,18 +68,19 @@
       email: '',
       password: '',
       password_confirm: '',
+      Admin: false
   })
 
 import { ElMessage } from 'element-plus'
 
 const imageUrl = ref('')
 
-const handleAvatarSuccess: UploadProps['onSuccess'] = (
-  response,
-  uploadFile
-) => {
-    imageUrl.value = URL.createObjectURL(uploadFile.raw!)
-}
+// const handleAvatarSuccess: UploadProps['onSuccess'] = (
+//   response,
+//   uploadFile
+// ) => {
+//     imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+// }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   if (rawFile.type !== 'image/jpeg') {
@@ -88,12 +90,8 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     ElMessage.error('Avatar picture size can not exceed 2MB!')
     return false
   } else {
-    console.log(ruleForm.email)
-    if (ruleForm.email === '') {
-      console.log("Please input email")
-      return false;
-    }
-  return true
+    imageUrl.value = URL.createObjectURL(rawFile)
+    return true
   }
 }
 
@@ -149,13 +147,53 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
 
   const send_post = () => {
-    http.post("http://127.0.0.1:8000/user_register/", {
+    if (imageUrl.value === '') {
+      http.post("http://127.0.0.1:8000/user_register/", {
               username: ruleForm.username,
               password: ruleForm.password,
               email: ruleForm.email,
+              image: "default"
             },
         )
+    } else {
+      urlToBase64(imageUrl.value).then(
+      (base64)=>{
+        http.post("http://127.0.0.1:8000/user_register/", {
+              username: ruleForm.username,
+              password: ruleForm.password,
+              email: ruleForm.email,
+              image: base64
+            },
+        )
+      }
+    )
+    }
   }
+  async function urlToBase64(url) {
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onload = () => {
+        const base64 = reader.result;
+        console.log(base64);
+    };
+    return new Promise((resolve, reject) => {
+      reader.onload = () => {
+        const base64 = reader.result;
+        // console.log(base64);
+        
+        resolve(base64);
+      };
+      reader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  } catch (error) {
+    console.error('Error converting URL to Base64:', error);
+  }
+}
 </script>
   
 <style scoped>

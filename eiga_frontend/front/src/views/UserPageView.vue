@@ -44,6 +44,7 @@ export default {
       username: '',
       bio: '大家好啊我是膜蛤',
       bangumis: [],
+      avatarUrl: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ8n9J70Q6vFkV5jzTigNeNGXSFvgzB9SOxHr_zAKWXi8KJRnsF'
     }
   },
   // 用户同路由跳转更新，不能删。
@@ -83,19 +84,22 @@ export default {
           {'user_id': this.user_id}
       ).then(response => {
         this.username = response.data.username
+        console.log(response.data.image_data);
+        this.avatarUrl = `data:image/png;base64,${response.data.image_data}`
+        console.log(this.avatarUrl);
       }).catch(error => {
         console.error('Error fetching data:', error);
       });
     }
   },
-  props: {
-    // 头像
-    avatarUrl: {
-      type: String,
-      default: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ8n9J70Q6vFkV5jzTigNeNGXSFvgzB9SOxHr_zAKWXi8KJRnsF',
-      required: true,
-    },
-  },
+  // props: {
+  //   // 头像
+  //   avatarUrl: {
+  //     type: String,
+  //     default: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ8n9J70Q6vFkV5jzTigNeNGXSFvgzB9SOxHr_zAKWXi8KJRnsF',
+  //     required: true,
+  //   },
+  // },
 };
 </script>
 <style scoped>
