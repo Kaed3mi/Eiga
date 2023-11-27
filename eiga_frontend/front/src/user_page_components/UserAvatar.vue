@@ -1,9 +1,9 @@
 <template>
   <div class="eiga-avatar">
-    <img :src="avatar_url" alt="User avatar" class="avatar"
-         @mouseover="showChange = true"
-         @mouseleave="showChange = false"
-         @click="this.dialogVisible = true"
+    <el-avatar :src="avatar_url" class="avatar"
+               @mouseover="showChange = true"
+               @mouseleave="showChange = false"
+               @click="this.dialogVisible = true"
     />
 
     <div class="update-user-avatar">
@@ -72,8 +72,8 @@ export default {
 <style scoped>
 
 .avatar {
-  width: 60%;
-  height: 60%;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   transition: filter 0.3s ease;
   cursor: pointer;

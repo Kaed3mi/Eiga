@@ -27,12 +27,14 @@
             <el-menu-item index="1-3">标签</el-menu-item>
           </el-sub-menu>
 
-          <el-menu-item index="2">
-            <el-icon>
-              <icon-menu/>
-            </el-icon>
-            <span>排行榜</span>
-          </el-menu-item>
+          <router-link :to="{ name: 'rank_home_page'}">
+            <el-menu-item index="2">
+              <el-icon>
+                <icon-menu/>
+              </el-icon>
+              <span>排行榜</span>
+            </el-menu-item>
+          </router-link>
 
           <router-link :to="{ name: 'UserPage', params: { userId: userId }}">
             <el-menu-item>

@@ -10,6 +10,7 @@ import SubjectSearch from "../views/SubjectSearch.vue"
 import CharacterUpdateView from "../views/CharacterUpdateView.vue"
 import BangumiUpdateView from "../views/BangumiUpdateView.vue"
 import UserPageView from "../views/UserPageView.vue";
+import BangumiRank from "../views/BangumiRank.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -78,6 +79,16 @@ const router = createRouter({
             path: '/bangumi_update/:bangumiId',
             name: 'bangumi_update-update',
             component: BangumiUpdateView,
+        },
+        {
+            path: '/rank',
+            name: 'rank_home_page',
+            component: BangumiRank
+        },
+        {
+            path: '/rank/:page',
+            name: 'rank',
+            component: BangumiRank
         },
     ]
 })
