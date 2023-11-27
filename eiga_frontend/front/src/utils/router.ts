@@ -10,7 +10,6 @@ import SubjectSearch from "../views/SubjectSearch.vue"
 import CharacterUpdateView from "../views/CharacterUpdateView.vue"
 import BangumiUpdateView from "../views/BangumiUpdateView.vue"
 import UserPageView from "../views/UserPageView.vue";
-import UpdateUserInfo from "../components/UpdateUserInfo.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -80,12 +79,6 @@ const router = createRouter({
             name: 'bangumi_update-update',
             component: BangumiUpdateView,
         },
-        {
-            // かたみ同学用来测试的
-            path: '/dev',
-            name: 'dev',
-            component: UpdateUserInfo,
-        }
     ]
 })
 

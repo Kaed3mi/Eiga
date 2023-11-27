@@ -1,16 +1,20 @@
 <template>
   <div class="user-profile">
-
+    <!-- 左侧导航栏 -->
     <div class="vertical-menu">
-      <!-- 左侧导航栏 -->
       <VerticalMenu/>
     </div>
+
+    <!-- 用户信息弹窗组件 -->
     <div class="user-info-container">
-      <!-- 用户信息弹窗组件 -->
       <UpdateUserInfo/>
     </div>
-    
-    <img :src="avatarUrl" alt="User avatar" class="avatar"/>
+
+    <!-- 用户头像/修改组件 -->
+    <div class='avatar-container'>
+      <UserAvatar :avatar_url="this.avatar_url"/>
+    </div>
+
     <h2>{{ username }}</h2>
     <p>{{ bio }}</p>
     <div class="stat">
@@ -31,18 +35,19 @@
 </template>
 <script>
 import VerticalMenu from "../components/VerticalMenu.vue";
-import UpdateUserInfo from "../components/UpdateUserInfo.vue";
+import UpdateUserInfo from "../user_page_components/UpdateUserInfo.vue";
 import http from "../utils/http";
-import {watch} from "vue";
+import UserAvatar from "../user_page_components/UserAvatar.vue";
 
 export default {
   name: 'UserPage',
-  components: {VerticalMenu, UpdateUserInfo},
+  components: {UserAvatar, VerticalMenu, UpdateUserInfo},
   data() {
     return {
+      avatar_url: '',
       user_id: this.$route.params.userId,
       username: '',
-      bio: '大家好啊我是膜蛤',
+      bio: '好',
       bangumis: [],
     }
   },
@@ -83,19 +88,14 @@ export default {
           {'user_id': this.user_id}
       ).then(response => {
         this.username = response.data.username
+        this.avatar_url = response.data.avatar
+        // console.log("avatar_url: " + this.avatar);
       }).catch(error => {
         console.error('Error fetching data:', error);
       });
     }
   },
-  props: {
-    // 头像
-    avatarUrl: {
-      type: String,
-      default: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ8n9J70Q6vFkV5jzTigNeNGXSFvgzB9SOxHr_zAKWXi8KJRnsF',
-      required: true,
-    },
-  },
+  props: {},
 };
 </script>
 <style scoped>
