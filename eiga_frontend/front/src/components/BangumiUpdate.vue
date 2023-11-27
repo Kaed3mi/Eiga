@@ -59,6 +59,7 @@
                     <el-table :data="bangumiTable" style="width: auto" max-height="250">
           <el-table-column prop="bangumi_id" label="ID"  />
           <el-table-column prop="bangumi_name" label="Name"  />
+          <el-table-column prop="bangumi_relation" label="Relation"  />
           <el-table-column label="Operations" >
           <template #default="scope">
             <el-button
@@ -81,6 +82,7 @@
               clearable
               @select="onSelectBangumi">
               </el-autocomplete>
+              <el-input v-model="newRelation" placeholder="Please input" ></el-input>
               <el-button class="mt-4" @click="onAddBangumi">Add Item</el-button>
                 <el-divider border-style="dashed"/>
               <el-button type="primary" @click="submitUpdate">
@@ -131,6 +133,7 @@
         characterTable: [],
         bangumiObject: null,
         bangumiTable: [],
+        newRelation: '',
         imageUrl: ''
       }
     },
@@ -169,12 +172,16 @@
             }
         ).then(response => {
           for (let item of response.data.bangumis) {
+            console.log("item");
+            console.log(item.relation);
+            
             this.bangumi_relationships.push({
               'bangumi_id': item.bangumi_id,
             })
             this.bangumiTable.push({
               'bangumi_id': item.bangumi_id.bangumi_id,
-              'bangumi_name': item.bangumi_id.bangumi_name
+              'bangumi_name': item.bangumi_id.bangumi_name,
+              'bangumi_relation': item.relation
             })
           }
           console.log("this.bangumi_relationships")
@@ -262,7 +269,11 @@
       onAddBangumi() {
         if (this.bangumiObject) {
           console.log({"bangumi_id": this.bangumiObject.bangumi_id, "bangumi_name": this.bangumiObject.value});
-          this.bangumiTable.push({"bangumi_id": this.bangumiObject.bangumi_id, "bangumi_name": this.bangumiObject.value})
+          this.bangumiTable.push({
+            "bangumi_id": this.bangumiObject.bangumi_id, 
+            "bangumi_name": this.bangumiObject.value,
+            'bangumi_relation': this.newRelation
+          })
         }
       },
       deleteCharacterRow(index) {
@@ -326,6 +337,12 @@
           "http://127.0.0.1:8000/bangumi_charater_update/", {
             bangumi_id: this.$route.params.bangumiId,
             characters: this.characterTable
+          }
+        )
+        http.post(
+          "http://127.0.0.1:8000/bangumi_bangumi_update/", {
+            bangumi_id: this.$route.params.bangumiId,
+            bangumis: this.bangumiTable
           }
         )
       }

@@ -49,6 +49,7 @@ export default {
       username: '',
       bio: '好',
       bangumis: [],
+      avatarUrl: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ8n9J70Q6vFkV5jzTigNeNGXSFvgzB9SOxHr_zAKWXi8KJRnsF'
     }
   },
   // 用户同路由跳转更新，不能删。
@@ -88,7 +89,10 @@ export default {
           {'user_id': this.user_id}
       ).then(response => {
         this.username = response.data.username
-        this.avatar_url = response.data.avatar
+        // console.log(response.data.image_data);
+        // this.avatarUrl = `data:image/png;base64,${response.data.image_data}`
+        // console.log(this.avatarUrl);
+        this.avatar_url = `data:image/png;base64,${response.data.image_data}`
         // console.log("avatar_url: " + this.avatar);
       }).catch(error => {
         console.error('Error fetching data:', error);

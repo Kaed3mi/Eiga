@@ -27,3 +27,23 @@ class BangumiRelationshipQuery(APIView):
         return Response({
             'bangumis': obj_list_data
         })
+
+
+class BangumiBangumiUpdate(APIView):
+    def post(self, request):
+        print(request.data.get('bangumis'))
+        bangumis = list(request.data.get('bangumis'))
+        bangumi_id = int(request.data.get('bangumi_id'))
+        bangumis_bangumi_list = BangumiRelationship.objects.filter(a_id=bangumi_id)
+        for bangumis_bangumi in bangumis_bangumi_list:
+            bangumis_bangumi.delete()
+        for attribute in bangumis:
+            bangumiA = Bangumi.objects.get(bangumi_id=bangumi_id)
+            bangumiB = Bangumi.objects.get(bangumi_id=attribute['bangumi_id'])
+            relate = BangumiRelationship.objects.create(
+                a_id=bangumiA,
+                b_id=bangumiB,
+                relation=attribute['bangumi_relation']
+            )
+            relate.save()
+        return Response(1)

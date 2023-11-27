@@ -44,6 +44,7 @@ urlpatterns = [
     path('bangumi_select/', bangumi.BangumiSelect.as_view()),
     path('bangumi_update/', bangumi.BangumiUpdate.as_view()),
     path('bangumi_charater_update/', bangumi_character.BangumiCharaterUpdate.as_view()),
+    path('bangumi_bangumi_update/', bangumi_relationship.BangumiBangumiUpdate.as_view()),
     # comment
     path('comment_query/', comment.CommentQuery.as_view()),
     path('comment_search/', comment.CommentSearch.as_view()),
