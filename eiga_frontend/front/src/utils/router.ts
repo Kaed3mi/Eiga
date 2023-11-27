@@ -11,6 +11,9 @@ import CharacterUpdateView from "../views/CharacterUpdateView.vue"
 import BangumiUpdateView from "../views/BangumiUpdateView.vue"
 import UserPageView from "../views/UserPageView.vue";
 import BangumiRank from "../views/BangumiRank.vue";
+import BlogPageView from "../views/BlogPageView.vue";
+import BlogCreateView from "../views/BlogCreateView.vue";
+import BlogUpdateView from "../views/BlogUpdateView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -90,6 +93,21 @@ const router = createRouter({
             name: 'rank',
             component: BangumiRank
         },
+        {
+            path: '/blog/:blogId',
+            name: 'blog-page',
+            component: BlogPageView,
+        },
+        {
+            path: '/blog_create',
+            name: 'blog-create-page',
+            component: BlogCreateView,
+        },
+        {
+            path: '/blog_update/:blogId',
+            name: 'blog-update-page',
+            component: BlogUpdateView,
+        }
     ]
 })
 

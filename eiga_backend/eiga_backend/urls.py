@@ -25,6 +25,8 @@ import app.views.character as character
 import app.views.bangumi_character as bangumi_character
 import app.views.comment as comment
 import app.views.score as score
+import app.views.blog as blog
+import app.views.blog_bangumi as blog_bangumi
 
 urlpatterns = [
     path('vue/', vueViews.VueViews.as_view()),
@@ -59,7 +61,13 @@ urlpatterns = [
     path('character_search/', character.CharacterSearch.as_view()),
     path('character_query/', character.CharacterQuery.as_view()),
     path('character_update/', character.CharacterUpdate.as_view()),
-    path('character_select/', character.CharacterSelect.as_view())
+    path('character_select/', character.CharacterSelect.as_view()),
+    # blog
+    path('blog_insert/', blog.BlogInsert.as_view()),
+    path('blog_update/', blog.BlogUpdate.as_view()),
+    path('blog_query/', blog.BlogQuery.as_view()),
+    path('blog_bangumi_query/', blog_bangumi.BlogBangumiQuery.as_view()),
+    path('blog_bangumi_update/', blog_bangumi.BlogBangumiUpdate.as_view()),
 ]
 # import app.views.user as user
 # from django.contrib import admin
