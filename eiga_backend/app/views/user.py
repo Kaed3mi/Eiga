@@ -103,9 +103,9 @@ class UserLogin(APIView):
 
 class UserInfoQuery(APIView):
     def post(self, request):
-        user_id = str(request.data.get('user_id'))
+        print('user query request = ', request.data)
+        user_id = request.data.get('user_id')
         user_info = User.objects.filter(user_id=user_id)
-        print(user_info)
         if user_info.__len__() == 0:
             print("user not exist")
             return_information = {"state": "0", "exception": "user_not_exist", "tip": "用户不存在"}

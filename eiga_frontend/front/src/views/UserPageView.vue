@@ -84,6 +84,7 @@ export default {
       });
     },
     userQuery() {
+      console.log("I'm user#"+this.user_id)
       http.post(
           "http://127.0.0.1:8000/user_query/",
           {'user_id': this.user_id}

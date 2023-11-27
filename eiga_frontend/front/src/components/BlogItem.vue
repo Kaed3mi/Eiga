@@ -1,12 +1,35 @@
 <template>
-  <el-card :body-style="{ padding: '0px' }">
+  <el-card class="box-card" shadow="always" style="width: 1000px;">
     <div style="padding: 14px">
-      <span>标题：{{ blog_title }}<br/>内容：{{ content }}</span>
-      <div class="bottom">
-        <el-button text class="button">
-          <router-link :to="'/user/'+ user_id.user_id">Check User(user_id:{{ user_id.user_id }})</router-link>
-        </el-button>
-      </div>
+      <el-container>
+        <!-- 头部，用于显示标题 -->
+        <el-header style="text-align: center; padding: 20px; background-color: #409EFF; color: #fff; height: auto">
+          <h2 style="margin: 0;">{{ blog_title }}</h2>
+        </el-header>
+
+        <!-- 主体内容区域，用于显示正文 -->
+        <el-main style="padding: 20px;">
+          <!-- 正文内容 -->
+          <div>
+            <p v-for="(line, index) in content.split('\n')" :key="index"
+               style="text-align: left;white-space: pre-wrap;text-indent: 2em;"
+            >
+              {{ line }}
+            </p>
+            <!-- 可以根据需要添加更多内容 -->
+          </div>
+        </el-main>
+
+        <!-- 底部，可以用于显示页脚等信息 -->
+        <el-footer style="text-align: center; padding: 10px; background-color: #409EFF; color: #fff;">
+          <div class="bottom">
+            <el-button text class="button">
+              <router-link :to="'/user/'+ user_id.user_id">Check User(user_id:{{ user_id.user_id }})</router-link>
+            </el-button>
+          </div>
+        </el-footer>
+      </el-container>
+
     </div>
   </el-card>
   <div v-if="bangumis.length > 0">
