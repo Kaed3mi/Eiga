@@ -34,7 +34,6 @@
 
 <script lang="ts">
 // import { ref } from 'vue'
-import testCharacter from '../assets/testCharacter.jpeg'
 import http from '../utils/http';
 
 
@@ -43,7 +42,6 @@ export default {
     return {
       character_id: this.$route.params.characterId,
       character_name: '',
-      testCharacter,
       imageUrl: '',
       descriptions: [],
       jsonData: {
