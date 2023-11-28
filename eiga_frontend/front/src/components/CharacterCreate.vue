@@ -9,48 +9,49 @@
             <Plus />
         </el-icon>
         </el-upload>
-    <el-button
-          @click.prevent="submit"
-        >
+        <el-button @click.prevent="submit">
           submit
         </el-button>
       </el-col>
       <el-col :span="1">
       </el-col>
       <el-col :span="15">
+        <h4 style="text-align: left;">name</h4>
+        <el-input v-model="character_name" placeholder="Please input" clearable />
+        <h4 style="text-align: left;">attributes</h4>
         <el-table :data="tableData" @cell-click="editCell">
-    <el-table-column
-      v-for="(column, index) in tableColumns"
-      :key="index"
-      :prop="column.prop"
-      :label="column.label"
-    >
-     <template #default="scope">
-        <div v-if="scope.row.editing === scope.column.property" class="editable-cell">
-          <el-input v-model="scope.row[scope.column.property]" @blur="updateValue(scope)" />
-        </div>
-        <div v-else>
-          {{ scope.row[column.prop] }}
-        </div>
-      </template>
-    </el-table-column>
-    <el-table-column fixed="right" label="Operations" width="120">
-      <template #default="scope">
-        <el-button
-          link
-          type="primary"
-          size="small"
-          @click.prevent="deleteRow(scope.$index)"
-        >
-          Remove
-        </el-button>
-      </template>
-    </el-table-column>
-  </el-table>
-  <el-button @click="addRow">Add Row</el-button>
-        <h4 style="text-align: left;">introduce</h4>
-        <el-input v-model="intoduction" :autosize="{ minRows: 2, maxRows: 20 }" type="textarea" placeholder="Please input" >
-    </el-input>
+            <el-table-column
+              v-for="(column, index) in tableColumns"
+              :key="index"
+              :prop="column.prop"
+              :label="column.label"
+            >
+                <template #default="scope">
+                    <div v-if="scope.row.editing === scope.column.property" class="editable-cell">
+                        <el-input v-model="scope.row[scope.column.property]" @blur="updateValue(scope)" />
+                    </div>
+                    <div v-else>
+                        {{ scope.row[column.prop] }}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column fixed="right" label="Operations" width="120">
+                <template #default="scope">
+                    <el-button
+                      link
+                      type="primary"
+                      size="small"
+                      @click.prevent="deleteRow(scope.$index)"
+                    >
+                      Remove
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-button @click="addRow">Add Row</el-button>
+            <h4 style="text-align: left;">introduce</h4>
+            <el-input v-model="intoduction" :autosize="{ minRows: 2, maxRows: 20 }" type="textarea" placeholder="Please input" >
+        </el-input>
       </el-col>
     </el-row>
   </el-card>
@@ -64,10 +65,12 @@ import http from "../utils/http.ts";
 import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
 import { ElMessage } from 'element-plus'
+import defaultImage from '../assets/character_default.jpg'
 
 const intoduction = ref('')
 const route = useRoute()
 const imageUrl = ref('')
+const character_name = ref('')
 const tableData =  ref([
       ])
 const tableColumns = ref([
@@ -88,23 +91,24 @@ const beforeImageUpload: UploadProps['beforeUpload'] = (rawFile) => {
 }
 
 const fetchData = () => {
-    console.log(route.params.characterId);
-    http.get(
-        "http://127.0.0.1:8000/character_query/",
-        {
-            params: {
-                "character_id": route.params.characterId
-            }
-        }
-    ).then(
-        response => {
-            console.log(response.data);
-            console.log(response.data.introduce);
-            imageUrl.value = `data:image/png;base64,${response.data.image}`
-            intoduction.value = response.data.introduce
-            tableData.value = response.data.attributes
-        }
-    )
+    imageUrl.value = defaultImage
+    // console.log(route.params.characterId);
+    // http.get(
+    //     "http://127.0.0.1:8000/character_query/",
+    //     {
+    //         params: {
+    //             "character_id": route.params.characterId
+    //         }
+    //     }
+    // ).then(
+    //     response => {
+    //         console.log(response.data);
+    //         console.log(response.data.introduce);
+    //         imageUrl.value = `data:image/png;base64,${response.data.image}`
+    //         intoduction.value = response.data.introduce
+    //         tableData.value = response.data.attributes
+    //     }
+    // )
 }
 onMounted(fetchData)
 
@@ -116,7 +120,7 @@ const updateValue = (scope) => {
 }
 
 const addRow = () => {
-      const newRow = { id: tableData.value.length + 1, name: '', age: '', editing: 'name' };
+      const newRow = {  };
       tableData.value.push(newRow);
 }
 
@@ -132,8 +136,8 @@ const submit = () => {
     .then((base64) => {
       console.log('Base64 encoded image:', base64);
       http.post(
-        "http://127.0.0.1:8000/character_update/", {
-            character_id: route.params.characterId,
+        "http://127.0.0.1:8000/character_create/", {
+            character_name: character_name.value,
             attributes: tableData.value,
             introduction: intoduction.value,
             image: base64
@@ -145,7 +149,7 @@ const submit = () => {
       console.error('Error converting URL to Base64:', error);
     });
 }
-async function urlToBase64(url) {
+async function urlToBase64(url: any) {
   try {
     const response = await fetch(url);
     const blob = await response.blob();

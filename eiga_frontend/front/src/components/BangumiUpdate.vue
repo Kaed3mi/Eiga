@@ -318,21 +318,21 @@
         }
       },
       submitUpdate() {
-        // this.urlToBase64(this.imageUrl)
-        // .then((base64) => {
-        //   console.log(this.bangumi_intro);
-        //   console.log(this.$route.params.bangumiId);
-        //   http.post(
-        //     "http://127.0.0.1:8000/bangumi_update/", {
-        //         bangumi_id: this.$route.params.bangumiId,
-        //         bangumi_intro: this.bangumi_intro,
-        //         image: base64
-        //     }
-        // )
-        // })
-        // .catch((error) => {
-        //   console.error('Error converting URL to Base64:', error);
-        // });
+        this.urlToBase64(this.imageUrl)
+        .then((base64) => {
+          console.log(this.bangumi_intro);
+          console.log(this.$route.params.bangumiId);
+          http.post(
+            "http://127.0.0.1:8000/bangumi_update/", {
+                bangumi_id: this.$route.params.bangumiId,
+                bangumi_intro: this.bangumi_intro,
+                image: base64
+            }
+        )
+        })
+        .catch((error) => {
+          console.error('Error converting URL to Base64:', error);
+        });
         http.post(
           "http://127.0.0.1:8000/bangumi_charater_update/", {
             bangumi_id: this.$route.params.bangumiId,

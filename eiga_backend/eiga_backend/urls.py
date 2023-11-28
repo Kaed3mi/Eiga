@@ -58,7 +58,8 @@ urlpatterns = [
     path('character_search/', character.CharacterSearch.as_view()),
     path('character_query/', character.CharacterQuery.as_view()),
     path('character_update/', character.CharacterUpdate.as_view()),
-    path('character_select/', character.CharacterSelect.as_view())
+    path('character_select/', character.CharacterSelect.as_view()),
+    path('character_create/', character.CharacterCreate.as_view())
 ]
 # import app.views.user as user
 # from django.contrib import admin

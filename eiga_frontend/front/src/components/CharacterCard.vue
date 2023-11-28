@@ -8,7 +8,7 @@
     >
       <el-card :body-style="{ padding: '0px' }">
         <img
-            :src="imageUrl"
+            :src="character.image"
             class="image"
         />
         <div style="padding: 14px">
@@ -49,7 +49,7 @@ export default {
             }
           }
       ).then(response => {
-        this.characters = response.data.characters;
+        // this.characters = response.data.characters;
         console.log(response.data.characters);
         for (let item of response.data.characters) {
           console.log("item: " + item.id + item.character_name);
@@ -62,9 +62,13 @@ export default {
             }
           ).then(
             response => {
-              console.log(response.data);
-              console.log(response.data.introduce);
-              this.imageUrl = `data:image/png;base64,${response.data.image}`
+              this.characters.push({
+                "character_id": item.id,
+                "character_name": item.character_name,
+                "image": `data:image/png;base64,${response.data.image}`
+              })
+              // console.log(response.data);
+              // console.log(response.data.introduce);
             }
           )
         }

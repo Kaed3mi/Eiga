@@ -20,15 +20,16 @@ from eiga_backend.settings import ASSETS_ROOT
 class CharacterQuery(APIView):
     def get(self, request):
         print("request: ")
-        print(request.GET.get('character_id'))
+        # print(request.GET.get('character_id'))
         character_id = request.GET.get('character_id')
         print('query character: id=' + character_id)
         character = Character.objects.get(character_id=character_id)
+        print(ASSETS_ROOT + character.image)
         with open(ASSETS_ROOT + character.image, 'rb') as f:
             image_data = base64.b64encode(f.read())
-        print(character.intro)
+        # print(character.intro)
         Json = json.loads(character.intro.replace("'", '"'))
-        print(Json)
+        # print(Json)
         Json["image"] = str(image_data)[2:-1]
         Json["character_name"] = str(character.character_name)
         return JsonResponse(Json)
@@ -111,3 +112,43 @@ class CharacterSelect(APIView):
                            character_list]
         print(characters_json)
         return Response(characters_json)
+
+
+# character_name: character_name,
+# attributes: tableData.value,
+# introduction: intoduction.value,
+# image: base64
+class CharacterCreate(APIView):
+    def post(self, request):
+        print(request.data.get('character_name'))
+        print(request.data.get('attributes'))
+        print(request.data.get('introduction'))
+        print(request.data.get('image'))
+
+        character_name = str(request.data.get('character_name'))
+        request.data.get('attributes')
+        request.data.get('introduction')
+        request.data.get('image')
+
+        image_base64 = request.data.get("image")
+        image_str = base64.b64decode(image_base64.split(',')[1])
+        image_type = image_base64.split(';')[0].split(':')[1]
+        file_ext = mimetypes.guess_extension(image_type)
+        if not file_ext:
+            file_ext = '.png'
+        # print(image_type)
+        dic = {"attributes": request.data.get("attributes"), "introduce": request.data.get("introduction").replace("'", '’')}
+        # print(str(dic))
+        print(request.data.get("attributes"))
+        s = Character.objects.create(
+            character_name=character_name,
+            intro=str(dic),
+        )
+        s.save()
+        print(ASSETS_ROOT + 'characters/' + str(s.character_id) + file_ext)
+        s.image = 'characters/' + str(s.character_id) + file_ext
+        s.save()
+
+        with open(ASSETS_ROOT + 'characters/' + str(s.character_id) + file_ext, 'wb') as f:
+            f.write(image_str)
+        return Response(1)

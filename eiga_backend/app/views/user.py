@@ -170,25 +170,25 @@ class UserUpdateInfo(APIView):
 @csrf_exempt
 def upload_avatar(request):
     if request.method == 'POST':
-        # print(request.body)
-        # print("email: " + request.POST.get('email', ''))
-        req_email = request.POST.get('email', '')
-        user_info = User.objects.get(email=req_email)
-        # print(user_info)
+        print(request.body)
+        print("user_id: " + request.POST.get('user_id', ''))
+        req_id = request.POST.get('user_id', '')
+        user_info = User.objects.get(user_id=req_id)
+        print(user_info)
         # print(request.FILES.get('file'))
         avatar = request.FILES.get('file')
-        # print(avatar)
+        print(avatar)
         if avatar:
             # 保存头像到服务器
-            file_path = default_storage.save('user/' + avatar.name, ContentFile(avatar.read()))
+            file_path = default_storage.save(ASSETS_ROOT + 'avatars/' + avatar.name, ContentFile(avatar.read()))
             print(file_path)
-            if User.objects.get(email=req_email).avatar == "default":
+            if user_info.avatar == "avatars/default.jpg":
                 print("the user has the default avatar and we change it to " + str(file_path))
                 user_info.avatar = str(file_path)
                 user_info.save()
             else:
                 print("now we will delete the original avatar")
-                legacy_avatar = User.objects.get(email=req_email).avatar
+                legacy_avatar = ASSETS_ROOT + user_info.avatar
                 print(legacy_avatar)
                 if os.path.exists(legacy_avatar):
                     os.remove(legacy_avatar)

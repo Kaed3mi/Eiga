@@ -137,7 +137,7 @@ export default {
       ).then(response => {
         this.bangumi_intro = response.data.bangumi_intro;
         this.bangumi_name = response.data.bangumi_name;
-        this.bangumi_score = response.data.bangumi_score;
+        // this.bangumi_score = response.data.bangumi_score;
         this.bangumi_image = `data:image/png;base64,${response.data.image}`;
         console.log(this.bangumi_image);
 
