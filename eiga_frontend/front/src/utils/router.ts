@@ -9,6 +9,7 @@ import CharacterPageView from "../views/CharacterPageView.vue"
 import SubjectSearch from "../views/SubjectSearch.vue"
 import CharacterUpdateView from "../views/CharacterUpdateView.vue"
 import BangumiUpdateView from "../views/BangumiUpdateView.vue"
+import BangumiCreateView from "../views/BangumiCreateView.vue"
 import UserPageView from "../views/UserPageView.vue";
 import CharacterCreateView from "../views/CharacterCreateView.vue"
 import BangumiRank from "../views/BangumiRank.vue";
@@ -88,6 +89,11 @@ const router = createRouter({
             path: '/bangumi_update/:bangumiId',
             name: 'bangumi_update-update',
             component: BangumiUpdateView,
+        },
+        {
+            path: '/bangumi_create/',
+            name: 'bangumi-create',
+            component: BangumiCreateView,
         },
         {
             path: '/rank',

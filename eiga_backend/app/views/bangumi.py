@@ -10,23 +10,35 @@ from eiga_backend.settings import ASSETS_ROOT
 
 
 # TODO 这里的操作需要核验权限组是否达标，不过呢我还没写。
-class BangumiInsert(APIView):
+class BangumiCreate(APIView):
     def post(self, request):
-        bangumi_id = str(request.data.get('bangumi_id'))
         bangumi_name = str(request.data.get('bangumi_name'))
         bangumi_intro = str(request.data.get('bangumi_intro'))
-        print(request.data)
+        print(request.data.get('image'))
+
+        image_base64 = request.data.get("image")
+        image_str = base64.b64decode(image_base64.split(',')[1])
+        image_type = image_base64.split(';')[0].split(':')[1]
+        file_ext = mimetypes.guess_extension(image_type)
+        if not file_ext:
+            file_ext = '.png'
+
+
         try:
             obj = Bangumi(
-                bangumi_id=bangumi_id,
                 bangumi_name=bangumi_name,
                 bangumi_intro=bangumi_intro
             )
             obj.save()
+            print(ASSETS_ROOT + 'bangumi/' + str(obj.bangumi_id) + file_ext)
+            obj.image = 'bangumi/' + str(obj.bangumi_id) + file_ext
+            obj.save()
+            with open(ASSETS_ROOT + 'bangumi/' + str(obj.bangumi_id) + file_ext, 'wb') as f:
+                f.write(image_str)
         except Exception as e:
             print(e)
             return Response(1)
-        return Response(0)
+        return Response({"bangumi_id": obj.bangumi_id})
 
 
 class BangumiUpdate(APIView):
@@ -133,11 +145,12 @@ class BangumiUpdate(APIView):
             bangumi_info.image = 'bangumi/' + str(bangumi_id) + file_ext
             bangumi_info.save()
         else:
-            print("now we will delete the original avatar")
+            print("now we will delete the original bangumi")
             legacy_image = bangumi_info.image
             print(legacy_image)
-            if os.path.exists(legacy_image):
-                os.remove(legacy_image)
+            if os.path.exists(ASSETS_ROOT + legacy_image):
+                print(ASSETS_ROOT + legacy_image)
+                os.remove(ASSETS_ROOT + legacy_image)
             else:
                 print("path didn't find check it")
             bangumi_info.image = 'bangumi/' + str(bangumi_id) + file_ext

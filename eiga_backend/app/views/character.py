@@ -84,11 +84,12 @@ class CharacterUpdate(APIView):
             character_info.image = 'characters/' + character_id + file_ext
             character_info.save()
         else:
-            print("now we will delete the original avatar")
+            print("now we will delete the original character image")
             legacy_image = character_info.image
             print(legacy_image)
-            if os.path.exists(legacy_image):
-                os.remove(legacy_image)
+            if os.path.exists(ASSETS_ROOT + legacy_image):
+                print(ASSETS_ROOT + legacy_image)
+                os.remove(ASSETS_ROOT + legacy_image)
             else:
                 print("path didn't find check it")
             character_info.image = 'characters/' + character_id + file_ext

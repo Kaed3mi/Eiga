@@ -192,8 +192,9 @@ def upload_avatar(request):
                 print("now we will delete the original avatar")
                 legacy_avatar = ASSETS_ROOT + user_info.avatar
                 print(legacy_avatar)
-                if os.path.exists(legacy_avatar):
-                    os.remove(legacy_avatar)
+                if os.path.exists(ASSETS_ROOT + legacy_avatar):
+                    print(ASSETS_ROOT + legacy_avatar)
+                    os.remove(ASSETS_ROOT + legacy_avatar)
                 else:
                     print("path didn't find check it")
                 user_info.avatar = str(file_path)

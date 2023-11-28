@@ -60,7 +60,6 @@
   
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import http from "../utils/http.ts";
 import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
@@ -68,7 +67,6 @@ import { ElMessage } from 'element-plus'
 import defaultImage from '../assets/character_default.jpg'
 
 const intoduction = ref('')
-const route = useRoute()
 const imageUrl = ref('')
 const character_name = ref('')
 const tableData =  ref([

@@ -47,6 +47,7 @@ urlpatterns = [
     path('bangumi_update/', bangumi.BangumiUpdate.as_view()),
     path('bangumi_charater_update/', bangumi_character.BangumiCharaterUpdate.as_view()),
     path('bangumi_bangumi_update/', bangumi_relationship.BangumiBangumiUpdate.as_view()),
+    path('bangumi_create/', bangumi.BangumiCreate.as_view()),
     # comment
     path('comment_query/', comment.CommentQuery.as_view()),
     path('comment_search/', comment.CommentSearch.as_view()),
@@ -62,7 +63,7 @@ urlpatterns = [
     path('character_query/', character.CharacterQuery.as_view()),
     path('character_update/', character.CharacterUpdate.as_view()),
     path('character_select/', character.CharacterSelect.as_view()),
-    path('character_create/', character.CharacterCreate.as_view())
+    path('character_create/', character.CharacterCreate.as_view()),
     # blog
     path('blog_insert/', blog.BlogInsert.as_view()),
     path('blog_update/', blog.BlogUpdate.as_view()),
