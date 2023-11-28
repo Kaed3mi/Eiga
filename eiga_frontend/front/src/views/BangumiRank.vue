@@ -4,38 +4,47 @@
     <div class="vertical-menu">
       <VerticalMenu/>
     </div>
-    <el-row
-        v-for="(key, index) in bangumiList"
-        :key="key"
-        :span="8"
-    >
-      <el-card
-          style="width: 450px; height: 240px; margin: 10px"
+    <div class="bangumi_rank">
+      <el-row
+          v-for="(key, index) in bangumiList"
+          :key="key"
+          :span="8"
       >
-        <el-row>
-          <el-col :span="8">
-            <el-image
-                style="width: 150px; height: 200px"
-                :src="key.image"/>
-          </el-col>
-          <el-col :span="1"></el-col>
-          <el-col :span="15">
-            <router-link :to="{ name: 'bangumi-view', params: { bangumiId: key.bangumi_id }}">
-              <el-descriptions :title="key.bangumi_name" width="300px" :column="1">
-                <el-descriptions-item>
-                  Rank {{ key.bangumi_rank }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                  评分 {{ key.bangumi_score }} ({{ key.rater_cnt }}人评分)
-                </el-descriptions-item>
-              </el-descriptions>
-            </router-link>
-          </el-col>
-        </el-row>
-      </el-card>
-    </el-row>
-
-    <!--    <router-link :to="{ name: 'rank', params: { page: page + 1 } }">下一页</router-link>-->
+        <el-card
+            style="width: 450px; height: 240px; margin: 10px"
+        >
+          <el-row>
+            <el-col :span="8">
+              <el-image
+                  style="width: 150px; height: 200px"
+                  :src="key.image"/>
+            </el-col>
+            <el-col :span="1"></el-col>
+            <el-col :span="15">
+              <router-link :to="{ name: 'bangumi-view', params: { bangumiId: key.bangumi_id }}">
+                <el-descriptions :title="key.bangumi_name" width="300px" :column="1">
+                  <el-descriptions-item>
+                    Rank {{ key.bangumi_rank }}
+                  </el-descriptions-item>
+                  <el-descriptions-item>
+                    评分 {{ key.bangumi_score }} ({{ key.rater_cnt }}人评分)
+                  </el-descriptions-item>
+                </el-descriptions>
+              </router-link>
+            </el-col>
+          </el-row>
+        </el-card>
+      </el-row>
+    </div>
+    <div class="pagination">
+      <el-pagination
+          style="left: 10px"
+          background layout="prev, pager, next, jumper, total"
+          :page-size="5"
+          :total="this.total"
+          @current-change="currentChange"
+      />
+    </div>
 
   </div>
 </template>
@@ -51,6 +60,7 @@ export default {
   data() {
     return {
       page: this.$route.params.page ? this.$route.params.page : 1,
+      total: 0,
       bangumiList: [],
     };
   },
@@ -87,12 +97,15 @@ export default {
           })
           rank_cnt = rank_cnt + 1
         }
+        this.total = response.data.total
         console.log("response: " + response.data);
       }).catch(error => {
         ElMessage.error('页数过大！')
       });
-
-    }
+    },
+    currentChange(nextPage) {
+      this.$router.push({name: 'rank', params: {page: nextPage}});
+    },
   }
 };
 </script>

@@ -20,6 +20,7 @@
 
 <script>
 import http from "../utils/http.ts";
+import {ElMessage} from "element-plus";
 
 export default {
   name: "Login",
@@ -63,6 +64,7 @@ export default {
           }
         }
       }).catch(error => {
+        ElMessage.error('邮箱和密码不匹配！')
         console.log('请求错误!error=', error)
       })
     },

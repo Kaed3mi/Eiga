@@ -131,6 +131,7 @@ class BangumiRankQuery(APIView):
                 raise Exception('页数过大！')
             index_low = 5 * page - 5
             index_high = min(5 * page - 1, Bangumi.objects.count())
+            total = Bangumi.objects.count()
             raw_bangumis = []
             for bangumi in Bangumi.objects.all():
                 rater_cnt = Score.objects.filter(bangumi_id=bangumi.bangumi_id).__len__()
@@ -157,5 +158,6 @@ class BangumiRankQuery(APIView):
             print(e)
             return Response(1)
         return Response({
-            'bangumis': bangumis
+            'bangumis': bangumis,
+            'total': total
         })
