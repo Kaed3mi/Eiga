@@ -58,6 +58,7 @@ urlpatterns = [
     path('score_query/', score.ScoreQuery.as_view()),
     path('get_user_scores/', score.GetUserScores.as_view()),
     path('bangumi_rank_query/', score.BangumiRankQuery.as_view()),
+    path('my_bangumi_query/', score.MyBangumiQuery.as_view()),
     # character
     path('character_search/', character.CharacterSearch.as_view()),
     path('character_query/', character.CharacterQuery.as_view()),
@@ -69,7 +70,7 @@ urlpatterns = [
     path('blog_update/', blog.BlogUpdate.as_view()),
     path('blog_query/', blog.BlogQuery.as_view()),
     path('blog_bangumi_query/', blog_bangumi.BlogBangumiQuery.as_view()),
-    path('blog_bangumi_update/', blog_bangumi.BlogBangumiUpdate.as_view()),
+    path('blog_bangumi_update/', blog_bangumi.BlogBangumiUpdate.as_view())
 ]
 # import app.views.user as user
 # from django.contrib import admin

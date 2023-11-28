@@ -119,7 +119,7 @@ const router = createRouter({
             path: '/blog_update/:blogId',
             name: 'blog-update-page',
             component: BlogUpdateView,
-        }
+        },
     ]
 })
 

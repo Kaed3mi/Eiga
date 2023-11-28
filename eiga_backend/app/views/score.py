@@ -4,7 +4,7 @@ from django.db.models import Sum
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Score, User, Bangumi
-from app.serializers import BangumiModelSerializer
+from app.serializers import BangumiModelSerializer, ScoreModelSerializer
 from eiga_backend.settings import ASSETS_ROOT
 
 
@@ -160,4 +160,28 @@ class BangumiRankQuery(APIView):
         return Response({
             'bangumis': bangumis,
             'total': total
+        })
+
+
+class MyBangumiQuery(APIView):
+    def get(self, request):
+        user_id = request.GET.get('user_id')
+        if Score.objects.filter(user_id_id=user_id).__len__() == 0:
+            return Response({'bangumis': []})
+        obj_list = Score.objects.filter(user_id_id=user_id)
+        bangumis = []
+        for obj in obj_list:
+            bangumi = Bangumi.objects.get(bangumi_id=obj.bangumi_id.bangumi_id)
+            with open(ASSETS_ROOT + bangumi.image, 'rb') as f:
+                image_data = base64.b64encode(f.read())
+            bangumis.append({
+                'bangumi_id': bangumi.bangumi_id,
+                'bangumi_name': bangumi.bangumi_name,
+                'image': str(image_data)[2: -1],
+                'my_score': obj.score
+            })
+            # print(bangumis)
+        bangumis = sorted(bangumis, key=lambda x: x['my_score'], reverse=True)[0:4]
+        return Response({
+            'bangumis': bangumis
         })

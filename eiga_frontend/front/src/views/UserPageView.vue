@@ -12,7 +12,7 @@
 
     <!-- 用户头像/修改组件 -->
     <div class='avatar-container'>
-      <UserAvatar :avatar_url="this.avatar_url"/>
+      <UserAvatar :avatar_url="avatar_url"/>
     </div>
 
     <h2>{{ username }}</h2>
@@ -21,14 +21,10 @@
       <strong>@{{ username }}</strong>
     </div>
 
-    <div v-if="bangumis.length >= 0">
-      <h3>{{ username }}的Bangumi</h3>
-      <el-row :gutter="20">
-        <el-col :span="24" v-for="(item, index) in bangumis" :key="index">
-          {{ item.bangumi.bangumi_name }} : {{ item.score }}
-        </el-col>
-      </el-row>
-      <el-divider border-style="dashed"/>
+    <div class="my-bangumis">
+      <h3></h3>
+      <el-text type="primary" size="large">{{ username }}的番组</el-text>
+      <MyBangumis :user_id="user_id"/>
     </div>
 
   </div>
@@ -38,14 +34,15 @@ import VerticalMenu from "../components/VerticalMenu.vue";
 import UpdateUserInfo from "../user_page_components/UpdateUserInfo.vue";
 import http from "../utils/http";
 import UserAvatar from "../user_page_components/UserAvatar.vue";
+import MyBangumis from "../user_page_components/MyBangumis.vue";
 
 export default {
   name: 'UserPage',
-  components: {UserAvatar, VerticalMenu, UpdateUserInfo},
+  components: {MyBangumis, UserAvatar, VerticalMenu, UpdateUserInfo},
   data() {
     return {
-      avatar_url: '',
       user_id: this.$route.params.userId,
+      avatar_url: '',
       username: '',
       bio: '好',
       bangumis: [],
@@ -54,7 +51,7 @@ export default {
   },
   // 用户同路由跳转更新，不能删。
   beforeRouteUpdate(to, from, next) {
-    this.user_id = to.params.userId; // 更新 user_id
+    this.user_id = to.params.user_id; // 更新 user_id
     this.getUserScores();
     this.userQuery();
     next();
@@ -84,7 +81,7 @@ export default {
       });
     },
     userQuery() {
-      console.log("I'm user#"+this.user_id)
+      console.log("I'm user#" + this.user_id)
       http.post(
           "http://127.0.0.1:8000/user_query/",
           {'user_id': this.user_id}

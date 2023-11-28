@@ -1,9 +1,9 @@
 <template>
   <div class="eiga-avatar">
-    <el-avatar shape="circle"  :fit="fit" :src="avatar_url" alt="User avatar" class="avatar"
-         @mouseover="showChange = true"
-         @mouseleave="showChange = false"
-         @click="this.dialogVisible = true"/>
+    <el-avatar shape="circle" :fit="fit" :src="avatar_url" alt="User avatar" class="avatar"
+               @mouseover="showChange = true"
+               @mouseleave="showChange = false"
+               @click="this.dialogVisible = true"/>
     <div class="update-user-avatar">
       <el-dialog
           v-model="this.dialogVisible"
@@ -20,10 +20,10 @@
             :on-success="handleSuccess"
             :before-upload="beforeUpload"
         >
-        <el-avatar shape="circle"  :fit="fit" v-if="edited_url" :src="edited_url" class="avatar"/>
-    <el-icon v-else class="avatar-uploader-icon">
-      <Plus/>
-    </el-icon>
+          <el-avatar shape="circle" :fit="fit" v-if="edited_url" :src="edited_url" class="avatar"/>
+          <el-icon v-else class="avatar-uploader-icon">
+            <Plus/>
+          </el-icon>
         </el-upload>
 
       </el-dialog>
