@@ -62,6 +62,7 @@ urlpatterns = [
     path('character_query/', character.CharacterQuery.as_view()),
     path('character_update/', character.CharacterUpdate.as_view()),
     path('character_select/', character.CharacterSelect.as_view()),
+    path('character_create/', character.CharacterCreate.as_view())
     # blog
     path('blog_insert/', blog.BlogInsert.as_view()),
     path('blog_update/', blog.BlogUpdate.as_view()),

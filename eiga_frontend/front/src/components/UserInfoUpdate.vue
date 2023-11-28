@@ -37,7 +37,7 @@
 
   <el-upload
       class="avatar-uploader"
-      action="http://127.0.0.1:8000/upload_avatar/"
+      action=""
       :show-file-list="false"
       :data="{ email: ruleForm.email, customField2: '22222' }"
       :on-success="handleAvatarSuccess"

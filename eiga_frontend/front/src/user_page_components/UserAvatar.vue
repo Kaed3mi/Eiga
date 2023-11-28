@@ -1,11 +1,9 @@
 <template>
   <div class="eiga-avatar">
-    <el-avatar :src="avatar_url" class="avatar"
-               @mouseover="showChange = true"
-               @mouseleave="showChange = false"
-               @click="this.dialogVisible = true"
-    />
-
+    <el-avatar shape="circle"  :fit="fit" :src="avatar_url" alt="User avatar" class="avatar"
+         @mouseover="showChange = true"
+         @mouseleave="showChange = false"
+         @click="this.dialogVisible = true"/>
     <div class="update-user-avatar">
       <el-dialog
           v-model="this.dialogVisible"
@@ -13,14 +11,19 @@
       >
         <span>请上传您的头像</span>
         <el-upload
+            class="avatar-uploader"
             list-type="picture-card"
             action="http://127.0.0.1:8000/upload_avatar/"
             :limit="1"
+            :data="{user_id: this.user_id }"
             :show-file-list="true"
             :on-success="handleSuccess"
             :before-upload="beforeUpload"
         >
-          <i class="el-icon-plus"></i>
+        <el-avatar shape="circle"  :fit="fit" v-if="edited_url" :src="edited_url" class="avatar"/>
+    <el-icon v-else class="avatar-uploader-icon">
+      <Plus/>
+    </el-icon>
         </el-upload>
 
       </el-dialog>
@@ -40,7 +43,9 @@ export default {
     return {
       showChange: false,
       dialogVisible: false,
-      uploadDisabled: false
+      uploadDisabled: false,
+      user_id: localStorage.getItem("user_id"),
+      edited_url: ''
     }
   },
   props: {
@@ -62,6 +67,7 @@ export default {
         ElMessage.error('Avatar picture size can not exceed 2MB!')
         return false
       }
+      this.edited_url = URL.createObjectURL(rawFile)
       return true
     },
   },
