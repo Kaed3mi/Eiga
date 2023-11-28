@@ -3,23 +3,32 @@
     <el-button @click="dialogVisible = true">修改信息</el-button>
     <el-dialog
         v-model="dialogVisible"
-        title="Tips"
         width="30%"
     >
-      <span>请上传您的头像</span>
       <div class="form-container">
-        <div class="form-input">
-          <label for="name">昵称:</label>
-          <input type="text" v-model="editedUserInfo.username" id="name" placeholder="昵称">
-        </div>
-        <div class="form-input">
-          <label for="email">邮箱:</label>
-          <input type="email" v-model="editedUserInfo.email" id="email" placeholder="邮箱">
-        </div>
-        <div class="form-input">
-          <label for="email">密码:</label>
-          <input type="text" v-model="editedUserInfo.password" id="email" placeholder="密码">
-        </div>
+        <el-form
+            ref="ruleFormRef"
+            label-width="120px"
+            class="demo-ruleForm"
+            status-icon
+        >
+
+          <el-form-item label="用户名:" prop="username">
+            <el-input v-model="this.editedUserInfo.username" placeholder="请输入昵称"
+                      :clearable="true"/>
+          </el-form-item>
+
+          <el-form-item label="邮箱:" prop="email">
+            <el-input v-model="this.editedUserInfo.email" placeholder="请输入邮箱"
+                      :clearable="true"/>
+          </el-form-item>
+
+          <el-form-item label="密码" prop="password">
+            <el-input v-model="this.editedUserInfo.password" placeholder="请输入密码" type="password"
+                      :show-password="true"/>
+          </el-form-item>
+
+        </el-form>
       </div>
       <template #footer>
       <span class="dialog-footer">
@@ -34,6 +43,7 @@
 <script>
 
 import http from "../utils/http";
+import {ElMessage} from "element-plus";
 
 export default {
   data() {
@@ -50,6 +60,14 @@ export default {
   methods: {
     updateUserInfo() {
       // 在这里处理更新用户信息的逻辑，比如发送请求到后端保存更改等
+      // check Email:
+      if (this.editedUserInfo.email !== '') {
+        const pattern = /^([0-9a-zA-Z_\.\-\])+\@([0-9a-zA-Z_\.\-\])+\.([a-zA-Z]+)$/;
+        if (!pattern.test(this.editedUserInfo.email)) {
+          ElMessage.error('邮箱格式不正确！')
+          return;
+        }
+      }
       console.log('Updated user info:', localStorage.getItem('user_id'), this.editedUserInfo);
       http.post(
           "http://127.0.0.1:8000/user_info_update/", {

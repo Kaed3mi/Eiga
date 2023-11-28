@@ -1,7 +1,12 @@
+import base64
+
+from django.db.models import Sum
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Score, User, Bangumi
 from app.serializers import BangumiModelSerializer
+from eiga_backend.settings import ASSETS_ROOT
+
 
 # TODO 考虑要不要做游客功能，按理说游客是不能评分的
 class ScoreInsert(APIView):
@@ -92,6 +97,7 @@ class BangumiScoreQuery(APIView):
             'score': average_score
         })
 
+
 class GetUserScores(APIView):
     def get(self, request):
         user_id = request.GET.get('user_id')
@@ -103,6 +109,49 @@ class GetUserScores(APIView):
                 bangumis.append({
                     'bangumi': BangumiModelSerializer(obj.bangumi_id).data,
                     'score': obj.score
+                })
+        except Exception as e:
+            print(e)
+            return Response(1)
+        return Response({
+            'bangumis': bangumis
+        })
+
+
+class BangumiRankQuery(APIView):
+    """
+    需要page字段，每个页面只许展示5个番组，所以返回的番组是5*page - 4到5*page排名的番组
+    """
+
+    def get(self, request):
+        page = int(request.GET.get('page'))
+        print(request.GET)
+        try:
+            if 5 * page - 5 > Bangumi.objects.count():
+                raise Exception('页数过大！')
+            index_low = 5 * page - 5
+            index_high = min(5 * page - 1, Bangumi.objects.count())
+            raw_bangumis = []
+            for bangumi in Bangumi.objects.all():
+                rater_cnt = Score.objects.filter(bangumi_id=bangumi.bangumi_id).__len__()
+                total_score = Score.objects.filter(bangumi_id=bangumi.bangumi_id).aggregate(total=Sum('score'))
+                bangumi.bangumi_rater_cnt = rater_cnt
+                bangumi.bangumi_score = total_score['total'] / rater_cnt if total_score['total'] else 0.0
+                raw_bangumis.append(bangumi)
+            print(raw_bangumis)
+            sorted_bangumis = sorted(raw_bangumis, key=lambda x: x.bangumi_score, reverse=True)[
+                              index_low: index_high]
+            print(sorted_bangumis)
+            bangumis = []
+            for bangumi in sorted_bangumis:
+                with open(ASSETS_ROOT + bangumi.image, 'rb') as f:
+                    image_data = base64.b64encode(f.read())
+                bangumis.append({
+                    'bangumi_id': bangumi.bangumi_id,
+                    'bangumi_name': bangumi.bangumi_name,
+                    'bangumi_score': bangumi.bangumi_score,
+                    'bangumi_rater_cnt': bangumi.bangumi_rater_cnt,
+                    'image': str(image_data)[2:-1]
                 })
         except Exception as e:
             print(e)

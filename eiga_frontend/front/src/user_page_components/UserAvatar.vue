@@ -78,8 +78,8 @@ export default {
 <style scoped>
 
 .avatar {
-  width: 60%;
-  height: 60%;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   transition: filter 0.3s ease;
   cursor: pointer;
