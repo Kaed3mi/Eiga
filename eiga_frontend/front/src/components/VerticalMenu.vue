@@ -63,6 +63,26 @@
             </el-icon>
             <span>设置</span>
           </el-menu-item>
+
+          <el-sub-menu index="7">
+            <template #title>
+              <el-icon>
+                <location/>
+              </el-icon>
+              <span>控制台</span>
+            </template>
+
+          <el-menu-item index="1-1" v-bind:disabled="!isAdmin || !isEditable" @click="routeToModify">修改当前页面
+          </el-menu-item>
+              
+          <el-menu-item index="1-2" v-bind:disabled="!isAdmin" @click="routeToCreateCharacter">新建角色
+          </el-menu-item>
+
+          <el-menu-item index="1-3" v-bind:disabled="!isAdmin" @click="routeToCreateBangumi">新建番剧
+          </el-menu-item>
+
+          </el-sub-menu>
+
         </el-menu>
       </el-col>
     </el-row>
@@ -153,6 +173,18 @@ export default {
       activate2: '1'
     }
   },
+  computed: {
+    isAdmin() {
+      return (
+        localStorage.getItem("user_id") && localStorage.getItem("permission") === "admin"
+      );
+    },
+    isEditable() {
+      return (
+        this.$route.path.startsWith("/bangumi/")  || this.$route.path.startsWith("/character/")
+      );
+    }
+  },
   components: {
     UserAvatar
   },
@@ -162,6 +194,7 @@ export default {
       this.userQuery();
     }
     this.defaultActivate();
+    
   },
   methods: {
     handleUserPage() {
@@ -237,7 +270,23 @@ export default {
       })
       localStorage.removeItem('user_id');
       this.$router.push('/login')
-    }
+    },
+    routeToModify() {
+      if (this.$route.path.startsWith("/bangumi/")) {
+          console.log("/bangumi/" + this.$route.params.bangumiId);
+          this.$router.push("/bangumi_update/" + this.$route.params.bangumiId);
+      }
+      if (this.$route.path.startsWith("/character/")) {
+        console.log("/character/" + this.$route.params.characterId);
+          this.$router.push("/character_update/" + this.$route.params.characterId);
+      }
+    },
+    routeToCreateCharacter() {
+        this.$router.push('/character_create')
+    },
+    routeToCreateBangumi() {
+      this.$router.push('/bangumi_create')
+    },
   }
 }
 
@@ -249,13 +298,14 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
+  height: 80%;
   width: 150px;
 }
 
 .fixed-user {
   position: fixed;
   width: 150px;
-
+  height: 20%;
   bottom: 10px; /* 距离底部的位置 */
   left: 00px; /* 距离左侧的位置 */
 }

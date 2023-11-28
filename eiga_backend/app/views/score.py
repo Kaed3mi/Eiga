@@ -141,7 +141,7 @@ class BangumiRankQuery(APIView):
                 raw_bangumis.append(bangumi)
             print(raw_bangumis)
             sorted_bangumis = sorted(raw_bangumis, key=lambda x: x.bangumi_score, reverse=True)[
-                              index_low: index_high]
+                              index_low: index_high + 1]
             print(sorted_bangumis)
             bangumis = []
             for bangumi in sorted_bangumis:
