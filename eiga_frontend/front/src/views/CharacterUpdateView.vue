@@ -1,6 +1,10 @@
 <template>
-    <VerticalMenu></VerticalMenu>
-    <CharacterUpdate></CharacterUpdate>
+    <el-container>
+      <el-container>
+        <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
+        <el-main><CharacterUpdate></CharacterUpdate></el-main>
+      </el-container>
+    </el-container>
 </template>
    
 <script lang="ts">

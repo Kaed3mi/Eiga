@@ -1,9 +1,9 @@
 <template>
-  <div>
+    <el-container>
+        <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
+        <el-main>
+          <div>
     <!-- 左侧导航栏 -->
-    <div class="vertical-menu">
-      <VerticalMenu/>
-    </div>
     <div class="bangumi_rank">
       <el-row
           v-for="(key, index) in bangumiList"
@@ -47,6 +47,8 @@
     </div>
 
   </div>
+        </el-main>
+      </el-container>
 </template>
 
 <script>

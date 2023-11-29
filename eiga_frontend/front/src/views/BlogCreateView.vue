@@ -1,6 +1,8 @@
 <template>
-  <VerticalMenu></VerticalMenu>
-  <BlogCreateItem></BlogCreateItem>
+  <el-container>
+        <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
+        <el-main><BlogCreateItem></BlogCreateItem></el-main>
+  </el-container>
 </template>
 
 <script>

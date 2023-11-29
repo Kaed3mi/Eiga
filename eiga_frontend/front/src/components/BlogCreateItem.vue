@@ -175,7 +175,7 @@ export default {
 <style scoped>
 .center-container {
   display: flex;
-  width: 1000px;
+  width: 100%;
   justify-content: center;
   align-items: center;
 }
