@@ -1,6 +1,10 @@
 <template>
-    <VerticalMenu></VerticalMenu>
-    <CharacterCreate></CharacterCreate>
+    <el-container>
+      <el-container>
+        <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
+        <el-main><CharacterCreate></CharacterCreate></el-main>
+      </el-container>
+    </el-container>
 </template>
    
 <script lang="ts">

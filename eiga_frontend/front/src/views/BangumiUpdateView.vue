@@ -1,5 +1,4 @@
 <template>
-    <VerticalMenu></VerticalMenu>
     <BangumiUpdateVue></BangumiUpdateVue>
 </template>
    

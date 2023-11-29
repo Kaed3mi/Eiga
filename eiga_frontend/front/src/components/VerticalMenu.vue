@@ -57,14 +57,8 @@
             </el-icon>
             <span>日志</span>
           </el-menu-item>
-          <el-menu-item index="6">
-            <el-icon>
-              <setting/>
-            </el-icon>
-            <span>设置</span>
-          </el-menu-item>
 
-          <el-sub-menu index="7">
+          <el-sub-menu index="6">
             <template #title>
               <el-icon>
                 <location/>
@@ -83,11 +77,37 @@
 
           </el-sub-menu>
 
+          <el-sub-menu
+            index="7"
+            active-text-color="#007f7f"
+            background-color="#ffffff"
+            v-if="user_id!=null &&String(user_id)!==''"
+            class="el-menu-vertical-demo"
+            text-color="#000"
+        >
+        <template #title>
+          <el-avatar :src="avatar_url" :size="24" style="margin-left: -0px;" class="avatar"/>
+            <span style="padding: 5px; font-size:14px">{{ username }}</span>
+            </template>
+          <el-menu-item index="8-1" @click="logOut">
+            <el-icon>
+              <ArrowLeft/>
+            </el-icon>
+            <span style="padding: 5px; ">登出</span>
+          </el-menu-item>
+          <el-menu-item index="8-2" @click="switchAccount">
+            <el-icon>
+              <Sort/>
+            </el-icon>
+            <span>切换账号</span>
+          </el-menu-item>
+        </el-sub-menu>
+
         </el-menu>
       </el-col>
     </el-row>
   </div>
-  <div class="fixed-user">
+  <!-- <div class="fixed-user">
     <el-row class="row-with-divider">
       <el-col v-if="user_id!=null &&String(user_id)!==''" :span="24">
         <el-menu
@@ -130,7 +150,7 @@
         </el-menu>
       </el-col>
     </el-row>
-  </div>
+  </div> -->
 </template>
 
 
@@ -295,11 +315,10 @@ export default {
 
 <style scoped>
 .vertical-menu {
-  position: fixed;
   top: 0;
   left: 0;
-  height: 80%;
-  width: 150px;
+  height: 100%;
+  width: 200px;
 }
 
 .fixed-user {

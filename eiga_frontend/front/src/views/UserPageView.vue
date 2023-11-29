@@ -1,9 +1,10 @@
 <template>
-  <div class="user-profile">
+  <el-container>
+        <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
+        <el-main>
+          <!-- <CharacterInfo></CharacterInfo> -->
+          <div class="user-profile">
     <!-- 左侧导航栏 -->
-    <div class="vertical-menu">
-      <VerticalMenu/>
-    </div>
 
     <!-- 用户信息弹窗组件 -->
     <div class="user-info-container">
@@ -28,6 +29,8 @@
     </div>
 
   </div>
+        </el-main>
+      </el-container>
 </template>
 <script>
 import VerticalMenu from "../components/VerticalMenu.vue";

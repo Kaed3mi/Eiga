@@ -15,11 +15,12 @@
           <span>{{ character.character_name}}</span>
           <div class="bottom">
             <el-button text class="button">
-              <router-link :to="'/character/'+ character.id">Check</router-link>
+              <router-link :to="'/character/'+ character.character_id">Check</router-link>
             </el-button>
           </div>
         </div>
       </el-card>
+      
     </el-col>
   </el-row>
 </template>

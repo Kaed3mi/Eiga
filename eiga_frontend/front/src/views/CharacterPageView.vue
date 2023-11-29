@@ -1,6 +1,10 @@
 <template>
-    <VerticalMenu></VerticalMenu>
-    <CharacterInfo></CharacterInfo>
+    <el-container>
+      <el-container>
+        <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
+        <el-main><CharacterInfo></CharacterInfo></el-main>
+      </el-container>
+    </el-container>
 </template>
 
 <script lang="ts">
@@ -19,6 +23,17 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.inputBar {
+  width: 300px;
+}
+span {
+  color: red;
+}
 </style>
