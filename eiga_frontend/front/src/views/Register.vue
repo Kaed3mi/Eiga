@@ -1,10 +1,17 @@
 <template>
-    <hr>
-    <h1>注册页面</h1>
-    <hr>
-    <UserInfoInput></UserInfoInput>
-    <VerticalMenu></VerticalMenu>
 
+    <el-container>
+      <el-container>
+        <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
+        <el-main>
+          <el-row >
+            <el-col :span="6"></el-col>
+            <el-col :span="12"><UserInfoInput></UserInfoInput></el-col>
+            <el-col :span="6"></el-col>
+          </el-row>
+        </el-main>
+      </el-container>
+    </el-container>
 </template>
    
 <script>

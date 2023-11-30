@@ -10,6 +10,7 @@
           :key="key"
           :span="8"
       >
+      <el-container class="row-content">
         <el-card
             style="width: 450px; height: 240px; margin: 10px"
         >
@@ -34,19 +35,23 @@
             </el-col>
           </el-row>
         </el-card>
+
+      </el-container>
       </el-row>
     </div>
-    <div class="pagination">
-      <el-pagination
-          style="left: 10px"
-          background layout="prev, pager, next, jumper, total"
-          :page-size="5"
-          :total="this.total"
-          @current-change="currentChange"
-      />
-    </div>
 
-  </div>
+    <el-row >
+      <el-container class="row-content">   
+          <el-pagination
+            style=""
+            background layout="prev, pager, next, jumper, total"
+            :page-size="5"
+            :total="this.total"
+            @current-change="currentChange"/>
+      </el-container>
+    </el-row>
+
+          </div>
         </el-main>
       </el-container>
 </template>
@@ -111,3 +116,11 @@ export default {
   }
 };
 </script>
+
+<style>
+.row-content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

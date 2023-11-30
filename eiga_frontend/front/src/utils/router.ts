@@ -60,20 +60,17 @@ const router = createRouter({
             name: 'UserPage',
             component: UserPageView,
         },
-        {
-            path: '/bangumi/:bangumiId',
-            name: 'bangumi-view',
-            component: BangumiPageView,
-        },
-        {
-            path: '/character/:characterId',
-            name: 'character-view',
-            component: CharacterPageView,
-        },
+        // search
         {
             path: '/subject_search/',
             name: 'bangumi-subject_search',
             component: SubjectSearch,
+        },
+        // character
+        {
+            path: '/character/:characterId',
+            name: 'character-view',
+            component: CharacterPageView,
         },
         {
             path: '/character_update/:characterId',
@@ -85,6 +82,12 @@ const router = createRouter({
             name: 'character-create',
             component: CharacterCreateView,
         },
+        // bangumi
+        {
+            path: '/bangumi/:bangumiId',
+            name: 'bangumi-view',
+            component: BangumiPageView,
+        },
         {
             path: '/bangumi_update/:bangumiId',
             name: 'bangumi_update-update',
@@ -95,6 +98,7 @@ const router = createRouter({
             name: 'bangumi-create',
             component: BangumiCreateView,
         },
+        // rank
         {
             path: '/rank',
             name: 'rank_home_page',
@@ -105,6 +109,7 @@ const router = createRouter({
             name: 'rank',
             component: BangumiRank
         },
+        // blog
         {
             path: '/blog/:blogId',
             name: 'blog-page',

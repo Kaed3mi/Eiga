@@ -1,35 +1,37 @@
 <template>
   <el-container>
         <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
-        <el-main>
+        <el-container>
+          <el-header></el-header>
+          <el-main>
           <!-- <CharacterInfo></CharacterInfo> -->
           <div class="user-profile">
-    <!-- 左侧导航栏 -->
+            <!-- 左侧导航栏 -->
+            <!-- 用户信息弹窗组件 -->
+            <div class="user-info-container">
+              <UpdateUserInfo/>
+            </div>
 
-    <!-- 用户信息弹窗组件 -->
-    <div class="user-info-container">
-      <UpdateUserInfo/>
-    </div>
+            <!-- 用户头像/修改组件 -->
+            <div class='avatar-container'>
+              <UserAvatar :avatar_url="avatar_url"/>
+            </div>
 
-    <!-- 用户头像/修改组件 -->
-    <div class='avatar-container'>
-      <UserAvatar :avatar_url="avatar_url"/>
-    </div>
+            <h2>{{ username }}</h2>
+            <p>{{ bio }}</p>
+            <div class="stat">
+              <strong>@{{ username }}</strong>
+            </div>
 
-    <h2>{{ username }}</h2>
-    <p>{{ bio }}</p>
-    <div class="stat">
-      <strong>@{{ username }}</strong>
-    </div>
+            <div class="my-bangumis">
+              <h3></h3>
+              <el-text type="primary" size="large">{{ username }}的番组</el-text>
+              <MyBangumis :user_id="user_id"/>
+            </div>
 
-    <div class="my-bangumis">
-      <h3></h3>
-      <el-text type="primary" size="large">{{ username }}的番组</el-text>
-      <MyBangumis :user_id="user_id"/>
-    </div>
-
-  </div>
+          </div>
         </el-main>
+        </el-container>
       </el-container>
 </template>
 <script>

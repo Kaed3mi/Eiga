@@ -1,20 +1,15 @@
 <template>
+  <el-card class="box-card" style="min-width: 800px;">
 
-    <el-card class="box-card" style="min-width: 800px;">
-    <el-row>
-      <el-col :span="8">
-        <el-upload class="avatar-uploader" :show-file-list="false" :data="{}" :before-upload="beforeImageUpload">
+  <el-row>
+    <el-col :span="8">
+      <el-upload class="avatar-uploader" :show-file-list="false" :data="{}" :before-upload="beforeImageUpload">
         <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-        <el-icon v-else class="avatar-uploader-icon">
-            <Plus />
-        </el-icon>
-        </el-upload>
-    <el-button
-          @click.prevent="submit"
-        >
-          submit
-        </el-button>
-      </el-col>
+        <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+      </el-upload>
+
+      <el-button type="primary" @click.prevent="submit">提交</el-button>
+    </el-col>
       <el-col :span="1">
       </el-col>
       <el-col :span="15">
@@ -177,8 +172,8 @@ async function urlToBase64(url) {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 250px;
-    height: 400px;
+    width: auto;
+    height: auto;
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     overflow: hidden;
