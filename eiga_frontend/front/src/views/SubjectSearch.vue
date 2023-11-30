@@ -33,10 +33,15 @@
             <div v-if="search_results.length > 0">
               <h3>搜索结果：</h3>
               <el-row
+                  class="search_item"
                   :gutter="20"
               >
                 <el-col :span="24" v-for="(result, index) in search_results" :key="index">
-                  <ListItem :type="result.type" :id="result.id" :name="result.name" :description="0" :image="''"></ListItem>
+                  <div class="row-content">
+                    <ListItem :type="result.type" :id="result.id" :name="result.name" :description="0" :image="''"></ListItem>
+                  </div>
+          
+                  
                 </el-col>
               </el-row>
             </div>
@@ -158,4 +163,10 @@ export default {
   box-sizing: border-box;
   vertical-align: top;
 }
+.row-content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 </style>

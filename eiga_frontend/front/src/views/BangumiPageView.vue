@@ -4,7 +4,7 @@
       <el-aside width="200px">
         <VerticalMenu/>
       </el-aside>
-      <el-container>
+      <el-container class="content-container">
         <el-header><p :style="{ fontSize: '24px' }">{{ bangumi_name }}</p></el-header>
         <el-divider border-style="dashed"/>
         <el-container>
@@ -303,6 +303,10 @@ export default {
 </script>
 
 <style scoped>
+.content-container{
+  margin: 20px;
+}
+
 .full-screen-layout {
   height: 80vh; /* 设置高度为视口高度，以填充整个屏幕 */
 }

@@ -17,6 +17,7 @@ export default {
    
    
 <style scoped>
+
 .inputBar {
   width: 300px;
 }

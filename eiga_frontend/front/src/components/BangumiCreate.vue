@@ -75,7 +75,7 @@
                 </el-row>
 
                 <div class="input-row-bb">
-
+                
                 <el-autocomplete
                 v-model="selectedResultBangumi"
                 :fetch-suggestions="querySearchBangumi"
@@ -84,7 +84,6 @@
                 clearable
                 @select="onSelectBangumi">
                 </el-autocomplete>
-
                 <el-input v-model="newRelation" placeholder="请输入关系" ></el-input>
 
                 <el-button class="mt-4" type="primary" @click="onAddBangumi">Add</el-button>

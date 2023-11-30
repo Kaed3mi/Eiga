@@ -4,7 +4,7 @@
         <el-aside width="200px">
           <VerticalMenu/>
         </el-aside>
-        <el-container>
+        <el-container class="content-container">
           <el-header><p :style="{ fontSize: '24px' }">{{ bangumi_name }}</p></el-header>
           <el-divider border-style="dashed"/>
           <el-container>
@@ -24,34 +24,44 @@
               </div>
             </el-aside>
             <el-main>
-             <h4 style="text-align: left;"> 简介：</h4>
+              <h4 style="text-align: left;"> 简介：</h4>
               <el-input v-model="bangumi_intro" :autosize="{ minRows: 2, maxRows: 20 }" type="textarea" placeholder="Please input" ></el-input>
               <el-divider border-style="dashed"/>
-              角色
-          <el-table :data="characterTable" style="width: auto" max-height="250">
-          <el-table-column prop="character_id" label="ID"  />
-          <el-table-column prop="character_name" label="Name"  />
-          <el-table-column label="Operations" >
-          <template #default="scope">
-            <el-button
-              link
-              type="primary"
-              size="small"
-              @click.prevent="deleteCharacterRow(scope.$index)">
-              Remove
-            </el-button>
-          </template>
-          </el-table-column>
-          </el-table>
-              <el-autocomplete
-              v-model="selectedResultCharacter"
-              :fetch-suggestions="querySearchCharacter"
-              placeholder="请输入内容"
-              :trigger-on-focus="false"
-              clearable
-              @select="onSelectCharacter">
-              </el-autocomplete>
-              <el-button class="mt-4" @click="onAddCharacter">Add Item</el-button>
+              <h3>角色</h3>
+
+              <el-table :data="characterTable" style="width: auto" max-height="250">
+                <el-table-column prop="character_id" label="ID"  />
+                <el-table-column prop="character_name" label="Name"  />
+                <el-table-column label="Operations" >
+                  <template #default="scope">
+                    <el-button
+                      link
+                      type="primary"
+                      size="small"
+                      @click.prevent="deleteCharacterRow(scope.$index)">
+                      Remove
+                    </el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+
+              <div style="margin:10px">
+                角色:
+                <el-autocomplete
+                v-model="selectedResultCharacter"
+                :fetch-suggestions="querySearchCharacter"
+                placeholder="请输入内容"
+                :trigger-on-focus="false"
+                clearable
+                style="width: 75%;"
+                @select="onSelectCharacter">
+                </el-autocomplete>
+
+                <el-button class="mt-4" type="primary" @click="onAddCharacter">Add Item</el-button>
+              </div>
+
+
+
               <el-divider border-style="dashed"/>
                 <h3>关联番组</h3>
                 <el-row :gutter="20">
@@ -74,20 +84,29 @@
           </el-table>
                   </el-col>
                 </el-row>
-              <el-autocomplete
-              v-model="selectedResultBangumi"
-              :fetch-suggestions="querySearchBangumi"
-              placeholder="请输入内容"
-              :trigger-on-focus="false"
-              clearable
-              @select="onSelectBangumi">
-              </el-autocomplete>
-              <el-input v-model="newRelation" placeholder="Please input" ></el-input>
-              <el-button class="mt-4" @click="onAddBangumi">Add Item</el-button>
+                
+              <div style="margin:10px">
+                番组:
+                <el-autocomplete
+                style="width: 35%;"
+                v-model="selectedResultBangumi"
+                :fetch-suggestions="querySearchBangumi"
+                placeholder="请输入内容"
+                :trigger-on-focus="false"
+                clearable
+                @select="onSelectBangumi">
+                </el-autocomplete>
+
+                关系:
+                <el-input style="width: 35%;" v-model="newRelation" placeholder="Please input" ></el-input>
+
+                <el-button class="mt-4" @click="onAddBangumi" type="primary">Add Item</el-button>
+
                 <el-divider border-style="dashed"/>
-              <el-button type="primary" @click="submitUpdate">
-                提交
-              </el-button>
+
+                <el-button type="primary" @click="submitUpdate">提交</el-button>
+              </div>
+
             </el-main>
           </el-container>  
           <el-footer>Footer</el-footer>
@@ -350,18 +369,22 @@
   }
   </script>
   
-  <style scoped>
-  .full-screen-layout {
-    height: 80vh; /* 设置高度为视口高度，以填充整个屏幕 */
-  }
+<style scoped>
+.content-container{
+  margin: 20px;
+}
+
+.full-screen-layout {
+  height: 80vh; /* 设置高度为视口高度，以填充整个屏幕 */
+}
   
-  .demo-image .block {
-    padding: 70px 0;
-    text-align: center;
-    border-right: solid 1px var(--el-border-color);
-    display: inline-block;
-    width: 40%;
-    box-sizing: border-box;
-    vertical-align: top;
-  }
-  </style>
+.demo-image .block {
+  padding: 70px 0;
+  text-align: center;
+  border-right: solid 1px var(--el-border-color);
+  display: inline-block;
+  width: 40%;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+</style>
