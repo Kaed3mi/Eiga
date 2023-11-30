@@ -181,7 +181,7 @@ class MyBangumiQuery(APIView):
                 'my_score': obj.score
             })
             # print(bangumis)
-        bangumis = sorted(bangumis, key=lambda x: x['my_score'], reverse=True)[0:4]
+        bangumis = sorted(bangumis, key=lambda x: x['my_score'], reverse=True)
         return Response({
             'bangumis': bangumis
         })

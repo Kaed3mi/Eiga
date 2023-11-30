@@ -1,30 +1,44 @@
 <template>
   <div class="bangumi_rank">
-    <el-row>
-      <el-col
-          :span="6"
-          v-for="(key, index) in bangumiList"
-          :key="key">
-        <el-card
-            style="width: 140px; height: 240px; margin: 30px"
-        >
-          <el-col>
-            <el-row>
-              <el-image
-                  style="width: 100px; height: 134px"
-                  :src="key.image"/>
-            </el-row>
-            <el-row>
-              <router-link :to="{ name: 'bangumi-view', params: { bangumiId: key.bangumi_id }}">
-                <el-text class="w-80px" type="primary" truncated>{{ key.bangumi_name }}</el-text>
-                <el-text type="info">用户评分：</el-text>
-                <el-text type="success"> {{ key.my_score }}</el-text>
-              </router-link>
-            </el-row>
+
+    <el-carousel
+        style=""
+        indicator-position="none"
+        :autoplay='false'>
+      <el-carousel-item
+          v-for="fourGroup in bangumiGroupList"
+          :key="fourGroup">
+        <el-row>
+          <!--:span="6"是为了一行展示4个-->
+          <el-col
+              :span="6"
+              v-for="bangumi in fourGroup"
+              :key="bangumi">
+            <el-container class="row-content">
+              <el-card
+                  style="width: 140px; height: 240px; margin: 30px"
+              >
+                <el-col>
+                  <el-row>
+                    <el-image
+                        style="width: 100px; height: 134px"
+                        :src="bangumi.image"/>
+                  </el-row>
+                  <el-row>
+                    <router-link :to="{ name: 'bangumi-view', params: { bangumiId: bangumi.bangumi_id }}">
+                      <el-text class="w-80px" type="primary" truncated>{{ bangumi.bangumi_name }}</el-text>
+                      <el-text type="info">用户评分：</el-text>
+                      <el-text type="success"> {{ bangumi.my_score }}</el-text>
+                    </router-link>
+                  </el-row>
+                </el-col>
+              </el-card>
+            </el-container>
           </el-col>
-        </el-card>
-      </el-col>
-    </el-row>
+        </el-row>
+      </el-carousel-item>
+    </el-carousel>
+
   </div>
 </template>
 
@@ -36,7 +50,7 @@ export default {
   name: "MyBangumis",
   data() {
     return {
-      bangumiList: [],
+      bangumiGroupList: [],
     };
   },
   mounted() {
@@ -47,7 +61,7 @@ export default {
   },
   methods: {
     myBangumiQuery() {
-      this.bangumiList = []
+      this.bangumiGroupList = []
       http.get(
           "http://127.0.0.1:8000/my_bangumi_query/",
           {
@@ -57,15 +71,24 @@ export default {
           }
       ).then(response => {
         console.log(response.data.bangumis)
+        let counter = 0; // 将番组分成4个一组
+        let bangumiGroup = []
         for (let bangumi of response.data.bangumis) {
-          this.bangumiList.push({
+          counter++
+          if (counter === 5) {
+            this.bangumiGroupList.push(bangumiGroup)
+            bangumiGroup = []
+            counter = counter % 4
+          }
+          bangumiGroup.push({
             'bangumi_id': bangumi.bangumi_id,
             'bangumi_name': bangumi.bangumi_name,
             'my_score': bangumi.my_score,
             'image': `data:image/png;base64,${bangumi.image}`,
           })
         }
-        console.log("response: " + response.data);
+        this.bangumiGroupList.push(bangumiGroup) // 最后加上省下的番组
+        console.log(this.bangumiGroupList);
       }).catch(error => {
         ElMessage.error('怎么出错了')
       });
@@ -78,4 +101,11 @@ export default {
 .w-80px {
   width: 110px;
 }
+
+.row-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 </style>
