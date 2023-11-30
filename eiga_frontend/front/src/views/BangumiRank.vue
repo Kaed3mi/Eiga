@@ -1,59 +1,61 @@
 <template>
-    <el-container>
-        <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
-        <el-main>
-          <div>
-    <!-- 左侧导航栏 -->
-    <div class="bangumi_rank">
-      <el-row
-          v-for="(key, index) in bangumiList"
-          :key="key"
-          :span="8"
-      >
-      <el-container class="row-content">
-        <el-card
-            style="width: 450px; height: 240px; margin: 10px"
-        >
-          <el-row>
-            <el-col :span="8">
-              <el-image
-                  style="width: 150px; height: 200px"
-                  :src="key.image"/>
-            </el-col>
-            <el-col :span="1"></el-col>
-            <el-col :span="15">
-              <router-link :to="{ name: 'bangumi-view', params: { bangumiId: key.bangumi_id }}">
-                <el-descriptions :title="key.bangumi_name" width="300px" :column="1">
-                  <el-descriptions-item>
-                    Rank {{ key.bangumi_rank }}
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    评分 {{ key.bangumi_score }} ({{ key.rater_cnt }}人评分)
-                  </el-descriptions-item>
-                </el-descriptions>
-              </router-link>
-            </el-col>
+  <el-container>
+    <el-aside width="200px">
+      <VerticalMenu></VerticalMenu>
+    </el-aside>
+    <el-main>
+      <div>
+        <!-- 左侧导航栏 -->
+        <div class="bangumi_rank">
+          <el-row
+              v-for="(key, index) in bangumiList"
+              :key="key"
+              :span="8"
+          >
+            <el-container class="row-content">
+              <el-card
+                  style="width: 450px; height: 240px; margin: 10px"
+              >
+                <el-row>
+                  <el-col :span="8">
+                    <el-image
+                        style="width: 150px; height: 200px"
+                        :src="key.image"/>
+                  </el-col>
+                  <el-col :span="1"></el-col>
+                  <el-col :span="15">
+                    <router-link :to="{ name: 'bangumi-view', params: { bangumiId: key.bangumi_id }}">
+                      <el-descriptions :title="key.bangumi_name" width="300px" :column="1">
+                        <el-descriptions-item>
+                          Rank {{ key.bangumi_rank }}
+                        </el-descriptions-item>
+                        <el-descriptions-item>
+                          评分 {{ key.bangumi_score }} ({{ key.rater_cnt }}人评分)
+                        </el-descriptions-item>
+                      </el-descriptions>
+                    </router-link>
+                  </el-col>
+                </el-row>
+              </el-card>
+
+            </el-container>
           </el-row>
-        </el-card>
+        </div>
 
-      </el-container>
-      </el-row>
-    </div>
+        <el-row>
+          <el-container class="row-content">
+            <el-pagination
+                :current-page="Number(page)"
+                background layout="prev, pager, next, jumper, total"
+                :page-size="5"
+                :total="this.total"
+                @current-change="currentChange"/>
+          </el-container>
+        </el-row>
 
-    <el-row >
-      <el-container class="row-content">   
-          <el-pagination
-            style=""
-            background layout="prev, pager, next, jumper, total"
-            :page-size="5"
-            :total="this.total"
-            @current-change="currentChange"/>
-      </el-container>
-    </el-row>
-
-          </div>
-        </el-main>
-      </el-container>
+      </div>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
@@ -80,6 +82,7 @@ export default {
     this.bangumi_rank_query();
     next();
   },
+  props: {},
   methods: {
     bangumi_rank_query() {
       this.bangumiList = []
@@ -118,7 +121,7 @@ export default {
 </script>
 
 <style>
-.row-content{
+.row-content {
   display: flex;
   align-items: center;
   justify-content: center;

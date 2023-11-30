@@ -100,11 +100,6 @@ const router = createRouter({
         },
         // rank
         {
-            path: '/rank',
-            name: 'rank_home_page',
-            component: BangumiRank
-        },
-        {
             path: '/rank/:page',
             name: 'rank',
             component: BangumiRank
