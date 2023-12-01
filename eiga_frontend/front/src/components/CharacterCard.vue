@@ -6,7 +6,8 @@
         :span="4"
         :offset="index > 0 ? 2 : 0"
     >
-      <el-card :body-style="{ padding: '0px' }">
+    <router-link :to="'/character/'+ character.character_id">
+      <el-card :body-style="{ padding: '0px'}" style="height: 100%">
         <img
             :src="character.image"
             class="image"
@@ -14,12 +15,13 @@
         <div style="padding: 14px">
           <span>{{ character.character_name}}</span>
           <div class="bottom">
-            <el-button text class="button">
+            <!-- <el-button text class="button">
               <router-link :to="'/character/'+ character.character_id">Check</router-link>
-            </el-button>
+            </el-button> -->
           </div>
         </div>
       </el-card>
+    </router-link>
       
     </el-col>
   </el-row>

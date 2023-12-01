@@ -101,9 +101,14 @@ class BangumiSearch(APIView):
             bangumi_list = Bangumi.objects.filter(bangumi_name__contains=pattern)
             print(bangumi_list)
             for bangumi in bangumi_list:
+                image_url = bangumi.image
+                with open(ASSETS_ROOT + image_url, 'rb') as f:
+                    image_data = base64.b64encode(f.read())
+                    print(image_data)
                 bangumi_list_data.append({
                     "id": bangumi.bangumi_id,
                     "name": bangumi.bangumi_name,
+                    "image": str(image_data)[2:-1]
                 })
         except Exception as e:
             print(e)

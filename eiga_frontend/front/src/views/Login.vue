@@ -1,19 +1,27 @@
 <template>
-    <hr>
-    <h1>登录页面</h1>
-    <hr>
-    <UserLogin></UserLogin>
+  <el-container style="height: 100%">
+    <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
+    <el-main>
+      <el-container class="container">
+        <el-header></el-header>
+        <el-main>
+          <UserLogin></UserLogin>
+        </el-main>
+      </el-container>
+    </el-main>
+  </el-container>
 </template>
    
 <script lang="ts">
-  import http from "../utils/http";
-  import UserLogin from '../components/UserLogin.vue'
-  export default {
-    name: "Login",
-    components: {
-      UserLogin
-    }
+import UserLogin from '../components/UserLogin.vue'
+import VerticalMenu from "../components/VerticalMenu.vue";
+export default {
+  name: "Login",
+  components: {
+    UserLogin,
+    VerticalMenu
   }
+}
 </script>
    
    
@@ -23,5 +31,10 @@
 }
 span {
   color: red;
+}
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

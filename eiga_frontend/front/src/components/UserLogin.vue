@@ -1,21 +1,21 @@
 <template>
-  <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" class="ruleForm">
-    <el-form-item label="用户邮箱" prop="pass">
-      <el-input v-model="email" class="inputBar" width autocomplete="off" placeholder="Please input" clearable/>
-    </el-form-item>
-    <el-form-item label="登录密码" prop="checkPass">
-      <el-input v-model="password" class="inputBar" width type="password" autocomplete="off"
-                placeholder="Please input password" show-password/>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="submitForm(ruleFormRef)">
-        <a href="/" @click.prevent="send_post">login</a>
-      </el-button>
-      <el-button>
-        <router-link :to="{name : 'Register'}">register</router-link>
-      </el-button>
-    </el-form-item>
-  </el-form>
+  <el-card class="login-content" shadow="always"> 
+    <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" class="ruleForm">
+      <el-form-item label="用户邮箱" prop="pass">
+        <el-input v-model="email" class="inputBar" width autocomplete="off" placeholder="Please input" clearable/>
+      </el-form-item>
+      <el-form-item label="登录密码" prop="checkPass">
+        <el-input v-model="password" class="inputBar" width type="password" autocomplete="off"
+                  placeholder="Please input password" show-password/>
+      </el-form-item>
+        <el-button type="primary" @click="submitForm(ruleFormRef)">
+          <a href="/" @click.prevent="send_post">登录</a>
+        </el-button>
+        <el-button>
+          <router-link :to="{name : 'Register'}">注册</router-link>
+        </el-button>
+    </el-form>
+  </el-card>
 </template>
 
 <script>
@@ -74,10 +74,18 @@ export default {
 
 
 <style scoped>
-.inputBar {
-  width: 300px;
+.login-content{
+  width: auto;
+  /* min-width: 600px; */
+  height: auto;
+  /* min-height: 370px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
+.ruleForm{
+  /* max-width: 70%; */
+}
 span {
   color: red;
 }
