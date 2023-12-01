@@ -1,8 +1,10 @@
 <template>
   <div class="vertical-menu">
     <el-row class="tac">
-      <el-col :span="24">
-        <h5 class="mb-2">Mukamuka</h5>
+      <el-col>
+        <el-link href="/home/">
+          <h3 class="mb-2">Eiga番组计划</h3>
+        </el-link>
         <el-menu
             active-text-color="#007f7f"
             background-color="#ffffff"
@@ -38,7 +40,7 @@
               <span>搜索</span>
             </el-menu-item>
           </router-link>
-          <router-link :to="{ name: 'rank_home_page'}">
+          <router-link :to="{name: 'rank', params:{page: 1}}">
             <el-menu-item index="3">
               <el-icon>
                 <icon-menu/>
@@ -67,28 +69,28 @@
               <span>控制台</span>
             </template>
 
-          <el-menu-item index="1-1" v-bind:disabled="!isAdmin || !isEditable" @click="routeToModify">修改当前页面
-          </el-menu-item>
-              
-          <el-menu-item index="1-2" v-bind:disabled="!isAdmin" @click="routeToCreateCharacter">新建角色
-          </el-menu-item>
+            <el-menu-item index="1-1" v-bind:disabled="!isAdmin || !isEditable" @click="routeToModify">修改当前页面
+            </el-menu-item>
 
-          <el-menu-item index="1-3" v-bind:disabled="!isAdmin" @click="routeToCreateBangumi">新建番剧
-          </el-menu-item>
+            <el-menu-item index="1-2" v-bind:disabled="!isAdmin" @click="routeToCreateCharacter">新建角色
+            </el-menu-item>
+
+            <el-menu-item index="1-3" v-bind:disabled="!isAdmin" @click="routeToCreateBangumi">新建番剧
+            </el-menu-item>
 
           </el-sub-menu>
 
           <el-sub-menu
-            index="7"
-            active-text-color="#007f7f"
-            background-color="#ffffff"
-            v-if="user_id!=null &&String(user_id)!==''"
-            class="el-menu-vertical-demo"
-            text-color="#000"
-        >
-        <template #title>
-          <el-avatar :src="avatar_url" :size="24" style="margin-left: -0px;" class="avatar"/>
-            <span style="padding: 5px; font-size:14px">{{ username }}</span>
+              index="7"
+              active-text-color="#007f7f"
+              background-color="#ffffff"
+              v-if="user_id!=null &&String(user_id)!==''"
+              class="el-menu-vertical-demo"
+              text-color="#000"
+          >
+            <template #title>
+              <el-avatar :src="avatar_url" :size="24" style="margin-left: -0px;" class="avatar"/>
+              <span style="padding: 5px; font-size:14px">{{ username }}</span>
             </template>
           <el-menu-item index="8-1" @click="logOut">
             <el-icon>
@@ -203,12 +205,12 @@ export default {
   computed: {
     isAdmin() {
       return (
-        localStorage.getItem("user_id") && localStorage.getItem("permission") === "admin"
+          localStorage.getItem("user_id") && localStorage.getItem("permission") === "admin"
       );
     },
     isEditable() {
       return (
-        this.$route.path.startsWith("/bangumi/")  || this.$route.path.startsWith("/character/")
+          this.$route.path.startsWith("/bangumi/") || this.$route.path.startsWith("/character/")
       );
     }
   },
@@ -221,7 +223,7 @@ export default {
       this.userQuery();
     }
     this.defaultActivate();
-    
+
   },
   methods: {
     handleUserPage() {
@@ -302,16 +304,16 @@ export default {
     },
     routeToModify() {
       if (this.$route.path.startsWith("/bangumi/")) {
-          console.log("/bangumi/" + this.$route.params.bangumiId);
-          this.$router.push("/bangumi_update/" + this.$route.params.bangumiId);
+        console.log("/bangumi/" + this.$route.params.bangumiId);
+        this.$router.push("/bangumi_update/" + this.$route.params.bangumiId);
       }
       if (this.$route.path.startsWith("/character/")) {
         console.log("/character/" + this.$route.params.characterId);
-          this.$router.push("/character_update/" + this.$route.params.characterId);
+        this.$router.push("/character_update/" + this.$route.params.characterId);
       }
     },
     routeToCreateCharacter() {
-        this.$router.push('/character_create')
+      this.$router.push('/character_create')
     },
     routeToCreateBangumi() {
       this.$router.push('/bangumi_create')

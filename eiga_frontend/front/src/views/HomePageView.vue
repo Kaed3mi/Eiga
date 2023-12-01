@@ -1,17 +1,32 @@
 <template>
-    <el-container>
-      <el-container>
-        <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
-        <el-main>
-          <div class="demo-image">
-            <div v-for="fit in fits" :key="fit" class="block">
-              <span class="demonstration">{{ fit }}</span>
-              <el-image style="width: 100px; height: 100px" :src="url" :fit="fit" />
-            </div>
-          </div>
-        </el-main>
-      </el-container>
-    </el-container>
+  <el-container>
+    <el-aside width="200px">
+      <VerticalMenu ref="VerticalMenu"></VerticalMenu>
+    </el-aside>
+
+    <el-main>
+      <el-header></el-header>
+      <el-header style="text-align: left;">
+        <h2>Hi! {{ username }}</h2>
+      </el-header>
+      <el-card shadow="never">
+        <el-text>{{ hitokoto.hitokoto }}</el-text>
+        <p></p>
+        <el-text>—— {{ hitokoto.from_who }}《{{ hitokoto.from }}》</el-text>
+      </el-card>
+      <el-carousel
+          height="500px">
+        <el-carousel-item
+            v-for="url in urls">
+          <el-image
+              style="height: 500px;"
+              :src="url"></el-image>
+        </el-carousel-item>
+      </el-carousel>
+
+    </el-main>
+
+  </el-container>
 </template>
 <script lang="ts">
 import VerticalMenu from '../components/VerticalMenu.vue';
@@ -25,29 +40,52 @@ export default {
 }
 </script>
 
-<script lang="ts" setup>
-const fits = ['fill', 'contain', 'cover', 'none', 'scale-down']
-const url =
-  'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
-</script>
+<script lang="ts">
 
+
+import VerticalMenu from "../components/VerticalMenu.vue";
+import http from "../utils/http";
+
+export default {
+  components: {VerticalMenu},
+  data() {
+    return {
+      user_id: localStorage.getItem("user_id"),
+      hitokoto: [],
+      username: '',
+      urls: [
+        'https://i.postimg.cc/q783HPYV/minami-kotori.jpg'
+      ]
+    }
+  },
+  mounted() {
+    this.userQuery();
+    http.get(
+        "https://v1.hitokoto.cn/?c=a"
+    ).then(response => {
+      this.hitokoto = response.data
+      console.log(response.data)
+    })
+  },
+  methods: {
+    userQuery() {
+      http.post(
+          "http://127.0.0.1:8000/user_query/",
+          {'user_id': this.user_id}
+      ).then(response => {
+        this.username = response.data.username
+        // console.log(response.data.image_data);
+        // this.avatarUrl = `data:image/png;base64,${response.data.image_data}`
+        // console.log(this.avatarUrl);
+        // this.avatar_url = `data:image/png;base64,${response.data.image_data}`
+        // console.log("avatar_url: " + this.avatar);
+      }).catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    },
+  }
+}
+</script>
 <style scoped>
-.demo-image .block {
-  padding: 30px 0;
-  text-align: center;
-  border-right: solid 1px var(--el-border-color);
-  display: inline-block;
-  width: 20%;
-  box-sizing: border-box;
-  vertical-align: top;
-}
-.demo-image .block:last-child {
-  border-right: none;
-}
-.demo-image .demonstration {
-  display: block;
-  color: var(--el-text-color-secondary);
-  font-size: 14px;
-  margin-bottom: 20px;
-}
+
 </style>

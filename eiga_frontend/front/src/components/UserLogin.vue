@@ -50,7 +50,7 @@ export default {
           localStorage.setItem("user_id", response.data.user_id);
           localStorage.setItem("username", response.data.username);
           localStorage.setItem("permission", response.data.permission);
-          window.location.href = "/Home"
+          window.location.href = "/home"
         } else {
           console.log('登录失败')
           this.exception = response.data.exception

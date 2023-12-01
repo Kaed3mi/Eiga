@@ -51,7 +51,7 @@ const router = createRouter({
             component: BangumiPageView,
         },
         {
-            path: "/Home",
+            path: "/home",
             name: "homePage",
             component: HomePage
         },
@@ -99,11 +99,6 @@ const router = createRouter({
             component: BangumiCreateView,
         },
         // rank
-        {
-            path: '/rank',
-            name: 'rank_home_page',
-            component: BangumiRank
-        },
         {
             path: '/rank/:page',
             name: 'rank',
