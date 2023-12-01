@@ -1,17 +1,18 @@
 <template>
-  <el-card :body-style="{ padding: '0px' }">
-    <img
-        :src="image"
-        class="image"
-    />
-    <div style="padding: 14px">
-      <span>{{ type }},{{ name }}</span>
+  <el-card class="item-card" :body-style="{ padding: '0px' }">
+    <el-row :gutter="20">
+      <el-col :span="9">
+        <el-image :src="image" :fit="cover" style="width: auto; height: 150px;"/>
+      </el-col>
+      <el-col :span="15">
+        <span>{{ type }},{{ name }}</span>
       <div class="bottom">
         <el-button text class="button">
           <router-link :to="'/'+type +'/'+ id">Check</router-link>
         </el-button>
       </div>
-    </div>
+      </el-col>
+    </el-row>
   </el-card>
 </template>
 
@@ -33,6 +34,10 @@ export default {
 </script>
 
 <style>
+.item-card {
+  max-height: 150px;
+  min-width: 700px;
+}
 .time {
   font-size: 12px;
   color: #999;

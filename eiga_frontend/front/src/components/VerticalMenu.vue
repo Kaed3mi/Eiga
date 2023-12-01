@@ -13,6 +13,7 @@
             @open="handleOpen"
             @close="handleClose"
             @select="handleActivate"
+            :unique-opened="true"
         >
           <el-sub-menu index="1">
             <template #title>
@@ -102,6 +103,12 @@
             <span>切换账号</span>
           </el-menu-item>
         </el-sub-menu>
+          <el-menu-item v-else @click="logIn" index="1">
+            <el-icon>
+              <User/>
+            </el-icon>
+            <span>请登录</span>
+          </el-menu-item>
 
         </el-menu>
       </el-col>
@@ -281,6 +288,8 @@ export default {
       })
     },
     logIn() {
+      console.log("click login");
+      
       this.$router.push('/login')
     },
     switchAccount() {

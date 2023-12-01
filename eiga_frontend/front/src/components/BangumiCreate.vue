@@ -100,7 +100,6 @@
   
   <script lang="ts">
   import VerticalMenu from '../components/VerticalMenu.vue'
-  import CharacterCard from '../components/CharacterCard.vue'
   import http from "../utils/http";
   import ListItem from '../components/ListItem.vue'
   import CommentItem from "../components/CommentItem.vue";
@@ -111,7 +110,6 @@
     components: {
       CommentItem,
       VerticalMenu,
-      CharacterCard,
       ListItem
     },
     data() {

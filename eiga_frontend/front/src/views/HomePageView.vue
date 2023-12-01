@@ -1,11 +1,29 @@
 <template>
-  <div class="demo-image">
-    <div v-for="fit in fits" :key="fit" class="block">
-      <span class="demonstration">{{ fit }}</span>
-      <el-image style="width: 100px; height: 100px" :src="url" :fit="fit" />
-    </div>
-  </div>
+    <el-container>
+      <el-container>
+        <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
+        <el-main>
+          <div class="demo-image">
+            <div v-for="fit in fits" :key="fit" class="block">
+              <span class="demonstration">{{ fit }}</span>
+              <el-image style="width: 100px; height: 100px" :src="url" :fit="fit" />
+            </div>
+          </div>
+        </el-main>
+      </el-container>
+    </el-container>
 </template>
+<script lang="ts">
+import VerticalMenu from '../components/VerticalMenu.vue';
+import CharacterUpdate from '../components/CharacterUpdate.vue';
+export default {
+  name: "Character_update",
+  components: {
+    CharacterUpdate,
+      VerticalMenu
+  }
+}
+</script>
 
 <script lang="ts" setup>
 const fits = ['fill', 'contain', 'cover', 'none', 'scale-down']

@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card" style="min-width: 800px;">
+  <el-card class="box-card" style="min-width: 90%; width: auto">
     <el-row>
       <el-col :span="8">
         <el-card class="characterCard" :body-style="{ padding: '10px', height: 'auto', width: 'auto'}">

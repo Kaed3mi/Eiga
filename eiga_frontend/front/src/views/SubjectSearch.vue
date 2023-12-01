@@ -38,7 +38,7 @@
               >
                 <el-col :span="24" v-for="(result, index) in search_results" :key="index">
                   <div class="row-content">
-                    <ListItem :type="result.type" :id="result.id" :name="result.name" :description="0" :image="''"></ListItem>
+                    <ListItem :type="result.type" :id="result.id" :name="result.name" :description="0" :image="result.image"></ListItem>
                   </div>
           
                   
@@ -102,7 +102,7 @@ export default {
           }
       ).then(response => {
         for (let item of response.data.bangumis) {
-          this.search_results.push({type: "bangumi",id: item.id, name: item.name})
+          this.search_results.push({type: "bangumi",id: item.id, name: item.name, image: `data:image/png;base64,${item.image}`})
         }
       })
           .catch(error => {
