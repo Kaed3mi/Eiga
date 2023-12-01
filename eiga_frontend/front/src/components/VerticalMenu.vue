@@ -1,8 +1,10 @@
 <template>
   <div class="vertical-menu">
     <el-row class="tac">
-      <el-col :span="24">
-        <h5 class="mb-2">Mukamuka</h5>
+      <el-col>
+        <el-link href="/home/">
+          <h3 class="mb-2">Eiga番组计划</h3>
+        </el-link>
         <el-menu
             active-text-color="#007f7f"
             background-color="#ffffff"

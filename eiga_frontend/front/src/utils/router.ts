@@ -51,7 +51,7 @@ const router = createRouter({
             component: BangumiPageView,
         },
         {
-            path: "/Home",
+            path: "/home",
             name: "homePage",
             component: HomePage
         },
