@@ -1,34 +1,37 @@
 <template>
-    <el-container>
-      <el-container>
-        <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
-        <el-main>
-          <el-header><p :style="{ fontSize: '24px' }">{{ character_name }}</p></el-header>
+  <el-container class="container_style">
+    <el-aside width="200px">
+      <VerticalMenu></VerticalMenu>
+    </el-aside>
+    <el-main>
+      <div class="main_full_flex_style">
+        <div style="width: var(--bangumi-width)">
           <!-- <el-divider border-style="dashed"/> -->
           <el-container class="row-content">
             <CharacterInfo></CharacterInfo>
           </el-container>
-          
-        </el-main>
-      </el-container>
-    </el-container>
+        </div>
+      </div>
+    </el-main>
+  </el-container>
 </template>
 
 <script lang="ts">
 import CharacterInfo from '../components/CharacterInfo.vue';
 import VerticalMenu from '../components/VerticalMenu.vue';
 import http from '../utils/http';
+
 export default {
-    name: "characterInfo",
-    component: {
-        VerticalMenu,
-        CharacterInfo
-    },
-    components: { 
-        VerticalMenu,
-        CharacterInfo 
-    },
-    data() {
+  name: "characterInfo",
+  component: {
+    VerticalMenu,
+    CharacterInfo
+  },
+  components: {
+    VerticalMenu,
+    CharacterInfo
+  },
+  data() {
     return {
       character_id: this.$route.params.characterId,
       character_name: '',
@@ -69,7 +72,7 @@ export default {
           this.imageUrl = `data:image/png;base64,${this.jsonData.image}`
         }
         console.log("my name is " + this.character_name);
-        
+
       })
     }
   }
@@ -83,14 +86,17 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-.row-content{
+
+.row-content {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .inputBar {
   width: 300px;
 }
+
 span {
   color: red;
 }

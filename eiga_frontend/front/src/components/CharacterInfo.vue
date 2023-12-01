@@ -1,5 +1,9 @@
 <template>
   <el-card class="box-card" style="min-width: 90%; width: auto">
+    <h2>
+      {{ character_name }}
+    </h2>
+    <el-divider></el-divider>
     <el-row>
       <el-col :span="8">
         <el-card class="characterCard" :body-style="{ padding: '10px', height: 'auto', width: 'auto'}">
@@ -21,9 +25,13 @@
             {{ description.content }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <h4 :style="{ textAlign: 'left' }">Introduction</h4>
+            <h4 :style="{ textAlign: 'left' }">简介</h4>
             <div>
-              {{ introduce }}
+              <p v-for="(line, index) in introduce.split('\n')" :key="index"
+                 style="text-align: left;white-space: pre-wrap;text-indent: 2em;"
+              >
+                {{ line }}
+              </p>
             </div>
           </el-descriptions-item>
         </el-descriptions>

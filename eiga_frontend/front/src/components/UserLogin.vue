@@ -1,21 +1,34 @@
 <template>
-  <el-card class="login-content" shadow="always"> 
-    <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" class="ruleForm">
-      <el-form-item label="用户邮箱" prop="pass">
-        <el-input v-model="email" class="inputBar" width autocomplete="off" placeholder="Please input" clearable/>
-      </el-form-item>
-      <el-form-item label="登录密码" prop="checkPass">
-        <el-input v-model="password" class="inputBar" width type="password" autocomplete="off"
-                  placeholder="Please input password" show-password/>
-      </el-form-item>
-        <el-button type="primary" @click="submitForm(ruleFormRef)">
-          <a href="/" @click.prevent="send_post">登录</a>
-        </el-button>
-        <el-button>
-          <router-link :to="{name : 'Register'}">注册</router-link>
-        </el-button>
-    </el-form>
-  </el-card>
+  <el-container>
+    <el-main>
+      <el-image src="src/assets/eiga_title.png" style="width: 600px">
+      </el-image>
+      <el-divider/>
+      <div class="main_flex_style">
+        <div style="width: 500px">
+          <el-card class="login-content" shadow="always">
+            <h3>登录至Eiga</h3>
+            <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" class="ruleForm">
+              <el-form-item label="用户邮箱" prop="pass">
+                <el-input v-model="email" class="inputBar" width autocomplete="off" placeholder="请输入您的邮箱"
+                          clearable :prefix-icon="Message"/>
+              </el-form-item>
+              <el-form-item label="登录密码" prop="checkPass">
+                <el-input v-model="password" class="inputBar" width type="password" autocomplete="off"
+                          placeholder="请输入您的密码" show-password :prefix-icon="Key"/>
+              </el-form-item>
+              <el-button type="primary" @click.prevent="send_post">
+                登录
+              </el-button>
+              <el-button>
+                <router-link :to="{name : 'Register'}">注册</router-link>
+              </el-button>
+            </el-form>
+          </el-card>
+        </div>
+      </div>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
@@ -71,21 +84,24 @@ export default {
   }
 }
 </script>
-
+<script setup>
+import {
+  Message, Key
+} from '@element-plus/icons-vue'
+</script>
 
 <style scoped>
-.login-content{
-  width: auto;
-  /* min-width: 600px; */
-  height: auto;
-  /* min-height: 370px; */
+.login-content {
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.ruleForm{
+
+.ruleForm {
   /* max-width: 70%; */
 }
+
 span {
   color: red;
 }

@@ -1,20 +1,22 @@
 <template>
-  <el-container style="height: 100%">
-    <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
+  <el-container class="container_style">
+    <el-aside width="200px">
+      <VerticalMenu></VerticalMenu>
+    </el-aside>
     <el-main>
-      <el-container class="container">
-        <el-header></el-header>
-        <el-main>
+      <div class="main_full_flex_style">
+        <div style="width: var(--main-width)">
           <UserLogin></UserLogin>
-        </el-main>
-      </el-container>
+        </div>
+      </div>
     </el-main>
   </el-container>
 </template>
-   
+
 <script lang="ts">
 import UserLogin from '../components/UserLogin.vue'
 import VerticalMenu from "../components/VerticalMenu.vue";
+
 export default {
   name: "Login",
   components: {
@@ -23,15 +25,17 @@ export default {
   }
 }
 </script>
-   
-   
+
+
 <style scoped>
 .inputBar {
   width: 300px;
 }
+
 span {
   color: red;
 }
+
 .container {
   display: flex;
   align-items: center;

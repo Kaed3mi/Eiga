@@ -1,6 +1,10 @@
 <template>
   <div class="UpdateInfo">
-    <el-button @click="dialogVisible = true">修改信息</el-button>
+
+    <el-button plain type="primary" @click="dialogVisible = true">
+      <el-icon><Edit /></el-icon>
+      &nbsp;修改信息
+    </el-button>
     <el-dialog
         v-model="dialogVisible"
         width="30%"
@@ -39,7 +43,11 @@
     </el-dialog>
   </div>
 </template>
-
+<script  setup>
+import {
+  Edit
+} from '@element-plus/icons-vue'
+</script>
 <script>
 
 import http from "../utils/http";
@@ -85,6 +93,9 @@ export default {
 
 <style scoped>
 /* 样式可根据需求自行调整 */
+.UpdateInfo{
+  z-index: 100;
+}
 .modal {
   display: flex;
   align-items: center;

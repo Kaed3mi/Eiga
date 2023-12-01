@@ -1,39 +1,52 @@
 <template>
-  <el-container>
-        <el-aside width="200px"><VerticalMenu></VerticalMenu></el-aside>
-        <el-container>
-          <el-header></el-header>
-          <el-main>
-          <!-- <CharacterInfo></CharacterInfo> -->
-          <div class="user-profile">
-            <!-- 左侧导航栏 -->
-            <!-- 用户信息弹窗组件 -->
+  <el-container style="height: 100vh;">
+    <el-aside width="200px">
+      <VerticalMenu></VerticalMenu>
+    </el-aside>
+    <el-main>
+      <div class="main_full_flex_style">
+        <div style="width: var(--main-width)">
+          <el-card class="box-card" style="position: relative">
             <div class="user-info-container">
               <UpdateUserInfo/>
             </div>
+            <el-container>
+              <el-header></el-header>
+              <el-main>
+                <!-- <CharacterInfo></CharacterInfo> -->
+                <div class="user-profile">
+                  <!-- 左侧导航栏 -->
+                  <!-- 用户信息弹窗组件 -->
 
-            <!-- 用户头像/修改组件 -->
-            <div class='avatar-container'>
-              <UserAvatar :avatar_url="avatar_url"/>
-            </div>
+                  <!-- 用户头像/修改组件 -->
+                  <div class='avatar-container'>
+                    <UserAvatar :avatar_url="avatar_url"/>
+                  </div>
 
-            <h2>{{ username }}</h2>
-            <p>{{ bio }}</p>
-            <div class="stat">
-              <strong>@{{ username }}</strong>
-            </div>
+                  <h2>{{ username }}</h2>
+                  <p>{{ bio }}</p>
+                  <div class="stat">
+                    <strong>{{ email }}</strong>
+                  </div>
+                  <el-divider/>
+                  <div class="my-bangumis">
 
-            <div class="my-bangumis">
-              <h3></h3>
-              <el-text type="primary" size="large">{{ username }}的番组</el-text>
-              <MyBangumis :user_id="user_id"/>
-            </div>
+                    <h3></h3>
+                    <el-text type="primary" size="large">{{ username }}的番组</el-text>
+                    <MyBangumis :user_id="user_id"/>
+                  </div>
 
-          </div>
-        </el-main>
-        </el-container>
-      </el-container>
+                </div>
+              </el-main>
+            </el-container>
+          </el-card>
+        </div>
+      </div>
+    </el-main>
+  </el-container>
 </template>
+
+
 <script>
 import VerticalMenu from "../components/VerticalMenu.vue";
 import UpdateUserInfo from "../user_page_components/UpdateUserInfo.vue";
@@ -49,7 +62,8 @@ export default {
       user_id: this.$route.params.userId,
       avatar_url: '',
       username: '',
-      bio: '好',
+      email: '',
+      bio: '我是Eiga映画计划的一员',
       bangumis: [],
       avatarUrl: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ8n9J70Q6vFkV5jzTigNeNGXSFvgzB9SOxHr_zAKWXi8KJRnsF'
     }
@@ -92,6 +106,7 @@ export default {
           {'user_id': this.user_id}
       ).then(response => {
         this.username = response.data.username
+        this.email = response.data.email
         // console.log(response.data.image_data);
         // this.avatarUrl = `data:image/png;base64,${response.data.image_data}`
         // console.log(this.avatarUrl);
@@ -118,9 +133,10 @@ export default {
 }
 
 .user-info-container {
-  position: fixed;
-  top: 20px; /* 距离顶部的距离 */
-  right: 20px; /* 距离右侧的距离 */
+  z-index: 100;
+  position: absolute;
+  top: 20px; /* Adjust the top position as needed */
+  right: 20px; /* Adjust the right position as needed */
 }
 
 .stat {

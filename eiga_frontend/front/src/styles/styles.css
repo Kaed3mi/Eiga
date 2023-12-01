@@ -1,0 +1,25 @@
+:root {
+    --main-width: 70%;
+    --bangumi-width: 80%;
+    --menu-width: 200px;
+}
+
+.main_full_flex_style {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center; /* 在垂直方向上居中 */
+    justify-content: center; /* 在水平方向上居中 */
+}
+
+.main_flex_style {
+    display: flex;
+    align-items: center; /* 在垂直方向上居中 */
+    justify-content: center; /* 在水平方向上居中 */
+}
+
+.container_style {
+    min-height: 90vh;
+    margin-top: 5vh;
+    margin-bottom: 5vh
+}

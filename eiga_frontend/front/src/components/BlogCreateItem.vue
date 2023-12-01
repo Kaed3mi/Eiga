@@ -1,75 +1,104 @@
 <template>
-  <h2>新日志</h2>
-  <el-divider></el-divider>
-  <div class="center-container">
-
+  <el-card class="box-card">
     <el-container>
-      <el-main :style="{ width: '60%' }">
-        <h3>标题</h3>
-        <el-input
-            v-model="new_title_area"
-            maxlength="20"
-            placeholder="您的标题..."
-            show-word-limit
-            rows="3"
-            clearable
-        >
-        </el-input>
-        <h3>正文</h3>
-        <el-input
-            v-model="new_blog_area"
-            maxlength="2000"
-            :autosize="{ minRows: 16, maxRows: 20 }"
-            placeholder="畅所欲言..."
-            show-word-limit
-            type="textarea"
-            rows="3"
-            clearable
-        >
-        </el-input>
+      <el-main>
+        <h2>新日志</h2>
+        <el-divider></el-divider>
+        <div class="center-container">
 
-      </el-main>
-      <el-main :style="{ width: '40%' }">
-        <h3>关联番组</h3>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-table :data="bangumiTable" style="width: auto" max-height="250">
-              <el-table-column prop="bangumi_id" label="ID"/>
-              <el-table-column prop="bangumi_name" label="Name"/>
-              <el-table-column label="操作">
-                <template #default="scope">
-                  <el-button
-                      link
-                      type="primary"
-                      size="small"
-                      @click.prevent="deleteBangumiRow(scope.$index)">
-                    Remove
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-col>
-        </el-row>
-        <el-autocomplete
-            v-model="selectedResultBangumi"
-            :fetch-suggestions="querySearchBangumi"
-            placeholder="请输入内容"
-            :trigger-on-focus="false"
-            clearable
-            @select="onSelectBangumi">
-        </el-autocomplete>
-        <el-button class="mt-4" @click="onAddBangumi">Add Item</el-button>
-        <el-divider border-style="dashed"/>
+          <el-container>
+            <el-main :style="{ width: '60%' }">
+              <h3>标题</h3>
+              <el-input
+                  v-model="new_title_area"
+                  maxlength="20"
+                  placeholder="您的标题..."
+                  show-word-limit
+                  rows="3"
+                  clearable
+              >
+              </el-input>
+              <h3>正文</h3>
+              <el-input
+                  v-model="new_blog_area"
+                  maxlength="2000"
+                  :autosize="{ minRows: 16, maxRows: 20 }"
+                  placeholder="畅所欲言..."
+                  show-word-limit
+                  type="textarea"
+                  rows="3"
+                  clearable
+              >
+              </el-input>
 
+            </el-main>
+            <el-main :style="{ width: '40%' }">
+              <h3>关联番组</h3>
+              <el-row :gutter="20">
+                <el-col :span="24">
+                  <el-table :data="bangumiTable" style="width: auto" max-height="250">
+                    <el-table-column prop="bangumi_id" label="ID"/>
+                    <el-table-column prop="bangumi_name" label="Name"/>
+                    <el-table-column label="操作">
+                      <template #default="scope">
+                        <el-button
+                            round
+                            plain
+                            type="warning"
+                            @click.prevent="deleteBangumiRow(scope.$index)">
+                          <el-icon>
+                            <Delete/>
+                          </el-icon>
+                          &nbsp;
+                          移除
+                        </el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </el-col>
+              </el-row>
+              <div
+                  style="
+                    display: grid;
+                    margin-top: 10px;
+                    grid-template-columns: 60% 40%;
+                    grid-gap: 8px;
+                  "
+              >
+
+                <el-autocomplete
+                    v-model="selectedResultBangumi"
+                    :fetch-suggestions="querySearchBangumi"
+                    placeholder="请输入内容"
+                    :trigger-on-focus="false"
+                    clearable
+                    @select="onSelectBangumi">
+                </el-autocomplete>
+                <el-button plain class="mt-4" type="primary" @click="onAddBangumi">
+                  <el-icon>
+                    <Plus/>
+                  </el-icon>
+                  添加番组
+                </el-button>
+              </div>
+              <el-divider border-style="dashed"/>
+
+            </el-main>
+          </el-container>
+        </div>
+        <div class="submit_button">
+          <el-button type="primary" @click="submitUpdate">
+            提交
+          </el-button>
+        </div>
       </el-main>
     </el-container>
-  </div>
-  <div class="submit_button">
-    <el-button type="primary" @click="submitUpdate">
-      提交
-    </el-button>
-  </div>
+  </el-card>
 </template>
+
+<script lang="ts" setup>
+import {Plus, Delete} from '@element-plus/icons-vue'
+</script>
 
 <script lang="ts">
 import {ref} from "vue";

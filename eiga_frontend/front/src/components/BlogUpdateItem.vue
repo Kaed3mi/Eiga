@@ -1,4 +1,5 @@
 <template>
+  <el-card class="box-card" style="">
   <h2>更新日志</h2>
   <el-divider></el-divider>
   <div class="center-container">
@@ -69,6 +70,7 @@
       提交
     </el-button>
   </div>
+  </el-card>
 </template>
 
 <script lang="ts">

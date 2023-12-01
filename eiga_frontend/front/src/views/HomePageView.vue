@@ -28,26 +28,20 @@
 
   </el-container>
 </template>
-<script lang="ts">
-import VerticalMenu from '../components/VerticalMenu.vue';
-import CharacterUpdate from '../components/CharacterUpdate.vue';
-export default {
-  name: "Character_update",
-  components: {
-    CharacterUpdate,
-      VerticalMenu
-  }
-}
-</script>
 
 <script lang="ts">
 
 
 import VerticalMenu from "../components/VerticalMenu.vue";
 import http from "../utils/http";
+import CharacterUpdate from "../components/CharacterUpdate.vue";
 
 export default {
-  components: {VerticalMenu},
+  name: "Character_update",
+  components: {
+    CharacterUpdate,
+    VerticalMenu
+  },
   data() {
     return {
       user_id: localStorage.getItem("user_id"),

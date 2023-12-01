@@ -1,7 +1,8 @@
 <template>
-  <div class="bangumi_rank">
+  <div class="bangumi_rank" v-if="valid()">
 
     <el-carousel
+
         style=""
         indicator-position="none"
         :autoplay='false'>
@@ -39,6 +40,11 @@
       </el-carousel-item>
     </el-carousel>
 
+  </div>
+  <div v-else>
+    <p>
+      ta还没有评价过番组哦~
+    </p>
   </div>
 </template>
 
@@ -87,12 +93,23 @@ export default {
             'image': `data:image/png;base64,${bangumi.image}`,
           })
         }
-        this.bangumiGroupList.push(bangumiGroup) // 最后加上省下的番组
+        if (bangumiGroup.length > 0) {
+          this.bangumiGroupList.push(bangumiGroup) // 最后加上省下的番组
+        }
         console.log(this.bangumiGroupList);
       }).catch(error => {
         ElMessage.error('怎么出错了')
       });
+      console.log("len=" + this.bangumiGroupList.length)
+      console.log(">0? :" + String(this.bangumiGroupList.length > 0))
     },
+    valid() {
+      console.log("list ::" + this.bangumiGroupList)
+      console.log("len ::" + String(this.bangumiGroupList.length))
+      console.log(">0? ::" + String(this.bangumiGroupList.length > 0))
+      console.log("false::" + String(false))
+      return this.bangumiGroupList.length > 0
+    }
   }
 }
 </script>

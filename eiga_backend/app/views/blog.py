@@ -34,6 +34,26 @@ class BlogInsert(APIView):
         return Response(0)
 
 
+class BlogSearch(APIView):
+    def get(self, request):
+        pattern = request.GET.get('pattern')
+        obj_list_data = []
+        print('search blog: pattern=' + pattern)
+        try:
+            list = Blog.objects.filter(blog_title__contains=pattern)
+            print(list)
+            for obj in list:
+                obj_list_data.append({
+                    "id": obj.blog_id,
+                    "name": obj.blog_title,
+                })
+        except Exception as e:
+            print(e)
+            return Response(1)
+        return Response({
+            'blogs': obj_list_data
+        })
+
 class BlogUpdate(APIView):
     def put(self, request):
         blog_id = request.data.get("blog_id")

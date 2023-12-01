@@ -1,96 +1,104 @@
 <template>
-  <div class="full-screen-layout">
-    <el-container>
-      <el-aside width="200px">
-        <VerticalMenu/>
-      </el-aside>
-      <el-container class="content-container">
-        <el-header><p :style="{ fontSize: '24px' }">{{ bangumi_name }}</p></el-header>
-        <el-divider border-style="dashed"/>
-        <el-container>
-          <el-aside>
-            <div class="demo-image">
-              <el-image
-                  style="width: 300px; height: 400px"
-                  :src="bangumi_image"
-                  :fit="cover"
-              />
-            </div>
-            <el-rate
-                v-model="bangumi_score"
-                disabled
-                show-score
-                text-color="#ff9900"
-                :score-template="bangumi_score.toFixed(1)+ 'points'"
-                :colors="rate_colors"
-            />
-            <br/>
-            你的评分：
-            <br/>
-            <el-rate
-                v-model="user_score"
-                allow-half
-                show-score
-                text-color="#ff9900"
-                :score-template="Number(user_score) !== -1 ? Number(user_score).toFixed(1)+ 'points' : ''"
-                :colors="rate_colors"
-                @click="handleScoring"
-            />
-          </el-aside>
-
-          <el-main>
-            简介：
-            {{ bangumi_intro }}
-            <el-divider border-style="dashed"/>
-            角色
-            <CharacterCard :id=bangumi_id></CharacterCard>
-            <el-divider border-style="dashed"/>
-            <div v-if="bangumi_relationships.length > 0">
-              <h3>关联番组</h3>
-              <el-row
-                  :gutter="20"
-              >
-                <el-col :span="24" v-for="(result, index) in bangumi_relationships" :key="index">
-                  <ListItem type="bangumi" :id="result.bangumi_id.bangumi_id" :name="result.bangumi_id.bangumi_name"
-                            :description="0"
-                            :image="''"></ListItem>
-                </el-col>
-              </el-row>
+  <el-container class="container_style">
+    <el-aside width="200px">
+      <VerticalMenu/>
+    </el-aside>
+    <el-main>
+      <div class="main_full_flex_style">
+        <div style="width: var(--bangumi-width)">
+          <el-card class="box-card" style="">
+            <el-container class="content-container">
+              <el-header><h2>{{ bangumi_name }}</h2></el-header>
               <el-divider border-style="dashed"/>
-            </div>
-            <div v-if="comments.length > 0">
-              <h3>评论</h3>
-              <el-row
-                  :gutter="20"
-              >
-                <el-col :span="24" v-for="(result, index) in comments" :key="index">
-                  <CommentItem :comment_id="result.comment_id"></CommentItem>
-                </el-col>
-              </el-row>
-              <el-divider border-style="dashed"/>
-            </div>
-            <el-input
-                v-model="new_comment_area"
-                maxlength="400"
-                :autosize="{ minRows: 4, maxRows: 6 }"
-                placeholder="畅所欲言..."
-                show-word-limit
-                type="textarea"
-                rows="3"
-                clearable
-            >
-            </el-input>
-            <el-button type="primary" @click=commentInsert>
-              提交
-            </el-button>
-          </el-main>
+              <el-main>
+                <el-container>
+                  <el-aside>
+                    <div class="demo-image">
+                      <el-image
+                          style="width: 300px; height: 400px"
+                          :src="bangumi_image"
+                          :fit="cover"
+                      />
+                    </div>
+                    <el-rate
+                        v-model="bangumi_score"
+                        disabled
+                        show-score
+                        text-color="#ff9900"
+                        :score-template="bangumi_score.toFixed(1)+ 'points'"
+                        :colors="rate_colors"
+                    />
+                    <br/>
+                    你的评分：
+                    <br/>
+                    <el-rate
+                        v-model="user_score"
+                        allow-half
+                        show-score
+                        text-color="#ff9900"
+                        :score-template="Number(user_score) !== -1 ? Number(user_score).toFixed(1)+ 'points' : ''"
+                        :colors="rate_colors"
+                        @click="handleScoring"
+                    />
+                  </el-aside>
 
-        </el-container>
+                  <el-main>
+                    简介：
+                    {{ bangumi_intro }}
+                    <el-divider border-style="dashed"/>
+                    角色
+                    <CharacterCard :id=bangumi_id></CharacterCard>
+                    <el-divider border-style="dashed"/>
+                    <div v-if="bangumi_relationships.length > 0">
+                      <h3>关联番组</h3>
+                      <el-row
+                          :gutter="20"
+                      >
+                        <el-col :span="24" v-for="(result, index) in bangumi_relationships" :key="index">
+                          <ListItem type="bangumi" :id="result.bangumi_id.bangumi_id"
+                                    :name="result.bangumi_id.bangumi_name"
+                                    :description="0"
+                                    :image="''"></ListItem>
+                        </el-col>
+                      </el-row>
+                      <el-divider border-style="dashed"/>
+                    </div>
+                    <div v-if="comments.length > 0">
+                      <h3>评论</h3>
+                      <el-row
+                          :gutter="20"
+                      >
+                        <el-col :span="24" v-for="(result, index) in comments" :key="index">
+                          <CommentItem :comment_id="result.comment_id"></CommentItem>
+                        </el-col>
+                      </el-row>
+                      <el-divider border-style="dashed"/>
+                    </div>
+                    <el-input
+                        v-model="new_comment_area"
+                        maxlength="400"
+                        :autosize="{ minRows: 4, maxRows: 6 }"
+                        placeholder="畅所欲言..."
+                        show-word-limit
+                        type="textarea"
+                        rows="3"
+                        clearable
+                    >
+                    </el-input>
+                    <el-button type="primary" @click=commentInsert>
+                      提交
+                    </el-button>
+                  </el-main>
 
-        <el-footer>Footer</el-footer>
-      </el-container>
-    </el-container>
-  </div>
+                </el-container>
+              </el-main>
+              <el-footer>Footer</el-footer>
+            </el-container>
+          </el-card>
+        </div>
+      </div>
+    </el-main>
+  </el-container>
 </template>
 
 <script lang="ts">
@@ -303,7 +311,7 @@ export default {
 </script>
 
 <style scoped>
-.content-container{
+.content-container {
   margin: 20px;
 }
 

@@ -3,14 +3,16 @@
     <el-row class="tac">
       <el-col>
         <el-link href="/home/">
-          <h3 class="mb-2">Eiga番组计划</h3>
+          <el-image src="/src/assets/mukamuka.svg" style="width: 24px">
+          </el-image>
+          <h3 class="mb-2">Eiga映画计划</h3>
         </el-link>
         <el-menu
             active-text-color="#007f7f"
             background-color="#ffffff"
             class="el-menu-vertical-demo"
-            :default-openeds="(activate ==='1')?[]:['1']"
             :default-active="activate"
+            :default-openeds="openeds"
             text-color="#000"
             @open="handleOpen"
             @close="handleClose"
@@ -61,7 +63,10 @@
             <span>日志</span>
           </el-menu-item>
 
-          <el-sub-menu index="6">
+          <el-sub-menu
+              index="6"
+              v-if="isAdmin"
+          >
             <template #title>
               <el-icon>
                 <location/>
@@ -69,13 +74,13 @@
               <span>控制台</span>
             </template>
 
-            <el-menu-item index="1-1" v-bind:disabled="!isAdmin || !isEditable" @click="routeToModify">修改当前页面
+            <el-menu-item index="6-1" v-bind:disabled="!isAdmin || !isEditable" @click="routeToModify">修改当前页面
             </el-menu-item>
 
-            <el-menu-item index="1-2" v-bind:disabled="!isAdmin" @click="routeToCreateCharacter">新建角色
+            <el-menu-item index="6-2" v-bind:disabled="!isAdmin" @click="routeToCreateCharacter">新建角色
             </el-menu-item>
 
-            <el-menu-item index="1-3" v-bind:disabled="!isAdmin" @click="routeToCreateBangumi">新建番剧
+            <el-menu-item index="6-3" v-bind:disabled="!isAdmin" @click="routeToCreateBangumi">新建番剧
             </el-menu-item>
 
           </el-sub-menu>
@@ -92,20 +97,20 @@
               <el-avatar :src="avatar_url" :size="24" style="margin-left: -0px;" class="avatar"/>
               <span style="padding: 5px; font-size:14px">{{ username }}</span>
             </template>
-          <el-menu-item index="8-1" @click="logOut">
-            <el-icon>
-              <ArrowLeft/>
-            </el-icon>
-            <span style="padding: 5px; ">登出</span>
-          </el-menu-item>
-          <el-menu-item index="8-2" @click="switchAccount">
-            <el-icon>
-              <Sort/>
-            </el-icon>
-            <span>切换账号</span>
-          </el-menu-item>
-        </el-sub-menu>
-          <el-menu-item v-else @click="logIn" index="1">
+            <el-menu-item index="7-1" @click="logOut">
+              <el-icon>
+                <ArrowLeft/>
+              </el-icon>
+              <span style="padding: 5px; ">登出</span>
+            </el-menu-item>
+            <el-menu-item index="7-2" @click="switchAccount">
+              <el-icon>
+                <Sort/>
+              </el-icon>
+              <span>切换账号</span>
+            </el-menu-item>
+          </el-sub-menu>
+          <el-menu-item v-else @click="logIn" index="7">
             <el-icon>
               <User/>
             </el-icon>
@@ -199,18 +204,22 @@ export default {
       username: '',
       avatar_url: '',
       activate: '1',
+      openeds :[''],
       activate2: '1'
     }
   },
   computed: {
     isAdmin() {
+      console.log("permission:"+localStorage.getItem("permission"))
       return (
           localStorage.getItem("user_id") && localStorage.getItem("permission") === "admin"
       );
     },
     isEditable() {
       return (
-          this.$route.path.startsWith("/bangumi/") || this.$route.path.startsWith("/character/")
+          this.$route.path.startsWith("/bangumi/") ||
+          this.$route.path.startsWith("/character/") ||
+              this.$route.path.startsWith("/blog/")
       );
     }
   },
@@ -244,6 +253,9 @@ export default {
     },
     defaultActivate() {
       this.activate = localStorage.getItem("default-active")
+      this.openeds =['6']
+      console.log("opened:"+this.openeds)
+      console.log("opened2:"+['4'])
       this.activate2 = localStorage.getItem("default-active2")
       if (this.activate == null) {
         localStorage.setItem("default-active", '')
@@ -254,7 +266,7 @@ export default {
         this.activate2 = ''
       }
     },
-    handleActivate(indexPath) {
+    handleActivate(index,indexPath) {
       localStorage.setItem("default-active", indexPath[0])
       if (indexPath.length == 2) {
         localStorage.setItem("default-active2", indexPath[1])
@@ -291,7 +303,7 @@ export default {
     },
     logIn() {
       console.log("click login");
-      
+
       this.$router.push('/login')
     },
     switchAccount() {
@@ -310,6 +322,10 @@ export default {
       if (this.$route.path.startsWith("/character/")) {
         console.log("/character/" + this.$route.params.characterId);
         this.$router.push("/character_update/" + this.$route.params.characterId);
+      }
+      if (this.$route.path.startsWith("/blog/")) {
+        console.log("/blog/" + this.$route.params.blogId);
+        this.$router.push("/blog_update/" + this.$route.params.blogId);
       }
     },
     routeToCreateCharacter() {
