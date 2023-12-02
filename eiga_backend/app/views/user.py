@@ -14,6 +14,7 @@ import json
 import os
 import shutil
 
+from app.utils.utils import urlToImgDate
 from eiga_backend.settings import ASSETS_ROOT
 
 
@@ -117,8 +118,6 @@ class UserInfoQuery(APIView):
                 avatar_path = "avatars\default.jpg"
             else:
                 avatar_path = str(user.avatar)
-            with open(ASSETS_ROOT + avatar_path, 'rb') as f:
-                image_data = base64.b64encode(f.read())
             return_information = {
                 "state": "1",
                 "exception": "",
@@ -130,7 +129,7 @@ class UserInfoQuery(APIView):
                 "permission": user.permission,
                 "avatar": user.avatar,
                 "avatar_path": avatar_path,
-                "image_data": str(image_data)[2:-1]
+                "image_data": urlToImgDate(avatar_path)
             }
             return HttpResponse(json.dumps(return_information))
 

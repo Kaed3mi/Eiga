@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from app.models import Bangumi
 from app.models import CharacterBangumi
 from app.models import Character
+from app.utils.utils import urlToImgDate
 from eiga_backend.settings import ASSETS_ROOT
 
 
@@ -55,12 +56,10 @@ class StarringQuery(APIView):
         starring_bangumis = []
         for bangumi in bangumiList:
             starring_bangumi: Bangumi = Bangumi.objects.get(bangumi_id=bangumi.bangumi_id.bangumi_id)
-            with open(ASSETS_ROOT + starring_bangumi.image, 'rb') as f:
-                image_data = base64.b64encode(f.read())
             starring_bangumis.append({
                 'bangumi_id': starring_bangumi.bangumi_id,
                 'bangumi_name': starring_bangumi.bangumi_name,
-                'image': str(image_data)[2:-1]
+                'image': urlToImgDate(starring_bangumi.image)
             })
         print('出演番组表：' + str(starring_bangumis))
         return Response({

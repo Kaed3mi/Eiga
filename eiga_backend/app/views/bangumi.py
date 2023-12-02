@@ -6,6 +6,7 @@ from django.db.models import Q
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Bangumi
+from app.utils.utils import getBangumiScoreAndRank, urlToImgDate
 from eiga_backend.settings import ASSETS_ROOT
 
 
@@ -22,7 +23,6 @@ class BangumiCreate(APIView):
         file_ext = mimetypes.guess_extension(image_type)
         if not file_ext:
             file_ext = '.png'
-
 
         try:
             obj = Bangumi(
@@ -76,10 +76,6 @@ class BangumiQuery(APIView):
         print('query bangumi: id=' + bangumi_id)
         try:
             obj = Bangumi.objects.get(bangumi_id=bangumi_id)
-            image_url = obj.image
-            with open(ASSETS_ROOT + image_url, 'rb') as f:
-                image_data = base64.b64encode(f.read())
-                print(image_data)
         except Exception as e:
             print(e)
             return Response(1)
@@ -88,7 +84,7 @@ class BangumiQuery(APIView):
             'bangumi_intro': obj.bangumi_intro,
             'bangumi_score': obj.bangumi_score,
             'rank': obj.rank,
-            'image': str(image_data)[2:-1]
+            'image': urlToImgDate(obj.image)
         })
 
 
@@ -99,16 +95,16 @@ class BangumiSearch(APIView):
         print('search bangumi: pattern=' + pattern)
         try:
             bangumi_list = Bangumi.objects.filter(bangumi_name__contains=pattern)
-            print(bangumi_list)
+            bangumi_rank_dict = getBangumiScoreAndRank()
             for bangumi in bangumi_list:
                 image_url = bangumi.image
-                with open(ASSETS_ROOT + image_url, 'rb') as f:
-                    image_data = base64.b64encode(f.read())
-                    print(image_data)
                 bangumi_list_data.append({
                     "id": bangumi.bangumi_id,
                     "name": bangumi.bangumi_name,
-                    "image": str(image_data)[2:-1]
+                    "image": urlToImgDate(image_url),
+                    'score': bangumi_rank_dict[bangumi.bangumi_id]['bangumi_score'],
+                    'rank': bangumi_rank_dict[bangumi.bangumi_id]['bangumi_rank'],
+                    'rater_cnt': bangumi_rank_dict[bangumi.bangumi_id]['rater_cnt']
                 })
         except Exception as e:
             print(e)

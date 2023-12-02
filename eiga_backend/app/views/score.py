@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Score, User, Bangumi
 from app.serializers import BangumiModelSerializer, ScoreModelSerializer
+from app.utils.utils import getBangumiScoreAndRank, urlToImgDate
 from eiga_backend.settings import ASSETS_ROOT, RANK_PAGE_SIZE
 
 
@@ -145,14 +146,12 @@ class BangumiRankQuery(APIView):
             print(sorted_bangumis)
             bangumis = []
             for bangumi in sorted_bangumis:
-                with open(ASSETS_ROOT + bangumi.image, 'rb') as f:
-                    image_data = base64.b64encode(f.read())
                 bangumis.append({
                     'bangumi_id': bangumi.bangumi_id,
                     'bangumi_name': bangumi.bangumi_name,
                     'bangumi_score': bangumi.bangumi_score,
                     'bangumi_rater_cnt': bangumi.bangumi_rater_cnt,
-                    'image': str(image_data)[2:-1]
+                    'image': urlToImgDate(bangumi.image)
                 })
         except Exception as e:
             print(e)
@@ -173,12 +172,10 @@ class MyBangumiQuery(APIView):
         bangumis = []
         for obj in obj_list:
             bangumi = Bangumi.objects.get(bangumi_id=obj.bangumi_id.bangumi_id)
-            with open(ASSETS_ROOT + bangumi.image, 'rb') as f:
-                image_data = base64.b64encode(f.read())
             bangumis.append({
                 'bangumi_id': bangumi.bangumi_id,
                 'bangumi_name': bangumi.bangumi_name,
-                'image': str(image_data)[2: -1],
+                'image': urlToImgDate(bangumi.image),
                 'my_score': obj.score
             })
             # print(bangumis)

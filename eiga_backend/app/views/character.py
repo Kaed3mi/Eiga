@@ -14,6 +14,8 @@ import os
 import shutil
 import base64
 import io
+
+from app.utils.utils import urlToImgDate
 from eiga_backend.settings import ASSETS_ROOT
 
 
@@ -25,12 +27,10 @@ class CharacterQuery(APIView):
         print('query character: id=' + character_id)
         character = Character.objects.get(character_id=character_id)
         print(ASSETS_ROOT + character.image)
-        with open(ASSETS_ROOT + character.image, 'rb') as f:
-            image_data = base64.b64encode(f.read())
         # print(character.intro)
         Json = json.loads(character.intro.replace("'", '"'))
         # print(Json)
-        Json["image"] = str(image_data)[2:-1]
+        Json["image"] = urlToImgDate(character.image)
         Json["character_name"] = str(character.character_name)
         return JsonResponse(Json)
 
@@ -138,7 +138,8 @@ class CharacterCreate(APIView):
         if not file_ext:
             file_ext = '.png'
         # print(image_type)
-        dic = {"attributes": request.data.get("attributes"), "introduce": request.data.get("introduction").replace("'", '’')}
+        dic = {"attributes": request.data.get("attributes"),
+               "introduce": request.data.get("introduction").replace("'", '’')}
         # print(str(dic))
         print(request.data.get("attributes"))
         s = Character.objects.create(
