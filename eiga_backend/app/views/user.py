@@ -197,7 +197,7 @@ def upload_avatar(request):
                     os.remove(ASSETS_ROOT + legacy_avatar)
                 else:
                     print("path didn't find check it")
-                user_info.avatar = str(file_path)
+                user_info.avatar = str(file_path)[len(ASSETS_ROOT):]
                 user_info.save()
 
             # 返回头像的 URL
