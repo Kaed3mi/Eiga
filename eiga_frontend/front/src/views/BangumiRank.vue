@@ -110,7 +110,7 @@ export default {
   data() {
     return {
       page: this.$route.params.page ? this.$route.params.page : 1,
-      RANK_PAGE_SIZE: 4,
+      RANK_PAGE_SIZE: 8,
       total: 0,
       bangumiList: [],
     };

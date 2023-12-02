@@ -52,7 +52,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-button plain type="primary"  @click="addRow" style="margin: 12px">
+        <el-button plain type="primary" @click="addRow" style="margin: 12px">
           <el-icon>
             <Plus/>
           </el-icon>
@@ -153,16 +153,18 @@ const submit = () => {
               introduction: intoduction.value,
               image: base64
             }
-        )
-        ElMessage.success('已创建角色"' + character_name.value + '"！')
-        intoduction.value = ''
-        imageUrl.value = defaultImage
-        character_name.value = ''
-        tableData.value = []
-      })
-      .catch((error) => {
-        console.error('Error converting URL to Base64:', error);
-      });
+        ).then(() => {
+          ElMessage.success('已创建角色"' + character_name.value + '"！')
+          intoduction.value = ''
+          imageUrl.value = defaultImage
+          character_name.value = ''
+          tableData.value = []
+        }).catch((error) => {
+          ElMessage.error('创建失败！', error)
+        })
+      }).catch((error) => {
+    ElMessage.error('Error converting URL to Base64:', error);
+  });
 }
 
 async function urlToBase64(url: any) {

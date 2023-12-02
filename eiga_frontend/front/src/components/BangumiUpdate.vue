@@ -27,10 +27,16 @@
                   </div>
                 </el-aside>
                 <el-main>
+                  <h4 style="text-align: left;"> 番组名：</h4>
+                  <el-input v-model="bangumi_name" :autosize="{ minRows: 2, maxRows: 20 }" type="textarea"
+                            placeholder="Please input"></el-input>
+                  <el-divider border-style="dashed"/>
+
                   <h4 style="text-align: left;"> 简介：</h4>
                   <el-input v-model="bangumi_intro" :autosize="{ minRows: 2, maxRows: 20 }" type="textarea"
                             placeholder="Please input"></el-input>
                   <el-divider border-style="dashed"/>
+
                   <h3>角色</h3>
 
                   <el-table :data="characterTable" style="width: auto" max-height="250">
@@ -54,7 +60,7 @@
                     <el-autocomplete
                         v-model="selectedResultCharacter"
                         :fetch-suggestions="querySearchCharacter"
-                        placeholder="请输入内容"
+                        placeholder="请输入角色名"
                         :trigger-on-focus="false"
                         clearable
                         style="width: 75%;"
@@ -94,14 +100,14 @@
                         style="width: 35%;"
                         v-model="selectedResultBangumi"
                         :fetch-suggestions="querySearchBangumi"
-                        placeholder="请输入内容"
+                        placeholder="请输入番组名"
                         :trigger-on-focus="false"
                         clearable
                         @select="onSelectBangumi">
                     </el-autocomplete>
 
                     关系:
-                    <el-input style="width: 35%;" v-model="newRelation" placeholder="Please input"></el-input>
+                    <el-input style="width: 35%;" v-model="newRelation" placeholder="请输入关系"></el-input>
 
                     <el-button class="mt-4" @click="onAddBangumi" type="primary">Add Item</el-button>
 
@@ -112,7 +118,7 @@
 
                 </el-main>
               </el-container>
-              <el-footer>Footer</el-footer>
+              <Footer/>
             </el-container>
           </el-card>
         </div>
@@ -129,9 +135,11 @@ import ListItem from '../components/ListItem.vue'
 import CommentItem from "../components/CommentItem.vue";
 import {ref} from 'vue'
 import {ElMessage} from 'element-plus'
+import Footer from "./Footer.vue";
 
 export default {
   components: {
+    Footer,
     CommentItem,
     VerticalMenu,
     CharacterCard,
@@ -159,7 +167,8 @@ export default {
       bangumiObject: null,
       bangumiTable: [],
       newRelation: '',
-      imageUrl: ''
+      imageUrl: '',
+      isEditing: false,
     }
   },
   mounted() {
@@ -353,6 +362,7 @@ export default {
             http.post(
                 "http://127.0.0.1:8000/bangumi_update/", {
                   bangumi_id: this.$route.params.bangumiId,
+                  bangumi_name: this.bangumi_name,
                   bangumi_intro: this.bangumi_intro,
                   image: base64
                 }
@@ -373,7 +383,10 @@ export default {
             bangumis: this.bangumiTable
           }
       )
-      this.$router.push({name: 'bangumi-view', params: {bangumiId: this.bangumi_id}})
+
+      this.$router.push({name: 'bangumi-view', params: {bangumiId: this.bangumi_id}}).then(() => {
+        window.location.reload();
+      });
     }
   },
 }

@@ -101,7 +101,7 @@ class BangumiSearch(APIView):
                 bangumi_list_data.append({
                     "id": bangumi.bangumi_id,
                     "name": bangumi.bangumi_name,
-                    "description" : bangumi.bangumi_intro,
+                    "description": bangumi.bangumi_intro,
                     "image": urlToImgDate(image_url),
                     'score': bangumi_rank_dict[bangumi.bangumi_id]['bangumi_score'],
                     'rank': bangumi_rank_dict[bangumi.bangumi_id]['bangumi_rank'],
@@ -129,13 +129,18 @@ class BangumiUpdate(APIView):
     def post(self, request):
         print(request.data.get('bangumi_intro'))
         bangumi_id = int(request.data.get('bangumi_id'))
+        # 图片
         image_base64 = request.data.get("image")
         image_str = base64.b64decode(image_base64.split(',')[1])
         image_type = image_base64.split(';')[0].split(':')[1]
+
+        # 修改名字以及介绍
+        bangumi_name = str(request.data.get("bangumi_name"))
         bangumi_intro = str(request.data.get("bangumi_intro"))
         print(bangumi_intro)
         bangumi_info = Bangumi.objects.get(bangumi_id=bangumi_id)
         print(bangumi_info.bangumi_intro)
+        bangumi_info.bangumi_name = bangumi_name
         bangumi_info.bangumi_intro = bangumi_intro
         bangumi_info.save()
         file_ext = mimetypes.guess_extension(image_type)
