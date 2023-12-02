@@ -35,24 +35,43 @@
                 </el-input>
               </div>
               <div v-if="search_results.length > 0">
-                <h3>搜索结果:共{{search_results.length}}项</h3>
+                <h3>搜索结果:共{{ search_results.length }}项</h3>
                 <el-row
                     class="search_item"
                     :gutter="20"
                 >
-                  <el-col :span="24" v-for="(result, index) in search_results" :key="index">
+                  <el-col
+                      :span="24"
+                      v-for="(result, index) in search_results.slice((search_page-1)*SEARCH_PAGE_SIZE, search_page*SEARCH_PAGE_SIZE)"
+                      :key="index"
+                  >
                     <div class="row-content">
-                      <ListItem :type="result.type" :id="result.id" :name="result.name" :description="0"
-                                :image="result.image"></ListItem>
+                      <ListItem
+                          style="margin: 10px"
+                          :type="result.type"
+                          :id="result.id"
+                          :name="result.name"
+                          :description="0"
+                          :image="result.image">
+                      </ListItem>
                     </div>
-
-
                   </el-col>
                 </el-row>
               </div>
             </el-main>
+            <el-divider></el-divider>
+            <el-row>
+              <el-container class="row-content">
+                <el-pagination
+                    :current-page="Number(search_page)"
+                    background layout="prev, pager, next, jumper, total"
+                    :page-size="SEARCH_PAGE_SIZE"
+                    :total="search_results.length"
+                    @current-change="currentChange"/>
+              </el-container>
+            </el-row>
             <el-footer>
-              Footer
+              footer
             </el-footer>
           </el-container>
         </div>
@@ -75,6 +94,8 @@ export default {
       search_input: ref(''),
       search_icon: Search,
       search_results: [],
+      search_page: 1,
+      SEARCH_PAGE_SIZE: 10
     }
   },
   name: "DiscoveringPageView",
@@ -83,6 +104,13 @@ export default {
     ListItem
   },
   methods: {
+    currentChange(nextPage) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'  // 使用平滑滚动效果
+      });
+      this.search_page = nextPage;
+    },
     search() {
       this.search_results = []
       if (this.search_type == 2) {
@@ -91,7 +119,7 @@ export default {
         this.character_search()
       } else if (this.search_type == 4) {
         this.user_search()
-      }else if (this.search_type == 5) {
+      } else if (this.search_type == 5) {
         this.blog_search()
       } else if (this.search_type == 1) {
         this.user_search()
@@ -182,19 +210,7 @@ export default {
 </script>
 
 <style scoped>
-.full-screen-layout {
-  height: 80vh; /* 设置高度为视口高度，以填充整个屏幕 */
-}
 
-.demo-image .block {
-  padding: 70px 0;
-  text-align: center;
-  border-right: solid 1px var(--el-border-color);
-  display: inline-block;
-  width: 40%;
-  box-sizing: border-box;
-  vertical-align: top;
-}
 
 .row-content {
   display: flex;

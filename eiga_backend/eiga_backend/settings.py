@@ -142,5 +142,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-ASSETS_ROOT = "eiga_backend/assets/"
+ASSETS_ROOT = "assets/"
 RANK_PAGE_SIZE = 4
+SEARCH_PAGE_SIZE = 10
