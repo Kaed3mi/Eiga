@@ -37,15 +37,34 @@
         </el-descriptions>
       </el-col>
     </el-row>
+    <el-divider></el-divider>
+    <h3>出演</h3>
+    <!--出演-->
+    <el-container>
+      <el-col>
+        <ListItem
+            v-for="bangumi in starringBangumis"
+            style="margin: 10px"
+
+            type="bangumi"
+            :id="bangumi.bangumi_id"
+            :name="bangumi.bangumi_name"
+            :image="bangumi.image"
+            description="">
+        </ListItem>
+      </el-col>
+    </el-container>
   </el-card>
 </template>
 
 <script lang="ts">
 // import { ref } from 'vue'
 import http from '../utils/http';
+import ListItem from "./ListItem.vue";
 
 
 export default {
+  components: {ListItem},
   data() {
     return {
       character_id: this.$route.params.characterId,
@@ -60,10 +79,12 @@ export default {
       },
       response: 'attributes',
       introduce: '',
+      starringBangumis: [],
     };
   },
   mounted() {
     this.characterQuery();
+    this.starringQuery();
   },
   methods: {
     characterQuery() {
@@ -87,6 +108,27 @@ export default {
           this.imageUrl = `data:image/png;base64,${this.jsonData.image}`
         }
       })
+    },
+    starringQuery() {
+      http.get(
+          "http://127.0.0.1:8000/starring_query/",
+          {
+            params: {
+              "character_id": this.character_id
+            }
+          }
+      ).then(response => {
+        console.log(response.data);
+        this.starringBangumis = []
+        for (let bangumi of response.data.starring_bangumis) {
+          this.starringBangumis.push({
+            bangumi_id: bangumi.bangumi_id,
+            bangumi_name: bangumi.bangumi_name,
+            image: `data:image/png;base64,${bangumi.image}`
+          })
+        }
+      })
+      console.log('出演番组表：' + this.starringBangumis)
     }
   }
 };
