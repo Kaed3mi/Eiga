@@ -178,10 +178,11 @@ def upload_avatar(request):
         print(user_info)
         # print(request.FILES.get('file'))
         avatar = request.FILES.get('file')
+        avatar_name = str(user_info.user_id) + '-' + str(user_info.user_name) + '.jpg'
         print(avatar)
         if avatar:
             # 保存头像到服务器
-            file_path = default_storage.save(ASSETS_ROOT + 'avatars/' + avatar.name, ContentFile(avatar.read()))
+            file_path = default_storage.save(ASSETS_ROOT + 'avatars/' + avatar_name, ContentFile(avatar.read()))
             print(file_path)
             if user_info.avatar == "avatars/default.jpg":
                 print("the user has the default avatar and we change it to " + str(file_path))
@@ -200,7 +201,7 @@ def upload_avatar(request):
                 user_info.save()
 
             # 返回头像的 URL
-            avatar_url = f"{settings.MEDIA_URL}{avatar.name}"
+            avatar_url = f"{settings.MEDIA_URL}{avatar_name}"
             with open(file_path, 'rb') as f:
                 image_data = base64.b64encode(f.read())
             return_information = {'state': '1', 'exception': '', 'avatar_url': avatar_url,

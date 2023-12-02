@@ -357,6 +357,7 @@ export default {
                       bangumis: this.bangumiTable
                     }
                 )
+                this.$router.push({name: 'bangumi-view', params: {bangumiId: response.data.bangumi_id}})
               })
             })
             .catch((error) => {

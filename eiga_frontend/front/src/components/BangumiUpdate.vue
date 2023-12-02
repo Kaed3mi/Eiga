@@ -373,6 +373,7 @@ export default {
             bangumis: this.bangumiTable
           }
       )
+      this.$router.push({name: 'bangumi-view', params: {bangumiId: this.bangumi_id}})
     }
   },
 }

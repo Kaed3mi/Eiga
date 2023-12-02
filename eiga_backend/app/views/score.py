@@ -130,8 +130,6 @@ class BangumiRankQuery(APIView):
         try:
             if RANK_PAGE_SIZE * page - RANK_PAGE_SIZE > Bangumi.objects.count():
                 raise Exception('页数过大！')
-            index_low = RANK_PAGE_SIZE * page - RANK_PAGE_SIZE
-            index_high = min(RANK_PAGE_SIZE * page - 1, Bangumi.objects.count())
             total = Bangumi.objects.count()
             raw_bangumis = []
             for bangumi in Bangumi.objects.all():
@@ -141,8 +139,7 @@ class BangumiRankQuery(APIView):
                 bangumi.bangumi_score = total_score['total'] / rater_cnt if total_score['total'] else 0.0
                 raw_bangumis.append(bangumi)
             print(raw_bangumis)
-            sorted_bangumis = sorted(raw_bangumis, key=lambda x: x.bangumi_score, reverse=True)[
-                              index_low: index_high + 1]
+            sorted_bangumis = sorted(raw_bangumis, key=lambda x: x.bangumi_score, reverse=True)
             print(sorted_bangumis)
             bangumis = []
             for bangumi in sorted_bangumis:
@@ -150,6 +147,7 @@ class BangumiRankQuery(APIView):
                     'bangumi_id': bangumi.bangumi_id,
                     'bangumi_name': bangumi.bangumi_name,
                     'bangumi_score': bangumi.bangumi_score,
+                    'bangumi_rank': len(bangumis) + 1,
                     'bangumi_rater_cnt': bangumi.bangumi_rater_cnt,
                     'image': urlToImgDate(bangumi.image)
                 })

@@ -14,7 +14,7 @@
           <div class="bangumi_rank">
             <el-row>
               <el-col
-                  v-for="(key, index) in bangumiList"
+                  v-for="key in bangumiList.slice((page-1)*RANK_PAGE_SIZE, page*RANK_PAGE_SIZE)"
                   :key="key"
                   :span="12"
               >
@@ -86,7 +86,7 @@
               <el-pagination
                   :current-page="Number(page)"
                   background layout="prev, pager, next, jumper, total"
-                  :page-size="5"
+                  :page-size="RANK_PAGE_SIZE"
                   :total="this.total"
                   @current-change="currentChange"/>
             </el-container>
@@ -106,10 +106,11 @@ import {ElMessage} from "element-plus";
 import Footer from "../components/Footer.vue";
 
 export default {
-  components: {ListItem, VerticalMenu,Footer},
+  components: {ListItem, VerticalMenu, Footer},
   data() {
     return {
       page: this.$route.params.page ? this.$route.params.page : 1,
+      RANK_PAGE_SIZE: 4,
       total: 0,
       bangumiList: [],
     };
@@ -137,18 +138,15 @@ export default {
           }
       ).then(response => {
         console.log(response.data.bangumis)
-        let rank_page_size = response.data.page_size
-        let rank_cnt = this.page * rank_page_size - rank_page_size + 1
         for (let bangumi of response.data.bangumis) {
           this.bangumiList.push({
-            'bangumi_rank': rank_cnt,
+            'bangumi_rank': bangumi.bangumi_rank,
             'bangumi_id': bangumi.bangumi_id,
             'bangumi_name': bangumi.bangumi_name,
             'bangumi_score': bangumi.bangumi_score,
             'rater_cnt': bangumi.bangumi_rater_cnt,
             'image': `data:image/png;base64,${bangumi.image}`,
           })
-          rank_cnt = rank_cnt + 1
         }
         this.total = response.data.total
         console.log("response: " + response.data);
