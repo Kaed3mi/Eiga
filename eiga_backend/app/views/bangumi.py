@@ -101,6 +101,7 @@ class BangumiSearch(APIView):
                 bangumi_list_data.append({
                     "id": bangumi.bangumi_id,
                     "name": bangumi.bangumi_name,
+                    "description" : bangumi.bangumi_intro,
                     "image": urlToImgDate(image_url),
                     'score': bangumi_rank_dict[bangumi.bangumi_id]['bangumi_score'],
                     'rank': bangumi_rank_dict[bangumi.bangumi_id]['bangumi_rank'],

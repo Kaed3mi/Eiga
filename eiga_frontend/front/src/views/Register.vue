@@ -9,6 +9,7 @@
         <div class="main_full_flex_style">
           <div style="width: var(--main-width)">
             <UserInfoInput></UserInfoInput>
+            <Footer/>
           </div>
         </div>
       </el-main>
@@ -20,12 +21,14 @@
 import http from "../utils/http";
 import UserInfoInput from '../components/UserInfoInput.vue'
 import VerticalMenu from '../components/VerticalMenu.vue'
+import Footer from "../components/Footer.vue";
 
 export default {
   name: "Register",
   components: {
     UserInfoInput,
-    VerticalMenu
+    VerticalMenu,
+    Footer
   },
 }
 </script>

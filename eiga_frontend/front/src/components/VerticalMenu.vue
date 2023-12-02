@@ -204,13 +204,13 @@ export default {
       username: '',
       avatar_url: '',
       activate: '1',
-      openeds :[''],
+      openeds: [''],
       activate2: '1'
     }
   },
   computed: {
     isAdmin() {
-      console.log("permission:"+localStorage.getItem("permission"))
+      console.log("permission:" + localStorage.getItem("permission"))
       return (
           localStorage.getItem("user_id") && localStorage.getItem("permission") === "admin"
       );
@@ -219,7 +219,7 @@ export default {
       return (
           this.$route.path.startsWith("/bangumi/") ||
           this.$route.path.startsWith("/character/") ||
-              this.$route.path.startsWith("/blog/")
+          this.$route.path.startsWith("/blog/")
       );
     }
   },
@@ -249,13 +249,23 @@ export default {
       }
     },
     handleBlog() {
-      this.$router.push('/blog_create')
+      let user_id = localStorage.getItem('user_id');
+      console.log(user_id)
+      if (user_id == null) {
+        ElMessage({
+          message: '请先登录',
+          type: 'warning',
+        })
+        this.$router.push('/login')
+      } else {
+        this.$router.push('/blog_create')
+      }
     },
     defaultActivate() {
       this.activate = localStorage.getItem("default-active")
-      this.openeds =['6']
-      console.log("opened:"+this.openeds)
-      console.log("opened2:"+['4'])
+      this.openeds = ['6']
+      console.log("opened:" + this.openeds)
+      console.log("opened2:" + ['4'])
       this.activate2 = localStorage.getItem("default-active2")
       if (this.activate == null) {
         localStorage.setItem("default-active", '')
@@ -266,7 +276,7 @@ export default {
         this.activate2 = ''
       }
     },
-    handleActivate(index,indexPath) {
+    handleActivate(index, indexPath) {
       localStorage.setItem("default-active", indexPath[0])
       if (indexPath.length == 2) {
         localStorage.setItem("default-active2", indexPath[1])

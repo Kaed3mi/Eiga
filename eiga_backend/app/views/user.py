@@ -224,6 +224,7 @@ class UserSearch(APIView):
                 obj_list_data.append({
                     "id": obj.user_id,
                     "name": obj.user_name,
+                    "image": urlToImgDate(obj.avatar)
                 })
         except Exception as e:
             print(e)

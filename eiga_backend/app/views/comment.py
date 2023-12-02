@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Comment, User, Bangumi, Blog, Character
 from django.db.models import Q
+from app.utils.utils import urlToImgDate
 from app.serializers import BlogModelSerializer, BangumiModelSerializer, UserModelSerializer, CharacterModelSerializer
 import datetime
 
@@ -53,6 +54,7 @@ class CommentQuery(APIView):
             'content': obj.content,
             'time': obj.time,
             'user_id': UserModelSerializer(obj.user_id).data if user is not None else '',
+            'avatar': urlToImgDate(obj.user_id.avatar) if user is not None else '',
             'bangumi_id': BangumiModelSerializer(obj.bangumi_id).data if bangumi is not None else '',
             'blog_id': BlogModelSerializer(blog.blog_id).data if blog is not None else '',
             'character_id': CharacterModelSerializer(obj.character_id).data if character is not None else '',

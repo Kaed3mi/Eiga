@@ -20,9 +20,11 @@
               <el-button type="primary" @click.prevent="send_post">
                 登录
               </el-button>
-              <el-button>
-                <router-link :to="{name : 'Register'}">注册</router-link>
-              </el-button>
+              <router-link :to="{name : 'Register'}">
+                <el-button style="margin-left: 10px">
+                  注册
+                </el-button>
+              </router-link>
             </el-form>
           </el-card>
         </div>

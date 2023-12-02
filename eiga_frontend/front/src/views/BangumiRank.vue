@@ -36,7 +36,7 @@
                       <p style="font-size: 13px"> Rank {{ key.bangumi_rank }}</p>
                     </el-tag>
                   </div>
-                  <div class="main_flex_style" style="width: 100%;height: 25vh;">
+                  <div class="main_flex_style" style="width: 100%;height: 20vh;">
                     <el-row :gutter="15" style="width: 100%;">
                       <el-col :span="9">
                         <div class="main_flex_style" style="height: 100%">
@@ -91,6 +91,7 @@
                   @current-change="currentChange"/>
             </el-container>
           </el-row>
+          <Footer/>
         </div>
       </div>
     </el-main>
@@ -102,9 +103,10 @@ import VerticalMenu from "../components/VerticalMenu.vue";
 import ListItem from "../components/ListItem.vue";
 import http from "../utils/http";
 import {ElMessage} from "element-plus";
+import Footer from "../components/Footer.vue";
 
 export default {
-  components: {ListItem, VerticalMenu},
+  components: {ListItem, VerticalMenu,Footer},
   data() {
     return {
       page: this.$route.params.page ? this.$route.params.page : 1,
@@ -179,8 +181,8 @@ export default {
 .tag {
   position: absolute;
   z-index: 100;
-  right: 20px; /* Adjust the top position as needed */
-  top: 20px; /* Adjust the right position as needed */
+  right: 10px; /* Adjust the top position as needed */
+  top: 10px; /* Adjust the right position as needed */
   width: 15%
 }
 </style>

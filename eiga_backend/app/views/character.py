@@ -47,6 +47,8 @@ class CharacterSearch(APIView):
                 obj_list_data.append({
                     "id": obj.character_id,
                     "name": obj.character_name,
+                    "image": urlToImgDate(obj.image),
+                    "description": json.loads(obj.intro.replace("'", '"'))['introduce']
                 })
         except Exception as e:
             print(e)

@@ -36,27 +36,27 @@
               </div>
               <div v-if="search_results.length > 0">
                 <h3>搜索结果:共{{ search_results.length }}项</h3>
-                <el-row
-                    class="search_item"
-                    :gutter="20"
-                >
-                  <el-col
-                      :span="24"
-                      v-for="(result, index) in search_results.slice((search_page-1)*SEARCH_PAGE_SIZE, search_page*SEARCH_PAGE_SIZE)"
-                      :key="index"
+                <div class="main_flex_style">
+                  <el-row
+                      class="search_item"
+                      :gutter="20"
                   >
-                    <div class="row-content">
+                    <el-col :span="24"
+                            v-for="(result, index) in search_results.slice((search_page-1)*SEARCH_PAGE_SIZE, search_page*SEARCH_PAGE_SIZE)"
+                            :key="index">
                       <ListItem
-                          style="margin: 10px"
                           :type="result.type"
                           :id="result.id"
                           :name="result.name"
-                          :description="0"
-                          :image="result.image">
-                      </ListItem>
-                    </div>
-                  </el-col>
-                </el-row>
+                          :description="result.description"
+                          :image="result.image"
+                          :score="result.score"
+                          :rank="result.rank"
+                          :rater_cnt="result.rater_cnt"
+                      />
+                    </el-col>
+                  </el-row>
+                </div>
               </div>
             </el-main>
             <el-divider></el-divider>
@@ -71,9 +71,10 @@
               </el-container>
             </el-row>
             <el-footer>
-              footer
+
             </el-footer>
           </el-container>
+          <Footer/>
         </div>
       </div>
     </el-main>
@@ -86,6 +87,7 @@ import ListItem from '../components/ListItem.vue'
 import {ref} from 'vue'
 import {Search} from '@element-plus/icons-vue'
 import http from "../utils/http";
+import Footer from "../components/Footer.vue";
 
 export default {
   data() {
@@ -95,13 +97,14 @@ export default {
       search_icon: Search,
       search_results: [],
       search_page: 1,
-      SEARCH_PAGE_SIZE: 10
+      SEARCH_PAGE_SIZE: 7
     }
   },
   name: "DiscoveringPageView",
   components: {
     VerticalMenu,
-    ListItem
+    ListItem,
+    Footer,
   },
   methods: {
     currentChange(nextPage) {
@@ -143,6 +146,10 @@ export default {
             type: "bangumi",
             id: item.id,
             name: item.name,
+            description: item.description,
+            rank: item.rank,
+            score: item.score,
+            rater_cnt: item.rater_cnt,
             image: `data:image/png;base64,${item.image}`
           })
         }
@@ -161,7 +168,13 @@ export default {
           }
       ).then(response => {
         for (let item of response.data.characters) {
-          this.search_results.push({type: "character", id: item.id, name: item.name})
+          this.search_results.push({
+            type: "character",
+            id: item.id,
+            name: item.name,
+            description: item.description,
+            image: `data:image/png;base64,${item.image}`
+          })
         }
         console.log(this.search_results)
       })
@@ -179,7 +192,12 @@ export default {
           }
       ).then(response => {
         for (let item of response.data.users) {
-          this.search_results.push({type: "user", id: item.id, name: item.name})
+          this.search_results.push({
+            type: "user",
+            id: item.id,
+            name: item.name,
+            image: `data:image/png;base64,${item.image}`
+          })
         }
         console.log(this.search_results)
       })
@@ -197,7 +215,12 @@ export default {
           }
       ).then(response => {
         for (let item of response.data.blogs) {
-          this.search_results.push({type: "blog", id: item.id, name: item.name})
+          this.search_results.push({
+            type: "blog",
+            id: item.id,
+            name: item.name,
+            description: item.description,
+          })
         }
         console.log(this.search_results)
       })
@@ -210,7 +233,23 @@ export default {
 </script>
 
 <style scoped>
+.full-screen-layout {
+  height: 80vh; /* 设置高度为视口高度，以填充整个屏幕 */
+}
 
+.demo-image .block {
+  padding: 70px 0;
+  text-align: center;
+  border-right: solid 1px var(--el-border-color);
+  display: inline-block;
+  width: 40%;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
+.search_item {
+  width: 60%;
+}
 
 .row-content {
   display: flex;

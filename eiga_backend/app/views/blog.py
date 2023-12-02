@@ -46,6 +46,7 @@ class BlogSearch(APIView):
                 obj_list_data.append({
                     "id": obj.blog_id,
                     "name": obj.blog_title,
+                    "description": obj.content
                 })
         except Exception as e:
             print(e)
@@ -53,6 +54,7 @@ class BlogSearch(APIView):
         return Response({
             'blogs': obj_list_data
         })
+
 
 class BlogUpdate(APIView):
     def put(self, request):

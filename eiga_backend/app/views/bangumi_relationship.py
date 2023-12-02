@@ -5,6 +5,7 @@ from app.models import BangumiRelationship
 from app.models import Character
 from django.db.models import Q
 from app.serializers import BangumiModelSerializer
+from app.utils.utils import urlToImgDate
 
 
 class BangumiRelationshipQuery(APIView):
@@ -18,7 +19,8 @@ class BangumiRelationshipQuery(APIView):
             for obj in list:
                 obj_list_data.append({
                     "relation": obj.relation,
-                    "bangumi_id": BangumiModelSerializer(obj.b_id).data
+                    "bangumi_id": BangumiModelSerializer(obj.b_id).data,
+                    "image": urlToImgDate(obj.b_id.image)
                 })
         except Exception as e:
             print('BangumiRelationshipQuery failed', e)

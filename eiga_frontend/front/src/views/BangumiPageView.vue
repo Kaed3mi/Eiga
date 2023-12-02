@@ -12,7 +12,7 @@
               <el-divider border-style="dashed"/>
               <el-main>
                 <el-container>
-                  <el-aside>
+                  <el-aside style="margin-right: 5%">
                     <div class="demo-image">
                       <el-image
                           style="width: 300px; height: 400px"
@@ -43,10 +43,14 @@
                   </el-aside>
 
                   <el-main>
-                    简介：
-                    {{ bangumi_intro }}
+                    <h3>简介</h3>
+                    <p v-for="(line, index) in bangumi_intro.split('\n')" :key="index"
+                       style="text-align: left;white-space: pre-wrap;text-indent: 2em;"
+                    >
+                      {{ line }}
+                    </p>
                     <el-divider border-style="dashed"/>
-                    角色
+                    <h3>角色</h3>
                     <CharacterCard :id=bangumi_id></CharacterCard>
                     <el-divider border-style="dashed"/>
                     <div v-if="bangumi_relationships.length > 0">
@@ -57,8 +61,8 @@
                         <el-col :span="24" v-for="(result, index) in bangumi_relationships" :key="index">
                           <ListItem type="bangumi" :id="result.bangumi_id.bangumi_id"
                                     :name="result.bangumi_id.bangumi_name"
-                                    :description="0"
-                                    :image="''"></ListItem>
+                                    :relation="result.relation"
+                                    :image="result.image"></ListItem>
                         </el-col>
                       </el-row>
                       <el-divider border-style="dashed"/>
@@ -74,35 +78,53 @@
                       </el-row>
                       <el-divider border-style="dashed"/>
                     </div>
-                    <el-input
-                        v-model="new_comment_area"
-                        maxlength="400"
-                        :autosize="{ minRows: 4, maxRows: 6 }"
-                        placeholder="畅所欲言..."
-                        show-word-limit
-                        type="textarea"
-                        rows="3"
-                        clearable
-                    >
-                    </el-input>
-                    <el-button type="primary" @click=commentInsert>
-                      提交
-                    </el-button>
+                    <div v-if="user_id!=null &&String(user_id)!==''">
+                      <el-card>
+                        <el-row>
+                          <div class="main_left_style">
+                            <el-avatar :src="avatar" :size="32" style="margin-left: -0px;" class="avatar"/>
+                          </div>
+                        </el-row>
+                        <div style="padding: 8px"></div>
+                        <el-input
+                            v-model="new_comment_area"
+                            maxlength="400"
+                            :autosize="{ minRows: 4, maxRows: 6 }"
+                            placeholder="畅所欲言..."
+                            show-word-limit
+                            type="textarea"
+                            rows="3"
+                            clearable
+                        >
+                        </el-input>
+                        <div style="padding: 8px"></div>
+                        <el-button type="primary" @click=commentInsert>
+                          提交
+                        </el-button>
+                      </el-card>
+                    </div>
+                    <div v-else>
+                      <p>登录后即可发表评论</p>
+                    </div>
                   </el-main>
 
                 </el-container>
               </el-main>
-              <el-footer>Footer</el-footer>
+
             </el-container>
           </el-card>
+          <Footer/>
         </div>
       </div>
+
     </el-main>
+
   </el-container>
 </template>
 
 <script lang="ts">
 import VerticalMenu from '../components/VerticalMenu.vue'
+import Footer from '../components/Footer.vue'
 import CharacterCard from '../components/CharacterCard.vue'
 import http from "../utils/http";
 import ListItem from '../components/ListItem.vue'
@@ -122,7 +144,10 @@ export default {
       rate_colors: ref(['#99A9BF', '#F7BA2A', '#FF9900']),
       bangumi_relationships: [],
       comments: [],
-      new_comment_area: ref('')
+      new_comment_area: ref(''),
+      user_name: '',
+      avatar: '',
+      user_id: ref(''),
     }
   },
   mounted() {
@@ -131,6 +156,10 @@ export default {
     this.bangumiRelationShipQuery();
     this.userScoreQuery();
     this.bangumiScoreQuery();
+    this.user_id = ref(localStorage.getItem('user_id'))
+    if (this.user_id != null) {
+      this.userQuery();
+    }
 
   },
   methods: {
@@ -165,7 +194,9 @@ export default {
       ).then(response => {
         for (let item of response.data.bangumis) {
           this.bangumi_relationships.push({
+            "relation": item.relation,
             'bangumi_id': item.bangumi_id,
+            'image': `data:image/png;base64,${item.image}`
           })
         }
         console.log("this.bangumi_relationships")
@@ -241,6 +272,21 @@ export default {
         console.error('Error posting data:', error);
       });
     },
+    userQuery() {
+      http.post(
+          "http://127.0.0.1:8000/user_query/",
+          {'user_id': localStorage.getItem("user_id")}
+      ).then(response => {
+        this.user_name = response.data.username
+        // console.log(response.data.image_data);
+        // this.avatarUrl = `data:image/png;base64,${response.data.image_data}`
+        // console.log(this.avatarUrl);
+        this.avatar = `data:image/png;base64,${response.data.image_data}`
+        // console.log("avatar_url: " + this.avatar);
+      }).catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    },
     userScoreQuery() {
       http.get(
           'http://127.0.0.1:8000/score_query/',
@@ -305,7 +351,8 @@ export default {
     CommentItem,
     VerticalMenu,
     CharacterCard,
-    ListItem
+    ListItem,
+    Footer,
   }
 }
 </script>

@@ -7,6 +7,7 @@
       <div class="main_full_flex_style">
         <div style="width: var(--main-width)">
           <UserLogin></UserLogin>
+          <Footer/>
         </div>
       </div>
     </el-main>
@@ -16,12 +17,14 @@
 <script lang="ts">
 import UserLogin from '../components/UserLogin.vue'
 import VerticalMenu from "../components/VerticalMenu.vue";
+import Footer from "../components/Footer.vue";
 
 export default {
   name: "Login",
   components: {
     UserLogin,
-    VerticalMenu
+    VerticalMenu,
+    Footer
   }
 }
 </script>
