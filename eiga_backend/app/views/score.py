@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Score, User, Bangumi
 from app.serializers import BangumiModelSerializer, ScoreModelSerializer
-from eiga_backend.settings import ASSETS_ROOT
+from eiga_backend.settings import ASSETS_ROOT, RANK_PAGE_SIZE
 
 
 # TODO 考虑要不要做游客功能，按理说游客是不能评分的
@@ -127,10 +127,10 @@ class BangumiRankQuery(APIView):
         page = int(request.GET.get('page'))
         print(request.GET)
         try:
-            if 5 * page - 5 > Bangumi.objects.count():
+            if RANK_PAGE_SIZE * page - RANK_PAGE_SIZE > Bangumi.objects.count():
                 raise Exception('页数过大！')
-            index_low = 5 * page - 5
-            index_high = min(5 * page - 1, Bangumi.objects.count())
+            index_low = RANK_PAGE_SIZE * page - RANK_PAGE_SIZE
+            index_high = min(RANK_PAGE_SIZE * page - 1, Bangumi.objects.count())
             total = Bangumi.objects.count()
             raw_bangumis = []
             for bangumi in Bangumi.objects.all():
@@ -158,6 +158,7 @@ class BangumiRankQuery(APIView):
             print(e)
             return Response(1)
         return Response({
+            'page_size': RANK_PAGE_SIZE,
             'bangumis': bangumis,
             'total': total
         })

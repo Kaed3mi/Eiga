@@ -1,58 +1,96 @@
 <template>
-  <el-container>
+
+  <el-container class="container_style">
     <el-aside width="200px">
       <VerticalMenu></VerticalMenu>
     </el-aside>
-    <el-main>
-      <div>
-        <!-- 左侧导航栏 -->
-        <div class="bangumi_rank">
-          <el-row
-              v-for="(key, index) in bangumiList"
-              :key="key"
-              :span="8"
-          >
-            <el-container class="row-content">
-              <el-card
-                  style="width: 450px; height: 240px; margin: 10px"
-              >
-                <el-row>
-                  <el-col :span="8">
-                    <el-image
-                        style="width: 150px; height: 200px"
-                        :src="key.image"/>
-                  </el-col>
-                  <el-col :span="1"></el-col>
-                  <el-col :span="15">
-                    <router-link :to="{ name: 'bangumi-view', params: { bangumiId: key.bangumi_id }}">
-                      <el-descriptions :title="key.bangumi_name" width="300px" :column="1">
-                        <el-descriptions-item>
-                          Rank {{ key.bangumi_rank }}
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                          评分 {{ key.bangumi_score }} ({{ key.rater_cnt }}人评分)
-                        </el-descriptions-item>
-                      </el-descriptions>
-                    </router-link>
-                  </el-col>
-                </el-row>
-              </el-card>
 
+    <el-main>
+      <div class="main_full_flex_style">
+        <div style="width: var(--main-width)">
+          <!-- 左侧导航栏 -->
+          <h2>番组排行</h2>
+          <el-divider></el-divider>
+          <div class="bangumi_rank">
+            <el-row>
+              <el-col
+                  v-for="(key, index) in bangumiList"
+                  :key="key"
+                  :span="12"
+              >
+
+                <el-card
+                    style="max-width: 800px;min-height: 50px; margin: 10px;position: relative;"
+                >
+                  <div v-if="key.bangumi_rank===1" class="medal">
+                    <el-image src="/src/assets/medal_gold_icon.png"/>
+                  </div>
+                  <div v-else-if="key.bangumi_rank===2" class="medal">
+                    <el-image src="/src/assets/medal_silver_icon.png"/>
+                  </div>
+                  <div v-else-if="key.bangumi_rank===3" class="medal">
+                    <el-image src="/src/assets/medal_bronze_icon.png"/>
+                  </div>
+                  <div class="tag">
+                    <el-tag size="large" round plain type="primary">
+                      <p style="font-size: 13px"> Rank {{ key.bangumi_rank }}</p>
+                    </el-tag>
+                  </div>
+                  <div class="main_flex_style" style="width: 100%;height: 25vh;">
+                    <el-row :gutter="15" style="width: 100%;">
+                      <el-col :span="9">
+                        <div class="main_flex_style" style="height: 100%">
+
+                          <el-image
+                              style="width: 100%; height: auto"
+                              :src="key.image"
+                              fit="cover"
+                          />
+                        </div>
+                      </el-col>
+                      <el-col :span="15">
+                        <div class="main_flex_style" style="height: 100%">
+                          <router-link :to="{ name: 'bangumi-view', params: { bangumiId: key.bangumi_id }}">
+                            <el-descriptions :title="key.bangumi_name" width="300px" :column="1">
+                              <el-descriptions-item>
+
+                              </el-descriptions-item>
+                              <el-descriptions-item>
+                                <div class="main_flex_style">
+                                  <el-rate
+                                      v-model="key.bangumi_score"
+                                      disabled
+                                      show-score
+                                      text-color="#ff9900"
+                                      score-template="{value} 分"
+                                  />
+                                  &nbsp;({{ key.rater_cnt }}人)
+                                </div>
+                              </el-descriptions-item>
+                            </el-descriptions>
+                          </router-link>
+                        </div>
+                      </el-col>
+                    </el-row>
+                  </div>
+                </el-card>
+
+
+              </el-col>
+            </el-row>
+          </div>
+          <el-divider></el-divider>
+          <el-row>
+            <el-container class="row-content">
+              <el-pagination
+                  :current-page="Number(page)"
+                  background layout="prev, pager, next, jumper, total"
+                  :page-size="5"
+                  :total="this.total"
+                  @current-change="currentChange"/>
             </el-container>
           </el-row>
         </div>
-
-        <el-row>
-          <el-container class="row-content">
-            <el-pagination
-                :current-page="Number(page)"
-                background layout="prev, pager, next, jumper, total"
-                :page-size="5"
-                :total="this.total"
-                @current-change="currentChange"/>
-          </el-container>
-        </el-row>
-
       </div>
     </el-main>
   </el-container>
@@ -85,6 +123,7 @@ export default {
   props: {},
   methods: {
     bangumi_rank_query() {
+
       this.bangumiList = []
       http.get(
           "http://127.0.0.1:8000/bangumi_rank_query/",
@@ -95,7 +134,8 @@ export default {
           }
       ).then(response => {
         console.log(response.data.bangumis)
-        let rank_cnt = this.page * 5 - 4
+        let rank_page_size = response.data.page_size
+        let rank_cnt = this.page * rank_page_size - rank_page_size + 1
         for (let bangumi of response.data.bangumis) {
           this.bangumiList.push({
             'bangumi_rank': rank_cnt,
@@ -125,5 +165,21 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.medal {
+  position: absolute;
+  z-index: 100;
+  right: -5px; /* Adjust the top position as needed */
+  bottom: -5px; /* Adjust the right position as needed */
+  width: 15%
+}
+
+.tag {
+  position: absolute;
+  z-index: 100;
+  right: 20px; /* Adjust the top position as needed */
+  top: 20px; /* Adjust the right position as needed */
+  width: 15%
 }
 </style>
