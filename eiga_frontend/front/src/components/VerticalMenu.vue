@@ -62,7 +62,7 @@
             <el-icon>
               <Notebook/>
             </el-icon>
-            <span>日志</span>
+            <span>撰写日志</span>
           </el-menu-item>
 
           <el-sub-menu
@@ -76,13 +76,13 @@
               <span>控制台</span>
             </template>
 
-            <el-menu-item index="6-1" v-bind:disabled="!isAdmin || !isEditable" @click="routeToModify">修改当前页面
+            <el-menu-item index="6-1" v-bind:disabled="!isAdmin || !isEditable" @click="routeToModify">更改当前条目
             </el-menu-item>
 
-            <el-menu-item index="6-2" v-bind:disabled="!isAdmin" @click="routeToCreateCharacter">新建角色
+            <el-menu-item index="6-2" v-bind:disabled="!isAdmin" @click="routeToCreateCharacter">创建角色
             </el-menu-item>
 
-            <el-menu-item index="6-3" v-bind:disabled="!isAdmin" @click="routeToCreateBangumi">新建番剧
+            <el-menu-item index="6-3" v-bind:disabled="!isAdmin" @click="routeToCreateBangumi">创建番组
             </el-menu-item>
 
           </el-sub-menu>

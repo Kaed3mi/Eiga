@@ -5,7 +5,7 @@
     </el-aside>
     <el-main>
       <div class="main_full_flex_style">
-        <div style="width: var(--bangumi-width) ">
+        <div class="main_width">
           <BangumiCreate></BangumiCreate>
           <Footer/>
         </div>

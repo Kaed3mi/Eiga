@@ -8,7 +8,7 @@
         <div style="width: var(--bangumi-width) ">
           <el-card class="box-card" style="">
             <el-container>
-              <el-header><h2>编辑番组：{{ bangumi_name }}</h2></el-header>
+              <el-header><h2>更改番组：{{ bangumi_name }}</h2></el-header>
               <el-divider border-style="dashed"/>
               <el-container>
                 <el-aside>

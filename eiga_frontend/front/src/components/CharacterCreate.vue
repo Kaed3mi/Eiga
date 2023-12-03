@@ -1,7 +1,7 @@
 <template>
 
   <el-card class="box-card" style="">
-    <h2>新角色</h2>
+    <h2>创建角色</h2>
     <el-divider></el-divider>
     <el-row :gutter="10">
       <el-col :span="9">

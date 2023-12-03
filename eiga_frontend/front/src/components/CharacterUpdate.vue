@@ -1,6 +1,6 @@
 <template>
   <el-card class="box-card" style="min-width: 800px;">
-    <h2>修改角色: {{ character_name }}</h2>
+    <h2>更改角色: {{ character_name }}</h2>
     <el-divider></el-divider>
     <el-row :gutter="10">
       <el-col :span="9">
