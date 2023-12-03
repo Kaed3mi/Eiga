@@ -11,7 +11,14 @@
     align-items: center; /* 在垂直方向上居中 */
     justify-content: center; /* 在水平方向上居中 */
 }
-
+.main_width {
+    width: var(--main-width);
+    max-width: 1000px;
+}
+.bangumi_width {
+    width: var(--bangumi-width);
+    max-width: 1100px;
+}
 .main_flex_style {
     display: flex;
     align-items: center; /* 在垂直方向上居中 */

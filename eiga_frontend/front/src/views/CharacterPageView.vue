@@ -5,7 +5,7 @@
     </el-aside>
     <el-main>
       <div class="main_full_flex_style">
-        <div style="width: var(--bangumi-width)">
+        <div class="bangumi_width">
           <!-- <el-divider border-style="dashed"/> -->
           <el-container class="row-content">
             <CharacterInfo></CharacterInfo>

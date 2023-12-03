@@ -34,6 +34,18 @@ class BlogInsert(APIView):
         return Response(0)
 
 
+class BlogDelete(APIView):
+    def delete(self, request):
+        blog_id = request.GET.get('blog_id')
+        try:
+            blog = Blog.objects.get(blog_id=blog_id)
+            blog.delete()
+        except Exception as e:
+            print(e)
+            return Response(1)
+        return Response(0)
+
+
 class BlogSearch(APIView):
     def get(self, request):
         pattern = request.GET.get('pattern')
@@ -75,19 +87,6 @@ class BlogUpdate(APIView):
             print(e)
             return Response(1)
         return Response(1)
-
-
-class BlogDelete(APIView):
-    def post(self, request):
-        blog_id = request.data.get('blog_id')
-        print(request.data)
-        try:
-            obj = Blog.objects.get(blog_id=blog_id)
-            obj.delete()
-        except Exception as e:
-            print(e)
-            return Response(1)
-        return Response(0)
 
 
 class BlogQuery(APIView):

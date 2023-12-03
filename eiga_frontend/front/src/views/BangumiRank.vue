@@ -7,7 +7,7 @@
 
     <el-main>
       <div class="main_full_flex_style">
-        <div style="width: var(--main-width)">
+        <div class="main_width">
           <!-- 左侧导航栏 -->
           <h2>番组排行</h2>
           <el-divider></el-divider>

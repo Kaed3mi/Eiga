@@ -5,7 +5,7 @@
     </el-aside>
     <el-main>
       <div class="main_full_flex_style">
-        <div style="width: var(--main-width)">
+        <div class="main_width">
           <el-card class="box-card" style="position: relative">
             <div class="user-info-container">
               <UpdateUserInfo/>

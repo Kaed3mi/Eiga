@@ -5,7 +5,7 @@
     </el-aside>
     <el-main>
       <div class="main_full_flex_style">
-        <div style="width: var(--bangumi-width)">
+        <div class="bangumi_width">
           <el-card class="box-card" style="">
             <el-container class="content-container">
               <el-header><h2>{{ bangumi_name }}</h2></el-header>

@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card" shadow="always" style="width: 1000px;">
+  <el-card class="box-card" shadow="always">
     <div style="padding: 14px">
       <el-container>
         <!-- 头部，用于显示标题 -->

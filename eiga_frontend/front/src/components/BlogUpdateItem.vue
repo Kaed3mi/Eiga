@@ -1,88 +1,121 @@
 <template>
   <el-card class="box-card" style="">
-  <h2>更新日志</h2>
-  <el-divider></el-divider>
-  <div class="center-container">
+    <h2>更新日志</h2>
+    <el-divider></el-divider>
+    <div class="main_flex_style">
 
-    <el-container>
-      <el-main :style="{ width: '60%' }">
-        <h3>标题</h3>
-        <el-input
-            v-model="new_title_area"
-            maxlength="20"
-            placeholder="您的标题..."
-            show-word-limit
-            rows="3"
-            clearable
-        >
-        </el-input>
-        <h3>正文</h3>
-        <el-input
-            v-model="new_blog_area"
-            maxlength="2000"
-            :autosize="{ minRows: 16, maxRows: 20 }"
-            placeholder="畅所欲言..."
-            show-word-limit
-            type="textarea"
-            rows="3"
-            clearable
-        >
-        </el-input>
+      <el-row gutter="15" style="width: 90%;">
+        <el-col :span="14">
+          <h3>标题</h3>
+          <el-input
+              v-model="new_title_area"
+              maxlength="20"
+              placeholder="您的标题..."
+              show-word-limit
+              rows="3"
+              clearable
+          >
+          </el-input>
+          <h3>正文</h3>
+          <el-input
+              v-model="new_blog_area"
+              maxlength="2000"
+              :autosize="{ minRows: 16, maxRows: 20 }"
+              placeholder="畅所欲言..."
+              show-word-limit
+              type="textarea"
+              rows="3"
+              clearable
+          >
+          </el-input>
 
-      </el-main>
-      <el-main :style="{ width: '40%' }">
-        <h3>关联番组</h3>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-table :data="bangumiTable" style="width: auto" max-height="250">
-              <el-table-column prop="bangumi_id" label="ID"/>
-              <el-table-column prop="bangumi_name" label="Name"/>
-              <el-table-column label="操作">
-                <template #default="scope">
-                  <el-button
-                      link
-                      type="primary"
-                      size="small"
-                      @click.prevent="deleteBangumiRow(scope.$index)">
-                    Remove
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-col>
-        </el-row>
-        <el-autocomplete
-            v-model="selectedResultBangumi"
-            :fetch-suggestions="querySearchBangumi"
-            placeholder="请输入内容"
-            :trigger-on-focus="false"
-            clearable
-            @select="onSelectBangumi">
-        </el-autocomplete>
-        <el-button class="mt-4" @click="onAddBangumi">Add Item</el-button>
-        <el-divider border-style="dashed"/>
+        </el-col>
+        <el-col :span="10">
+          <h3>关联番组</h3>
+          <el-row :gutter="20">
+            <el-col :span="24">
+              <el-table :data="bangumiTable" style="width: auto" max-height="250">
+                <el-table-column prop="bangumi_id" label="ID"/>
+                <el-table-column prop="bangumi_name" label="Name"/>
+                <el-table-column label="操作">
+                  <template #default="scope">
+                    <el-button
+                        round
+                        plain
+                        type="warning"
+                        @click.prevent="deleteBangumiRow(scope.$index)">
+                      <el-icon>
+                        <Delete/>
+                      </el-icon>
+                      移除
+                    </el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-col>
+          </el-row>
+          <el-autocomplete
+              v-model="selectedResultBangumi"
+              :fetch-suggestions="querySearchBangumi"
+              placeholder="请输入内容"
+              :trigger-on-focus="false"
+              clearable
+              @select="onSelectBangumi">
+          </el-autocomplete>
+          <el-button plain class="mt-4" type="primary" @click="onAddBangumi">
+            <el-icon>
+              <Plus/>
+            </el-icon>
+            添加番组
+          </el-button>
+          <el-divider border-style="dashed"/>
 
-      </el-main>
-    </el-container>
-  </div>
-  <div class="submit_button">
-    <el-button type="primary" @click="submitUpdate">
-      提交
-    </el-button>
-  </div>
+        </el-col>
+      </el-row>
+    </div>
+    <div class="submit_button" style="padding: 24px">
+      <el-row>
+        <el-button type="primary" @click="submitUpdate">
+          更新日志
+        </el-button>
+        <el-popover :visible="delete_visible" placement="top" :width="160">
+          <div class="main_flex_style">
+            <p>确定要删除吗?</p>
+          </div>
+          <div class="main_flex_style">
+            <el-button size="small" text @click="delete_visible = false">取消</el-button>
+            <el-button size="small" type="primary" @click="delete_visible = false; blogDelete()"
+            >确认
+            </el-button
+            >
+          </div>
+          <template #reference>
+            <el-button type="danger" @click="delete_visible = true">
+              删除日志
+            </el-button>
+          </template>
+        </el-popover>
+
+      </el-row>
+    </div>
   </el-card>
 </template>
+
+<script lang="ts" setup>
+import {Plus, Delete} from '@element-plus/icons-vue'
+</script>
 
 <script lang="ts">
 import {ref} from "vue";
 import http from "../utils/http.js";
-import {ElNotification} from 'element-plus'
+import {ElNotification,ElMessage} from 'element-plus'
 
 export default {
   props: ['blog_id'],
   name: "BlogCreateItem",
   data() {
     return {
+      delete_visible: false,
       new_blog_area: ref(''),
       new_title_area: ref(''),
       time: '',
@@ -118,6 +151,21 @@ export default {
         this.user_id = response.data.user_id;
         this.new_title_area = ref(response.data.blog_title);
       }).catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    },
+    blogDelete() {
+      http.delete(
+          "http://127.0.0.1:8000/blog_delete/",
+          {
+            params: {
+              "blog_id": this.blog_id,
+            }
+          }
+      ).then(response => {
+        ElMessage.success('已删除日志')
+      }).catch(error => {
+        ElMessage.error('操作失败')
         console.error('Error fetching data:', error);
       });
     },

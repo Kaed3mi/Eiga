@@ -30,8 +30,10 @@
               <el-menu-item index="1-1">番组
               </el-menu-item>
             </router-link>
-            <el-menu-item index="1-2">人物</el-menu-item>
-            <el-menu-item index="1-3">标签</el-menu-item>
+            <router-link :to="{ name: 'character-view', params: { characterId: 1 }}">
+              <el-menu-item index="1-2">人物</el-menu-item>
+            </router-link>
+            <el-menu-item index="1-3" @click="ElMessage.warning('暂不支持的功能')">标签</el-menu-item>
           </el-sub-menu>
 
           <router-link :to="{ name: 'bangumi-subject_search'}">
