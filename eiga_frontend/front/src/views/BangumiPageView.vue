@@ -13,33 +13,40 @@
               <el-main>
                 <el-container>
                   <el-aside style="margin-right: 5%">
-                    <div class="demo-image">
+                    <el-card :body-style="{ padding: '8px'}" shadow="always">
                       <el-image
                           style="width: 300px; height: 400px"
                           :src="bangumi_image"
                           :fit="cover"
                       />
-                    </div>
-                    <el-rate
-                        v-model="bangumi_score"
-                        disabled
-                        show-score
-                        text-color="#ff9900"
-                        :score-template="bangumi_score.toFixed(1)+ 'points'"
-                        :colors="rate_colors"
-                    />
-                    <br/>
-                    你的评分：
-                    <br/>
-                    <el-rate
-                        v-model="user_score"
-                        allow-half
-                        show-score
-                        text-color="#ff9900"
-                        :score-template="Number(user_score) !== -1 ? Number(user_score).toFixed(1)+ 'points' : ''"
-                        :colors="rate_colors"
-                        @click="handleScoring"
-                    />
+                    </el-card>
+                    <el-divider></el-divider>
+                    <el-card :body-style="{padding:'8px'}">
+                      <h4>Eiga评分</h4>
+                      <el-rate
+                          style="margin-top: -20px"
+                          v-model="bangumi_score"
+                          disabled
+                          show-score
+                          text-color="#ff9900"
+                          :score-template="bangumi_score.toFixed(1)+ 'points'"
+                          :colors="rate_colors"
+                      />
+                      <br/>
+                      <div style="padding: 20px;"></div>
+                      你的评分:&nbsp;&nbsp;
+                      <br/>
+                      <el-rate
+                          v-model="user_score"
+                          allow-half
+                          show-score
+                          text-color="#ff9900"
+                          :score-template="Number(user_score) !== -1 ? Number(user_score).toFixed(1)+ 'points' : ''"
+                          :colors="rate_colors"
+                          @click="handleScoring"
+                      />
+                      <div style="padding: 8px;"></div>
+                    </el-card>
                   </el-aside>
 
                   <el-main>
@@ -98,8 +105,8 @@
                         >
                         </el-input>
                         <div style="padding: 8px"></div>
-                        <el-button type="primary" @click=commentInsert>
-                          提交
+                        <el-button :icon="Position" type="primary" @click=commentInsert>
+                          发送评论
                         </el-button>
                       </el-card>
                     </div>
@@ -121,7 +128,12 @@
 
   </el-container>
 </template>
+<script lang="ts" setup>
+import {
+  Position
 
+} from '@element-plus/icons-vue'
+</script>
 <script lang="ts">
 import VerticalMenu from '../components/VerticalMenu.vue'
 import Footer from '../components/Footer.vue'
@@ -266,7 +278,6 @@ export default {
       ).then(response => {
         console.log("submitted score")
         this.bangumi_score = response.data.score
-        this.bangumiCommentQuery()
       }).catch(error => {
         alert("评论失败")
         console.error('Error posting data:', error);

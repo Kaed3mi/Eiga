@@ -21,11 +21,18 @@
         </el-main>
 
         <!-- 底部，可以用于显示页脚等信息 -->
-        <el-footer style="text-align: center; padding: 10px; background-color: #409EFF; color: #fff;">
-          <div class="bottom">
-            <el-button text class="button">
-              <router-link :to="'/user/'+ user_id.user_id">Check User(user_id:{{ user_id.user_id }})</router-link>
-            </el-button>
+        <el-footer style="text-align: center; padding: 10px; ">
+          <div class="main_left_style">
+            <el-avatar :src="avatar" :size="24" style="margin-left: -0px;" class="avatar"/>
+            <router-link :to="'/user/'+ user_id.user_id">
+              <el-button link plain type="primary" class="button">
+                <div style=" margin-left: 2px;margin-bottom: 4px">
+                  {{ user_id.user_name }}
+                </div>
+              </el-button>
+            </router-link>
+            <el-text style="font-size: 10px;color:gray">@{{ time }}</el-text>
+            <span style="padding: 5px; font-size:14px">{{}}</span>
           </div>
         </el-footer>
       </el-container>
@@ -34,19 +41,30 @@
   </el-card>
   <div v-if="bangumis.length > 0">
     <h3>关联番组</h3>
-    <el-row
-        :gutter="20"
-    >
-      <el-col :span="24" v-for="(result, index) in bangumis" :key="index">
-        <ListItem type="bangumi" :id="result.id" :name="result.bangumi_name" :description="0" :image="''"></ListItem>
-      </el-col>
-    </el-row>
+    <div class="main_flex_style">
+      <el-row
+          :gutter="20"
+          style="width: 70%;"
+      >
+        <el-col :span="24" v-for="(result, index) in bangumis" :key="index">
+          <ListItem
+              type="bangumi"
+              :id="result.bangumi_id"
+              :name="result.bangumi_name"
+              :description="result.bangumi_intro"
+              :image="result.image"
+          >
+          </ListItem>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import http from "../utils/http";
 import ListItem from "./ListItem.vue";
+import {format} from "date-fns";
 
 export default {
   props: ['blog_id'],
@@ -56,7 +74,8 @@ export default {
       time: '',
       user_id: '',
       blog_title: '',
-      bangumis: []
+      bangumis: [],
+      avatar: ''
     }
   },
   mounted() {
@@ -75,7 +94,8 @@ export default {
           }
       ).then(response => {
         this.content = response.data.content;
-        this.time = response.data.time;
+        this.time = format(response.data.time, "yyyy-MM-dd HH:mm");
+        this.avatar = `data:image/png;base64,${response.data.avatar}`;
         this.user_id = response.data.user_id;
         this.blog_title = response.data.blog_title;
       }).catch(error => {
@@ -97,7 +117,7 @@ export default {
             'bangumi_name': item.bangumi_id.bangumi_name,
             'bangumi_intro': item.bangumi_id.bangumi_intro,
             'bangumi_id': item.bangumi_id.bangumi_id,
-            'image': item.bangumi_id.image,
+            'image': `data:image/png;base64,${item.image}`
           })
         }
         console.log("this.bangumis")

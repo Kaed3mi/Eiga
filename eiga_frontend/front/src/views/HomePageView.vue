@@ -1,31 +1,34 @@
 <template>
-  <el-container>
+  <el-container class="container_style">
     <el-aside width="200px">
       <VerticalMenu ref="VerticalMenu"></VerticalMenu>
     </el-aside>
 
     <el-main>
-      <el-header></el-header>
-      <el-header style="text-align: left;">
-        <h2>Hi! {{ username }}</h2>
-      </el-header>
-      <el-card shadow="never">
-        <el-text>{{ hitokoto.hitokoto }}</el-text>
-        <p></p>
-        <el-text>—— {{ hitokoto.from_who }}《{{ hitokoto.from }}》</el-text>
-      </el-card>
-      <el-carousel
-          height="500px">
-        <el-carousel-item
-            v-for="url in urls">
-          <el-image
-              style="height: 500px;"
-              :src="url"></el-image>
-        </el-carousel-item>
-      </el-carousel>
-
+      <div class="main_full_flex_style">
+        <div class="main_width">
+          <el-header></el-header>
+          <el-header style="text-align: left;">
+            <h2>Hi! {{ username }}</h2>
+          </el-header>
+          <el-card shadow="never">
+            <el-text>{{ hitokoto.hitokoto }}</el-text>
+            <p></p>
+            <el-text>—— {{ hitokoto.from_who }}《{{ hitokoto.from }}》</el-text>
+          </el-card>
+          <el-carousel
+              height="500px">
+            <el-carousel-item
+                v-for="url in urls">
+              <el-image
+                  style="height: 500px;"
+                  :src="url"></el-image>
+            </el-carousel-item>
+          </el-carousel>
+          <Footer/>
+        </div>
+      </div>
     </el-main>
-
   </el-container>
 </template>
 
@@ -35,10 +38,12 @@
 import VerticalMenu from "../components/VerticalMenu.vue";
 import http from "../utils/http";
 import CharacterUpdate from "../components/CharacterUpdate.vue";
+import Footer from "../components/Footer.vue";
 
 export default {
   name: "Character_update",
   components: {
+    Footer,
     CharacterUpdate,
     VerticalMenu
   },

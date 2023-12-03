@@ -1,8 +1,8 @@
 <template>
   <el-card class="box-card" style="">
-    <h2>新番组</h2>
+    <h2>创建番组</h2>
     <el-divider></el-divider>
-    <el-input v-model="bangumi_name" placeholder="Please input" label="Name" clearable>
+    <el-input v-model="bangumi_name" placeholder="请输入番组名" label="Name" clearable>
       <template #prepend>
         <span>番组名</span>
       </template>
@@ -25,19 +25,19 @@
         </div>
       </el-aside>
       <el-main>
-        <h4 style="text-align: left;"> 简介：</h4>
+        <h3 style="text-align: left;"> 简介：</h3>
 
         <el-input v-model="bangumi_intro" :autosize="{ minRows: 2, maxRows: 20 }" type="textarea"
-                  placeholder="Please input">
+                  placeholder="请输入简介">
         </el-input>
 
         <el-divider border-style="dashed"/>
-        角色
+        <h3>角色</h3>
 
         <el-table :data="characterTable" style="width: auto" max-height="250">
           <el-table-column prop="character_id" label="ID"/>
-          <el-table-column prop="character_name" label="Name"/>
-          <el-table-column label="Operations">
+          <el-table-column prop="character_name" label="角色名"/>
+          <el-table-column label="操作">
             <template #default="scope">
               <el-button
                   round
@@ -48,6 +48,7 @@
                 <el-icon>
                   <Delete/>
                 </el-icon>
+                &nbsp;
                 移除
               </el-button>
             </template>
@@ -58,7 +59,7 @@
           <el-autocomplete
               v-model="selectedResultCharacter"
               :fetch-suggestions="querySearchCharacter"
-              placeholder="请输入内容"
+              placeholder="请输入角色名"
               :trigger-on-focus="false"
               clearable
               @select="onSelectCharacter">
@@ -83,9 +84,9 @@
           <el-col :span="24">
             <el-table :data="bangumiTable" style="width: auto" max-height="250">
               <el-table-column prop="bangumi_id" label="ID"/>
-              <el-table-column prop="bangumi_name" label="Name"/>
-              <el-table-column prop="bangumi_relation" label="Relation"/>
-              <el-table-column label="Operations">
+              <el-table-column prop="bangumi_name" label="番组名"/>
+              <el-table-column prop="bangumi_relation" label="关系"/>
+              <el-table-column label="操作">
                 <template #default="scope">
                   <el-button
                       round
@@ -109,7 +110,7 @@
           <el-autocomplete
               v-model="selectedResultBangumi"
               :fetch-suggestions="querySearchBangumi"
-              placeholder="请输入名称"
+              placeholder="请输入番组名"
               :trigger-on-focus="false"
               clearable
               @select="onSelectBangumi">
@@ -124,16 +125,16 @@
 
         </div>
 
-        <el-divider border-style="dashed"/>
-
-        <el-button type="primary" @click="submitUpdate">提交</el-button>
       </el-main>
     </el-container>
+    <el-divider border-style="dashed"/>
+
+    <el-button :icon="Finished" type="success" @click="submitUpdate">创建条目</el-button>
   </el-card>
 </template>
 
 <script lang="ts" setup>
-import {Plus, Delete} from '@element-plus/icons-vue'
+import {Plus, Delete, Finished} from '@element-plus/icons-vue'
 </script>
 <script lang="ts">
 import VerticalMenu from '../components/VerticalMenu.vue'
@@ -141,7 +142,7 @@ import http from "../utils/http";
 import ListItem from '../components/ListItem.vue'
 import CommentItem from "../components/CommentItem.vue";
 
-import {ElMessage} from 'element-plus'
+import {ElMessage, ElNotification} from 'element-plus'
 import defaultImage from '../assets/bangumi_default.jpg'
 
 export default {
@@ -357,6 +358,11 @@ export default {
                       bangumis: this.bangumiTable
                     }
                 )
+                ElNotification({
+                  title: '创建成功',
+                  message: '已创建番组\"' + this.bangumi_name + '\"',
+                  type: 'success',
+                })
                 this.$router.push({name: 'bangumi-view', params: {bangumiId: response.data.bangumi_id}})
               })
             })

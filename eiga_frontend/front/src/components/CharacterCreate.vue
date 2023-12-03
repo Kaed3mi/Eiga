@@ -65,8 +65,8 @@
         </el-input>
       </el-col>
     </el-row>
-    <el-button @click.prevent="submit" type="primary" style="margin-top: 20px">
-      创建角色
+    <el-button @click.prevent="submit" :icon="Finished" type="success" style="margin-top: 20px">
+      创建条目
     </el-button>
   </el-card>
 
@@ -75,11 +75,14 @@
 <script lang="ts" setup>
 import {onMounted, ref} from 'vue'
 import http from "../utils/http.ts";
-import {Plus, Delete} from '@element-plus/icons-vue'
+import {Plus, Delete, Finished} from '@element-plus/icons-vue'
 import type {UploadProps} from 'element-plus'
-import {ElMessage} from 'element-plus'
+import {ElMessage, ElNotification} from 'element-plus'
 import defaultImage from '../assets/character_default.jpg'
+import {useRoute} from 'vue-router'
+import router from "../utils/router";
 
+const route = useRoute()
 const intoduction = ref('')
 const imageUrl = ref('')
 const character_name = ref('')
@@ -145,7 +148,7 @@ const submit = () => {
   console.log(imageUrl.value);
   urlToBase64(imageUrl.value)
       .then((base64) => {
-        console.log('Base64 encoded image:', base64);
+        console.log('正在创建');
         http.post(
             "http://127.0.0.1:8000/character_create/", {
               character_name: character_name.value,
@@ -153,13 +156,16 @@ const submit = () => {
               introduction: intoduction.value,
               image: base64
             }
-        ).then(() => {
-          ElMessage.success('已创建角色"' + character_name.value + '"！')
-          intoduction.value = ''
-          imageUrl.value = defaultImage
-          character_name.value = ''
-          tableData.value = []
+        ).then((response) => {
+          console.log('创建成功');
+          ElNotification({
+            title: '创建成功',
+            message: '已创建角色\"' + character_name.value + '\"',
+            type: 'success',
+          })
+          router.push("/character/" + response.data.character_id)
         }).catch((error) => {
+          console.log('创建失败');
           ElMessage.error('创建失败！', error)
         })
       }).catch((error) => {

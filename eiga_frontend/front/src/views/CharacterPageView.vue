@@ -10,6 +10,7 @@
           <el-container class="row-content">
             <CharacterInfo></CharacterInfo>
           </el-container>
+          <Footer></Footer>
         </div>
       </div>
     </el-main>
@@ -20,6 +21,7 @@
 import CharacterInfo from '../components/CharacterInfo.vue';
 import VerticalMenu from '../components/VerticalMenu.vue';
 import http from '../utils/http';
+import Footer from "../components/Footer.vue";
 
 export default {
   name: "characterInfo",
@@ -28,6 +30,7 @@ export default {
     CharacterInfo
   },
   components: {
+    Footer,
     VerticalMenu,
     CharacterInfo
   },

@@ -35,6 +35,18 @@ class CharacterQuery(APIView):
         return JsonResponse(Json)
 
 
+class CharacterDelete(APIView):
+    def delete(self, request):
+        character_id = request.GET.get("character_id")
+        try:
+            obj = Character.objects.get(character_id=character_id)
+            obj.delete()
+        except Exception as e:
+            print(e)
+            return Response(1)
+        return Response(0)
+
+
 class CharacterSearch(APIView):
     def get(self, request):
         pattern = request.GET.get('pattern')
@@ -123,10 +135,10 @@ class CharacterSelect(APIView):
 # image: base64
 class CharacterCreate(APIView):
     def post(self, request):
-        print(request.data.get('character_name'))
-        print(request.data.get('attributes'))
-        print(request.data.get('introduction'))
-        print(request.data.get('image'))
+        # print(request.data.get('character_name'))
+        # print(request.data.get('attributes'))
+        # print(request.data.get('introduction'))
+        # print(request.data.get('image'))
 
         character_name = str(request.data.get('character_name'))
         request.data.get('attributes')
@@ -155,4 +167,4 @@ class CharacterCreate(APIView):
 
         with open(ASSETS_ROOT + 'characters/' + str(s.character_id) + file_ext, 'wb') as f:
             f.write(image_str)
-        return Response(1)
+        return Response({'character_id': s.character_id})

@@ -87,8 +87,8 @@
           </el-container>
         </div>
         <div class="submit_button">
-          <el-button type="primary" @click="submitUpdate">
-            提交
+          <el-button :icon="Finished" type="success" @click="submitUpdate">
+            创建条目
           </el-button>
         </div>
       </el-main>
@@ -97,13 +97,13 @@
 </template>
 
 <script lang="ts" setup>
-import {Plus, Delete} from '@element-plus/icons-vue'
+import {Plus, Delete, Finished} from '@element-plus/icons-vue'
 </script>
 
 <script lang="ts">
 import {ref} from "vue";
 import http from "../utils/http.js";
-import {ElNotification} from "element-plus";
+import {ElMessage, ElNotification} from "element-plus";
 
 export default {
   name: "BlogCreateItem",
@@ -190,11 +190,13 @@ export default {
             user_id: localStorage.getItem("user_id"),
             bangumis: bangumi_id_list
           }
-      )
-      ElNotification({
-        title: '创建成功',
-        message: '已创建日志\"' + this.new_title_area + '\"',
-        type: 'success',
+      ).then(response => {
+        ElNotification.success({
+          title: '创建成功',
+          message: '已创建日志\"' + this.new_title_area + '\"',
+          type: 'success',
+        })
+        this.$router.push("/blog/"+response.data.blog_id)
       })
     }
   }

@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from app.models import Bangumi, Blog
 from app.models import BlogBangumi
 from app.serializers import BangumiModelSerializer
-
+from app.utils.utils import urlToImgDate
 
 class BlogBangumiQuery(APIView):
     def get(self, request):
@@ -15,6 +15,7 @@ class BlogBangumiQuery(APIView):
             print(list)
             for obj in list:
                 obj_list_data.append({
+                    "image": urlToImgDate(obj.bangumi_id.image),
                     "bangumi_id": BangumiModelSerializer(obj.bangumi_id).data
                 })
         except Exception as e:

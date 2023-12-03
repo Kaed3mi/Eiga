@@ -6,7 +6,8 @@
     <el-main>
       <div class="main_full_flex_style">
         <div style="width: var(--bangumi-width) ">
-      <BangumiCreate></BangumiCreate>
+          <BangumiCreate></BangumiCreate>
+          <Footer/>
         </div>
       </div>
     </el-main>
@@ -15,10 +16,12 @@
 <script lang="ts">
 import VerticalMenu from '../components/VerticalMenu.vue';
 import BangumiCreate from '../components/BangumiCreate.vue';
+import Footer from "../components/Footer.vue";
 
 export default {
   name: "Bangumi_create",
   components: {
+    Footer,
     VerticalMenu,
     BangumiCreate
   }

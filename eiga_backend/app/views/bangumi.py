@@ -59,8 +59,8 @@ class BangumiUpdate(APIView):
 
 
 class BangumiDelete(APIView):
-    def post(self, request):
-        bangumi_id = str(request.data.get('bangumi_id'))
+    def delete(self, request):
+        bangumi_id = request.GET.get("bangumi_id")
         try:
             obj = Bangumi.objects.get(bangumi_id=bangumi_id)
             obj.delete()

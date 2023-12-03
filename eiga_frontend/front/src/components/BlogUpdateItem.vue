@@ -47,7 +47,7 @@
                       <el-icon>
                         <Delete/>
                       </el-icon>
-                      移除
+                      &nbsp;移除
                     </el-button>
                   </template>
                 </el-table-column>
@@ -75,8 +75,8 @@
     </div>
     <div class="submit_button" style="padding: 24px">
       <el-row>
-        <el-button type="primary" @click="submitUpdate">
-          更新日志
+        <el-button :icon="Select" type="primary" @click="submitUpdate">
+          提交更改
         </el-button>
         <el-popover :visible="delete_visible" placement="top" :width="160">
           <div class="main_flex_style">
@@ -90,25 +90,24 @@
             >
           </div>
           <template #reference>
-            <el-button type="danger" @click="delete_visible = true">
-              删除日志
+            <el-button :icon="Delete" type="danger" @click="delete_visible = true">
+              删除条目
             </el-button>
           </template>
         </el-popover>
-
       </el-row>
     </div>
   </el-card>
 </template>
 
 <script lang="ts" setup>
-import {Plus, Delete} from '@element-plus/icons-vue'
+import {Plus, Delete, Select} from '@element-plus/icons-vue'
 </script>
 
 <script lang="ts">
 import {ref} from "vue";
 import http from "../utils/http.js";
-import {ElNotification,ElMessage} from 'element-plus'
+import {ElNotification, ElMessage} from 'element-plus'
 
 export default {
   props: ['blog_id'],
@@ -163,7 +162,12 @@ export default {
             }
           }
       ).then(response => {
-        ElMessage.success('已删除日志')
+        ElNotification({
+          title: '删除成功',
+          message: '已删除日志\"' + this.new_title_area + '\"',
+          type: 'success',
+        })
+        this.$router.push("/home")
       }).catch(error => {
         ElMessage.error('操作失败')
         console.error('Error fetching data:', error);
@@ -266,9 +270,15 @@ export default {
       )
       ElNotification({
         title: '更新成功',
-        message: '已提交日志\"' + this.new_title_area + '\"的更新',
+        message: '已更改日志\"' + this.new_title_area + '\"',
         type: 'success',
       })
+      setTimeout(() => {
+        this.$router.push("/blog/" + this.blog_id).then(() => {
+          window.location.reload();
+        });
+      }, 500);
+
     }
   }
 }

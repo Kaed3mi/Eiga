@@ -32,7 +32,7 @@
           <div v-if="description">
             <div style="padding: 3px"></div>
             <el-row>
-              <div class="main_left_style" style="width: 250px;">
+              <div class="main_left_style" style="width: 80%;">
                 <el-text truncated>{{ description }}</el-text>
               </div>
             </el-row>

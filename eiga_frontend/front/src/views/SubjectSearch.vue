@@ -59,17 +59,20 @@
                 </div>
               </div>
             </el-main>
-            <el-divider></el-divider>
-            <el-row>
-              <el-container class="row-content">
-                <el-pagination
-                    :current-page="Number(search_page)"
-                    background layout="prev, pager, next, jumper, total"
-                    :page-size="SEARCH_PAGE_SIZE"
-                    :total="search_results.length"
-                    @current-change="currentChange"/>
-              </el-container>
-            </el-row>
+            <div v-if="search_results.length > 0">
+
+              <el-divider></el-divider>
+              <el-row>
+                <el-container class="row-content">
+                  <el-pagination
+                      :current-page="Number(search_page)"
+                      background layout="prev, pager, next, jumper, total"
+                      :page-size="SEARCH_PAGE_SIZE"
+                      :total="search_results.length"
+                      @current-change="currentChange"/>
+                </el-container>
+              </el-row>
+            </div>
             <el-footer>
 
             </el-footer>

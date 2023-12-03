@@ -7,6 +7,7 @@
       <div class="main_full_flex_style">
         <div class="main_width">
           <CharacterUpdate></CharacterUpdate>
+          <Footer/>
         </div>
       </div>
     </el-main>
@@ -16,10 +17,12 @@
 <script lang="ts">
 import VerticalMenu from '../components/VerticalMenu.vue';
 import CharacterUpdate from '../components/CharacterUpdate.vue';
+import Footer from "../components/Footer.vue";
 
 export default {
   name: "Character_update",
   components: {
+    Footer,
     CharacterUpdate,
     VerticalMenu
   }

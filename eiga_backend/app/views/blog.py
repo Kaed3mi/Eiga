@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Blog, BlogBangumi, User, Bangumi
 from app.serializers import UserModelSerializer
+from app.utils.utils import urlToImgDate
 import datetime
 
 
@@ -31,7 +32,7 @@ class BlogInsert(APIView):
         except Exception as e:
             print(e)
             return Response(1)
-        return Response(0)
+        return Response({"blog_id": blog.blog_id})
 
 
 class BlogDelete(APIView):
@@ -102,6 +103,7 @@ class BlogQuery(APIView):
             'content': obj.content,
             'blog_title': obj.blog_title,
             'time': obj.time,
+            'avatar': urlToImgDate(obj.user_id.avatar),
             'user_id': UserModelSerializer(obj.user_id).data if obj.user_id is not None else '',
         })
 

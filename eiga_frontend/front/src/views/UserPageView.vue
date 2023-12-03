@@ -1,5 +1,5 @@
 <template>
-  <el-container style="height: 100vh;">
+  <el-container class="container_style">
     <el-aside width="200px">
       <VerticalMenu></VerticalMenu>
     </el-aside>
@@ -40,6 +40,7 @@
               </el-main>
             </el-container>
           </el-card>
+          <Footer/>
         </div>
       </div>
     </el-main>
@@ -53,10 +54,11 @@ import UpdateUserInfo from "../user_page_components/UpdateUserInfo.vue";
 import http from "../utils/http";
 import UserAvatar from "../user_page_components/UserAvatar.vue";
 import MyBangumis from "../user_page_components/MyBangumis.vue";
+import Footer from "../components/Footer.vue";
 
 export default {
   name: 'UserPage',
-  components: {MyBangumis, UserAvatar, VerticalMenu, UpdateUserInfo},
+  components: {Footer, MyBangumis, UserAvatar, VerticalMenu, UpdateUserInfo},
   data() {
     return {
       user_id: this.$route.params.userId,
@@ -70,7 +72,8 @@ export default {
   },
   // 用户同路由跳转更新，不能删。
   beforeRouteUpdate(to, from, next) {
-    this.user_id = to.params.user_id; // 更新 user_id
+    this.user_id = to.params.userId; // 更新 user_id
+    console.log("refresh" + this.user_id)
     this.getUserScores();
     this.userQuery();
     next();

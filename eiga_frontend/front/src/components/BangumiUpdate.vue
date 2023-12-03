@@ -8,7 +8,7 @@
         <div style="width: var(--bangumi-width) ">
           <el-card class="box-card" style="">
             <el-container>
-              <el-header><h2>{{ bangumi_name }}</h2></el-header>
+              <el-header><h2>编辑番组：{{ bangumi_name }}</h2></el-header>
               <el-divider border-style="dashed"/>
               <el-container>
                 <el-aside>
@@ -27,14 +27,14 @@
                   </div>
                 </el-aside>
                 <el-main>
-                  <h4 style="text-align: left;"> 番组名：</h4>
-                  <el-input v-model="bangumi_name" :autosize="{ minRows: 2, maxRows: 20 }" type="textarea"
-                            placeholder="Please input"></el-input>
+                  <h3 style="text-align: left;"> 番组名：</h3>
+                  <el-input v-model="bangumi_name"
+                            placeholder="请输入番组名"></el-input>
                   <el-divider border-style="dashed"/>
 
-                  <h4 style="text-align: left;"> 简介：</h4>
+                  <h3 style="text-align: left;"> 简介：</h3>
                   <el-input v-model="bangumi_intro" :autosize="{ minRows: 2, maxRows: 20 }" type="textarea"
-                            placeholder="Please input"></el-input>
+                            placeholder="请输入简介"></el-input>
                   <el-divider border-style="dashed"/>
 
                   <h3>角色</h3>
@@ -45,29 +45,36 @@
                     <el-table-column label="Operations">
                       <template #default="scope">
                         <el-button
-                            link
-                            type="primary"
-                            size="small"
+                            round
+                            plain
+                            type="warning"
                             @click.prevent="deleteCharacterRow(scope.$index)">
-                          Remove
+                          <el-icon>
+                            <Delete/>
+                          </el-icon>
+                          &nbsp;
+                          移除
                         </el-button>
                       </template>
                     </el-table-column>
                   </el-table>
 
-                  <div style="margin:10px">
-                    角色:
+                  <div class="input-row-bc">
                     <el-autocomplete
                         v-model="selectedResultCharacter"
                         :fetch-suggestions="querySearchCharacter"
                         placeholder="请输入角色名"
                         :trigger-on-focus="false"
                         clearable
-                        style="width: 75%;"
                         @select="onSelectCharacter">
                     </el-autocomplete>
 
-                    <el-button class="mt-4" type="primary" @click="onAddCharacter">Add Item</el-button>
+                    <el-button plain class="mt-4" type="primary" @click="onAddCharacter">
+                      <el-icon>
+                        <Plus/>
+                      </el-icon>
+                      添加角色
+                    </el-button>
                   </div>
 
 
@@ -77,16 +84,20 @@
                     <el-col :span="24">
                       <el-table :data="bangumiTable" style="width: auto" max-height="250">
                         <el-table-column prop="bangumi_id" label="ID"/>
-                        <el-table-column prop="bangumi_name" label="Name"/>
-                        <el-table-column prop="bangumi_relation" label="Relation"/>
-                        <el-table-column label="Operations">
+                        <el-table-column prop="bangumi_name" label="番组名"/>
+                        <el-table-column prop="bangumi_relation" label="关系"/>
+                        <el-table-column label="操作">
                           <template #default="scope">
                             <el-button
-                                link
-                                type="primary"
-                                size="small"
+                                round
+                                plain
+                                type="warning"
                                 @click.prevent="deleteBangumiRow(scope.$index)">
-                              Remove
+                              <el-icon>
+                                <Delete/>
+                              </el-icon>
+                              &nbsp;
+                              移除
                             </el-button>
                           </template>
                         </el-table-column>
@@ -94,10 +105,8 @@
                     </el-col>
                   </el-row>
 
-                  <div style="margin:10px">
-                    番组:
+                  <div class="input-row-bb">
                     <el-autocomplete
-                        style="width: 35%;"
                         v-model="selectedResultBangumi"
                         :fetch-suggestions="querySearchBangumi"
                         placeholder="请输入番组名"
@@ -105,28 +114,57 @@
                         clearable
                         @select="onSelectBangumi">
                     </el-autocomplete>
+                    <el-input v-model="newRelation" placeholder="请输入关系"></el-input>
 
-                    关系:
-                    <el-input style="width: 35%;" v-model="newRelation" placeholder="请输入关系"></el-input>
+                    <el-button plain class="mt-4" @click="onAddBangumi" type="primary">
+                      <el-icon>
+                        <Plus/>
+                      </el-icon>
+                      添加番组关系
+                    </el-button>
 
-                    <el-button class="mt-4" @click="onAddBangumi" type="primary">Add Item</el-button>
 
-                    <el-divider border-style="dashed"/>
-
-                    <el-button type="primary" @click="submitUpdate">提交</el-button>
                   </div>
 
                 </el-main>
               </el-container>
-              <Footer/>
             </el-container>
+            <el-divider border-style="dashed"/>
+            <div class="main_flex_style">
+              <el-row>
+                <el-button :icon="Select" type="primary" @click="submitUpdate">
+                  提交更改
+                </el-button>
+                <el-popover :visible="delete_visible" placement="top" :width="160">
+                  <div class="main_flex_style">
+                    <p>确定要删除吗?</p>
+                  </div>
+                  <div class="main_flex_style">
+                    <el-button size="small" text @click="delete_visible = false">取消</el-button>
+                    <el-button size="small" type="primary" @click="delete_visible = false; bangumiDelete()"
+                    >确认
+                    </el-button
+                    >
+                  </div>
+                  <template #reference>
+                    <el-button :icon="Delete" type="danger" @click="delete_visible = true">
+                      删除条目
+                    </el-button>
+                  </template>
+                </el-popover>
+
+              </el-row>
+            </div>
           </el-card>
+          <Footer/>
         </div>
       </div>
     </el-main>
   </el-container>
 </template>
-
+<script lang="ts" setup>
+import {Plus, Delete, Select} from '@element-plus/icons-vue'
+</script>
 <script lang="ts">
 import VerticalMenu from '../components/VerticalMenu.vue'
 import CharacterCard from '../components/CharacterCard.vue'
@@ -134,7 +172,7 @@ import http from "../utils/http";
 import ListItem from '../components/ListItem.vue'
 import CommentItem from "../components/CommentItem.vue";
 import {ref} from 'vue'
-import {ElMessage} from 'element-plus'
+import {ElMessage, ElNotification} from 'element-plus'
 import Footer from "./Footer.vue";
 
 export default {
@@ -147,6 +185,7 @@ export default {
   },
   data() {
     return {
+      delete_visible: false,
       bangumi_id: this.$route.params.bangumiId,
       bangumi_image: '',
       bangumi_intro: "No introduction",
@@ -195,6 +234,26 @@ export default {
           .catch(error => {
             console.error('Error fetching data:', error);
           });
+    },
+    bangumiDelete() {
+      http.delete(
+          "http://127.0.0.1:8000/bangumi_delete/",
+          {
+            params: {
+              "bangumi_id": this.bangumi_id,
+            }
+          }
+      ).then(response => {
+        ElNotification({
+          title: '删除成功',
+          message: '已删除番组\"' + this.bangumi_name + '\"',
+          type: 'success',
+        })
+        this.$router.push("/home")
+      }).catch(error => {
+        ElMessage.error('操作失败')
+        console.error('Error fetching data:', error);
+      });
     },
     bangumiRelationShipQuery() {
       http.get(
@@ -383,10 +442,16 @@ export default {
             bangumis: this.bangumiTable
           }
       )
-
-      this.$router.push({name: 'bangumi-view', params: {bangumiId: this.bangumi_id}}).then(() => {
-        window.location.reload();
-      });
+      ElNotification({
+        title: '更新成功',
+        message: '已更改番组\"' + this.bangumi_name + '\"',
+        type: 'success',
+      })
+      setTimeout(() => {
+        this.$router.push({name: 'bangumi-view', params: {bangumiId: this.bangumi_id}}).then(() => {
+          window.location.reload();
+        });
+      }, 500);
     }
   },
 }
@@ -399,6 +464,20 @@ export default {
 
 .full-screen-layout {
   height: 80vh; /* 设置高度为视口高度，以填充整个屏幕 */
+}
+
+.input-row-bc {
+  display: grid;
+  margin-top: 10px;
+  grid-template-columns: 80% 20%;
+  grid-gap: 8px;
+}
+
+.input-row-bb {
+  display: grid;
+  margin-top: 10px;
+  grid-template-columns: 40% 40% 20%;
+  grid-gap: 8px;
 }
 
 .demo-image .block {

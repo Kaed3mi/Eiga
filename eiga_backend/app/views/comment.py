@@ -37,6 +37,18 @@ class CommentInsert(APIView):
         return Response(0)
 
 
+class CommentDelete(APIView):
+    def delete(self, request):
+        comment_id = request.GET.get("comment_id")
+        try:
+            obj = Comment.objects.get(comment_id=comment_id)
+            obj.delete()
+        except Exception as e:
+            print(e)
+            return Response(1)
+        return Response(0)
+
+
 class CommentQuery(APIView):
     def get(self, request):
         comment_id = request.GET.get('comment_id')

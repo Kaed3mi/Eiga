@@ -1,5 +1,5 @@
 <template>
-  <el-container style="height: 100vh;">
+  <el-container class="container_style">
     <el-aside width="200px">
       <VerticalMenu></VerticalMenu>
     </el-aside>
@@ -7,6 +7,7 @@
       <div class="main_full_flex_style">
         <div class="main_width">
           <BlogCreateItem></BlogCreateItem>
+          <Footer/>
         </div>
       </div>
     </el-main>
@@ -16,10 +17,12 @@
 <script>
 import VerticalMenu from "../components/VerticalMenu.vue";
 import BlogCreateItem from "../components/BlogCreateItem.vue";
+import Footer from "../components/Footer.vue";
 
 export default {
   name: "BlogCreateView",
   components: {
+    Footer,
     VerticalMenu,
     BlogCreateItem
   }
