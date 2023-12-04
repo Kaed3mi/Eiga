@@ -29,7 +29,7 @@
                           disabled
                           show-score
                           text-color="#ff9900"
-                          :score-template="bangumi_score.toFixed(1)+ '分'"
+                          :score-template="Number(bangumi_score) !== -1 ? Number(bangumi_score).toFixed(1)+ '分' : ''"
                           :colors="rate_colors"
                       />
                       <br/>

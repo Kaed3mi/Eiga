@@ -1,4 +1,4 @@
-import {createApp, VueElement} from 'vue'
+import { createApp, VueElement } from 'vue'
 import './style.css'
 import './styles/styles.css'
 import App from './App.vue'

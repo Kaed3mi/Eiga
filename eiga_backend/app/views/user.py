@@ -24,7 +24,7 @@ class UserRegister(APIView):
         user_name = str(request.data.get('username'))
         email = str(request.data.get('email'))
         password = str(request.data.get('password'))
-        permission = "user"
+        permission = str(request.data.get('permission'))
 
         image_base64 = request.data.get("image")
         print('data:', request.data)

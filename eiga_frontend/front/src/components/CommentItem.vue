@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 1%"></div>
   <el-card :body-style="{ padding: '20px' }" style="position: relative">
-    <div v-if="isAdmin">
+    <div v-if="isEditable()">
       <el-button :icon="Delete" size="small" plain type="danger" class="delete_button" @click="commentDelete">
       </el-button>
     </div>
@@ -58,12 +58,7 @@ export default {
     this.commentQuery(); // 在组件挂载后调用 fetchData 方法
   },
   computed: {
-    isAdmin() {
-      console.log("permission:" + localStorage.getItem("permission"))
-      return (
-          localStorage.getItem("user_id") && localStorage.getItem("permission") === "admin"
-      );
-    },
+
   },
   methods: {
     commentQuery() {
@@ -107,6 +102,13 @@ export default {
         ElMessage.error('操作失败')
         console.error('Error fetching data:', error);
       });
+    },
+    isEditable() {
+      let user_id = localStorage.getItem("user_id")
+      let permission = localStorage.getItem("permission")
+      return (
+        user_id && (permission === "admin" || user_id == this.user_id.user_id)
+      );
     },
   },
 

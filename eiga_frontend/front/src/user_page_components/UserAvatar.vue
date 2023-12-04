@@ -3,7 +3,7 @@
     <el-avatar shape="circle" :fit="fit" :src="avatar_url" alt="User avatar" class="avatar"
                @mouseover="showChange = true"
                @mouseleave="showChange = false"
-               @click="this.dialogVisible = true"/>
+               @click="this.dialogVisible = editable"/>
     <div class="update-user-avatar">
       <el-dialog
           v-model="this.dialogVisible"
@@ -53,6 +53,7 @@ export default {
       type: String,
       required: true,
     },
+    editable:{}
   },
   methods: {
     handleSuccess() {

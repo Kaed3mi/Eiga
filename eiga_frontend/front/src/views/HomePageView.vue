@@ -16,15 +16,19 @@
             <p></p>
             <el-text>—— {{ hitokoto.from_who }}《{{ hitokoto.from }}》</el-text>
           </el-card>
-          <el-carousel
+          <div style="padding: 5px"></div>
+          <el-card :body-style="{padding: '2px'}">
+            <el-carousel
               height="500px">
-            <el-carousel-item
-                v-for="url in urls">
+              <el-carousel-item
+              v-for="url in urls">
               <el-image
-                  style="height: 500px;"
-                  :src="url"></el-image>
+              style="height: 500px;"
+              fit="cover"
+              :src="url"></el-image>
             </el-carousel-item>
           </el-carousel>
+          </el-card>
           <Footer/>
         </div>
       </div>
@@ -53,7 +57,9 @@ export default {
       hitokoto: [],
       username: '',
       urls: [
-        'https://i.postimg.cc/q783HPYV/minami-kotori.jpg'
+        "/src/assets/bkimg/1.jpeg",
+        "/src/assets/bkimg/2.jpeg",
+        "/src/assets/bkimg/3.jpeg"
       ]
     }
   },

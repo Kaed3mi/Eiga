@@ -7,7 +7,7 @@
       <div class="main_full_flex_style">
         <div class="main_width">
           <el-card class="box-card" style="position: relative">
-            <div class="user-info-container">
+            <div v-if="checkUserIdentity" class="user-info-container">
               <UpdateUserInfo/>
             </div>
             <el-container>
@@ -20,7 +20,7 @@
 
                   <!-- 用户头像/修改组件 -->
                   <div class='avatar-container'>
-                    <UserAvatar :avatar_url="avatar_url"/>
+                    <UserAvatar :avatar_url="avatar_url" :editable="checkUserIdentity"/>
                   </div>
 
                   <h2>{{ username }}</h2>
@@ -105,14 +105,20 @@ export default {
   beforeRouteUpdate(to, from, next) {
     this.user_id = to.params.userId; // 更新 user_id
     console.log("refresh" + this.user_id)
-    this.getUserScores();
-    this.userQuery();
+    // this.getUserScores();
+    // this.userQuery();
     next();
   },
   mounted() {
     this.getUserScores();
     this.userQuery();
     this.userBlogQuery();
+  },
+  computed: {
+    checkUserIdentity() {
+      console.log("is: "+localStorage.getItem('user_id') == this.user_id);
+      return localStorage.getItem('user_id') == this.user_id
+    }
   },
   methods: {
     getUserScores() {

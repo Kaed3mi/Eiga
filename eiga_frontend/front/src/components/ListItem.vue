@@ -79,7 +79,7 @@
                     disabled
                     show-score
                     text-color="#ff9900"
-                    score-template="{value} 分"
+                    :score-template="Number(score_model).toFixed(1)+'分'"
                 />
                 <el-text> &nbsp;({{ rater_cnt }}人)</el-text>
               </div>
