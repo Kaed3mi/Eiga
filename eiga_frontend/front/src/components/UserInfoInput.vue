@@ -182,6 +182,7 @@ const send_post = () => {
           username: ruleForm.username,
           password: ruleForm.password,
           email: ruleForm.email,
+          permission: ruleForm.Admin ? "admin" : "user",
           image: "default"
         },
     )
@@ -192,6 +193,7 @@ const send_post = () => {
                 username: ruleForm.username,
                 password: ruleForm.password,
                 email: ruleForm.email,
+                permission: ruleForm.Admin ? "admin" : "user",
                 image: base64
               },
           )

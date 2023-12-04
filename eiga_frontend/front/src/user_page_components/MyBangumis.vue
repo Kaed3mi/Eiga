@@ -21,7 +21,7 @@
               >
                 <el-col>
                   <el-row>
-                    <el-card :body-style="{padding: '3px'}">
+                    <el-card :body-style="{padding: '3px' }">
                       <el-image
                           style="width: 100px; height: 134px;margin-bottom: -5px;margin-left: -3px"
                           :src="bangumi.image"/>

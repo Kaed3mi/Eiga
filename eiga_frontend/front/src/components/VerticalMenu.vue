@@ -312,6 +312,7 @@ export default {
         message: '已登出',
         type: 'success',
       })
+      window.location.reload()
     },
     logIn() {
       console.log("click login");

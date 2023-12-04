@@ -45,6 +45,7 @@
                             v-for="(result, index) in search_results.slice((search_page-1)*SEARCH_PAGE_SIZE, search_page*SEARCH_PAGE_SIZE)"
                             :key="index">
                       <ListItem
+                          :key="new Date().getTime()"
                           :type="result.type"
                           :id="result.id"
                           :name="result.name"
