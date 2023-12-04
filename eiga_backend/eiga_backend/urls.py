@@ -48,12 +48,13 @@ urlpatterns = [
     path('bangumi_update/', bangumi.BangumiUpdate.as_view()),
     path('bangumi_charater_update/', bangumi_character.BangumiCharaterUpdate.as_view()),
     path('bangumi_bangumi_update/', bangumi_relationship.BangumiBangumiUpdate.as_view()),
-    path('bangumi_create/', bangumi.BangumiCreate.as_view()),
-    path('starring_query/', bangumi_character.StarringQuery.as_view()),
+    path('bangumi_insert/', bangumi.BangumiInsert.as_view()),
+    path('character_bangumi_query/', bangumi_character.CharacterBangumiQuery.as_view()),
     # comment
     path('comment_query/', comment.CommentQuery.as_view()),
     path('comment_search/', comment.CommentSearch.as_view()),
     path('comment_insert/', comment.CommentInsert.as_view()),
+    path('comment_delete/', comment.CommentDelete.as_view()),
     # score
     path('score_insert/', score.ScoreInsert.as_view()),
     path('score_update/', score.ScoreUpdate.as_view()),
@@ -74,7 +75,9 @@ urlpatterns = [
     path('blog_search/', blog.BlogSearch.as_view()),
     path('blog_update/', blog.BlogUpdate.as_view()),
     path('blog_query/', blog.BlogQuery.as_view()),
+    path('user_blog_query/', blog.UserBlogQuery.as_view()),
     path('blog_bangumi_query/', blog_bangumi.BlogBangumiQuery.as_view()),
+    path('bangumi_blog_query/', blog_bangumi.BangumiBlogQuery.as_view()),
     path('blog_bangumi_update/', blog_bangumi.BlogBangumiUpdate.as_view())
 ]
 # import app.views.user as user

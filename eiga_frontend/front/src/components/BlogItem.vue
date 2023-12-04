@@ -40,11 +40,11 @@
     </div>
   </el-card>
   <div v-if="bangumis.length > 0">
+    <el-divider></el-divider>
     <h3>关联番组</h3>
     <div class="main_flex_style">
       <el-row
-          :gutter="20"
-          style="width: 70%;"
+          style="width: 100%;max-width: 600px;"
       >
         <el-col :span="24" v-for="(result, index) in bangumis" :key="index">
           <ListItem
@@ -59,11 +59,18 @@
       </el-row>
     </div>
   </div>
+  <el-divider></el-divider>
+  <div class="main_flex_style">
+    <div style=" width: 100%;max-width: 600px;">
+      <CommentArea object_type="blog" :object_id="blog_id"/>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import http from "../utils/http";
 import ListItem from "./ListItem.vue";
+import CommentArea from "../components/CommentArea.vue";
 import {format} from "date-fns";
 
 export default {
@@ -129,7 +136,8 @@ export default {
   },
   name: "BlogItem",
   components: {
-    ListItem
+    ListItem,
+    CommentArea
   },
 }
 

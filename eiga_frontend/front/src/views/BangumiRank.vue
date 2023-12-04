@@ -62,7 +62,7 @@
                                       disabled
                                       show-score
                                       text-color="#ff9900"
-                                      score-template="{value} 分"
+                                      :score-template="Number(key.bangumi_score).toFixed(1)+'分'"
                                   />
                                   &nbsp;({{ key.rater_cnt }}人)
                                 </div>

@@ -1,51 +1,54 @@
 <template>
-  <el-row gutter="20">
-    <el-col
-        v-for="(character, index) in characters"
-        :key="index"
-        :span="6"
-    >
-
-      <el-card :body-style="{ padding: '8px'}" style="height: 100%;position: relative">
-        <el-container style="display: flex;flex-direction: column;">
-          <div>
-            <el-card :body-style="{ padding: '2px'}">
-              <el-image style="width: 100%;margin-bottom: -5px"
-                        :src="character.image"
-                        class="image"
-              />
-            </el-card>
-          </div>
-          <div style="flex-grow: 1;
+  <div v-if="characters.length>0">
+    <el-row gutter="20">
+      <el-col
+          v-for="(character, index) in characters"
+          :key="index"
+          :span="6"
+      >
+        <el-card :body-style="{ padding: '8px'}" style="height: 100%;position: relative">
+          <el-container style="display: flex;flex-direction: column;">
+            <div>
+              <el-card :body-style="{ padding: '2px'}">
+                <el-image style="width: 100%;margin-bottom: -5px"
+                          :src="character.image"
+                          class="image"
+                />
+              </el-card>
+            </div>
+            <div style="flex-grow: 1;
               display: flex;
               flex-direction: column;
               justify-content: center;
               align-items: center;
               margin-top: 10px;"
-          >
-          </div>
-          <div>
-            <el-row>
-              <div style="padding: 4px;"></div>
-              <div class="main_flex_style" style="width: 100%">
-                <el-icon style="margin-top:2px;margin-right: 5px">
-                  <User/>
-                </el-icon>
-                <router-link :to="'/character/'+ character.character_id">
-                  <el-button link plain type="primary" class="button">
-                    <div>
-                      {{ character.character_name }}
-                    </div>
-                  </el-button>
-                </router-link>
-              </div>
-            </el-row>
-          </div>
-        </el-container>
-      </el-card>
-
-    </el-col>
-  </el-row>
+            >
+            </div>
+            <div>
+              <el-row>
+                <div style="padding: 4px;"></div>
+                <div class="main_flex_style" style="width: 100%">
+                  <el-icon style="margin-top:2px;margin-right: 5px">
+                    <User/>
+                  </el-icon>
+                  <router-link :to="'/character/'+ character.character_id">
+                    <el-button link plain type="primary" class="button">
+                      <div>
+                        {{ character.character_name }}
+                      </div>
+                    </el-button>
+                  </router-link>
+                </div>
+              </el-row>
+            </div>
+          </el-container>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
+  <div v-else>
+    <el-text size="small">该番组尚无角色...</el-text>
+  </div>
 </template>
 
 <script lang="ts" setup>

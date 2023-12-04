@@ -38,7 +38,7 @@
                 <el-col :span="24">
                   <el-table :data="bangumiTable" style="width: auto" max-height="250">
                     <el-table-column prop="bangumi_id" label="ID"/>
-                    <el-table-column prop="bangumi_name" label="Name"/>
+                    <el-table-column prop="bangumi_name" label="番组名"/>
                     <el-table-column label="操作">
                       <template #default="scope">
                         <el-button

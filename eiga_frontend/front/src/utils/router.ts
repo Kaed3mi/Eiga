@@ -94,7 +94,7 @@ const router = createRouter({
             component: BangumiUpdateView,
         },
         {
-            path: '/bangumi_create/',
+            path: '/bangumi_insert/',
             name: 'bangumi-create',
             component: BangumiCreateView,
         },

@@ -3,20 +3,18 @@
     <h2>
       {{ character_name }}
     </h2>
-    <el-divider></el-divider>
-    <el-row>
-      <el-col :span="8">
+    <el-divider border-style="dashed"></el-divider>
+    <el-container>
+      <el-aside style="margin-right: 5%">
         <el-card class="characterCard" :body-style="{ padding: '10px', height: 'auto', width: 'auto'}">
           <img :src="imageUrl" class="image"/>
-          <div style="padding: 0px">
+          <div style="margin-top: 5px">
             <span>{{ character_name }}</span>
           </div>
         </el-card>
-      </el-col>
-      <el-col :span="1">
-      </el-col>
-      <el-col :span="15">
-        <el-descriptions title="角色信息" width="300px" :column="1">
+      </el-aside>
+      <el-main>
+        <el-descriptions title="角色信息"  :column="1">
           <el-descriptions-item
               v-for="(description, index) in descriptions"
               :key="index"
@@ -25,7 +23,7 @@
             {{ description.content }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <h4 :style="{ textAlign: 'left' }">简介</h4>
+            <h3 :style="{ textAlign: 'left' }">简介</h3>
             <div>
               <p v-for="(line, index) in introduce.split('\n')" :key="index"
                  style="text-align: left;white-space: pre-wrap;text-indent: 2em;"
@@ -35,24 +33,25 @@
             </div>
           </el-descriptions-item>
         </el-descriptions>
-      </el-col>
-    </el-row>
-    <el-divider></el-divider>
-    <h3>出演</h3>
-    <!--出演-->
-    <el-container>
-      <el-col>
-        <ListItem
-            v-for="bangumi in starringBangumis"
-            style="margin: 10px"
-
-            type="bangumi"
-            :id="bangumi.bangumi_id"
-            :name="bangumi.bangumi_name"
-            :image="bangumi.image"
-            description="">
-        </ListItem>
-      </el-col>
+        <el-divider border-style="dashed"/>
+        <h3>出演</h3>
+        <!--出演-->
+        <el-container class="main_flex_style">
+          <el-row
+              :gutter="20"
+              style="width: 100%"
+          >
+            <el-col :span="24" v-for="(bangumi, index) in starringBangumis" :key="index">
+              <ListItem type="bangumi" :id="bangumi.bangumi_id"
+                        :name="bangumi.bangumi_name"
+                        :description="bangumi.bangumi_intro"
+                        :image="bangumi.image"></ListItem>
+            </el-col>
+          </el-row>
+        </el-container>
+        <el-divider border-style="dashed"/>
+        <CommentArea object_type="character" :object_id="character_id"></CommentArea>
+      </el-main>
     </el-container>
   </el-card>
 </template>
@@ -61,10 +60,10 @@
 // import { ref } from 'vue'
 import http from '../utils/http';
 import ListItem from "./ListItem.vue";
-
+import CommentArea from "./CommentArea.vue";
 
 export default {
-  components: {ListItem},
+  components: {CommentArea, ListItem},
   data() {
     return {
       character_id: this.$route.params.characterId,
@@ -111,7 +110,7 @@ export default {
     },
     starringQuery() {
       http.get(
-          "http://127.0.0.1:8000/starring_query/",
+          "http://127.0.0.1:8000/character_bangumi_query/",
           {
             params: {
               "character_id": this.character_id
@@ -124,6 +123,7 @@ export default {
           this.starringBangumis.push({
             bangumi_id: bangumi.bangumi_id,
             bangumi_name: bangumi.bangumi_name,
+            bangumi_intro: bangumi.bangumi_intro,
             image: `data:image/png;base64,${bangumi.image}`
           })
         }

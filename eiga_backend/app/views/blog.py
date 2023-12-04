@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Blog, BlogBangumi, User, Bangumi
-from app.serializers import UserModelSerializer
+from app.serializers import UserModelSerializer,BlogModelSerializer
 from app.utils.utils import urlToImgDate
 import datetime
 
@@ -105,6 +105,28 @@ class BlogQuery(APIView):
             'time': obj.time,
             'avatar': urlToImgDate(obj.user_id.avatar),
             'user_id': UserModelSerializer(obj.user_id).data if obj.user_id is not None else '',
+        })
+
+
+class UserBlogQuery(APIView):
+    def get(self, request):
+        user_id = request.GET.get('user_id')
+        obj_list_data = []
+        print('UserBlogQuery user_id:' + user_id)
+        try:
+            list = Blog.objects.filter(user_id=user_id)
+            print(list)
+            for obj in list:
+                obj_list_data.append({
+                    "blog_id": BlogModelSerializer(obj).data,
+                    "avatar": urlToImgDate(obj.user_id.avatar),
+                    "user_name": obj.user_id.user_name,
+                })
+        except Exception as e:
+            print(e)
+            return Response(1)
+        return Response({
+            'blogs': obj_list_data
         })
 
 

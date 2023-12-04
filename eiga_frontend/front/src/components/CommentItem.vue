@@ -1,6 +1,10 @@
 <template>
   <div style="padding: 1%"></div>
-  <el-card :body-style="{ padding: '20px' }" >
+  <el-card :body-style="{ padding: '20px' }" style="position: relative">
+    <div v-if="isAdmin">
+      <el-button :icon="Delete" size="small" plain type="danger" class="delete_button" @click="commentDelete">
+      </el-button>
+    </div>
     <el-row>
       <div class="main_left_style">
         <el-avatar :src="avatar" :size="24" style="margin-left: -0px;" class="avatar"/>
@@ -27,11 +31,14 @@
     </el-row>
   </el-card>
 </template>
-
+<script lang="ts" setup>
+import {Delete} from '@element-plus/icons-vue'
+</script>
 <script lang="ts">
 import axios from "axios";
 import http from "../utils/http";
 import {format} from 'date-fns';
+import {ElMessage, ElNotification} from "element-plus";
 
 export default {
   props: ['comment_id'],
@@ -43,11 +50,20 @@ export default {
       bangumi_id: '',
       blog_id: '',
       character_id: '',
-      avatar: ''
+      avatar: '',
+      deleted: false
     }
   },
   mounted() {
     this.commentQuery(); // 在组件挂载后调用 fetchData 方法
+  },
+  computed: {
+    isAdmin() {
+      console.log("permission:" + localStorage.getItem("permission"))
+      return (
+          localStorage.getItem("user_id") && localStorage.getItem("permission") === "admin"
+      );
+    },
   },
   methods: {
     commentQuery() {
@@ -71,8 +87,29 @@ export default {
           .catch(error => {
             console.error('Error fetching data:', error);
           });
-    }
+    },
+    commentDelete() {
+      http.delete(
+          "http://127.0.0.1:8000/comment_delete/",
+          {
+            params: {
+              "comment_id": this.comment_id,
+            }
+          }
+      ).then(response => {
+        ElNotification({
+          title: '删除成功',
+          message: '已删除用户\"' + this.user_id.user_name + '的评论\"',
+          type: 'success',
+        })
+        this.$emit('delete-comment', this.comment_id)
+      }).catch(error => {
+        ElMessage.error('操作失败')
+        console.error('Error fetching data:', error);
+      });
+    },
   },
+
   name: "CommentItem",
 }
 
@@ -100,5 +137,12 @@ export default {
 .image {
   width: 100%;
   display: block;
+}
+
+.delete_button {
+  z-index: 100;
+  position: absolute;
+  top: 15px; /* Adjust the top position as needed */
+  right: 20px; /* Adjust the right position as needed */
 }
 </style>

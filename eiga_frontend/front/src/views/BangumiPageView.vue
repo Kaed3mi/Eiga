@@ -29,7 +29,7 @@
                           disabled
                           show-score
                           text-color="#ff9900"
-                          :score-template="bangumi_score.toFixed(1)+ 'points'"
+                          :score-template="bangumi_score.toFixed(1)+ '分'"
                           :colors="rate_colors"
                       />
                       <br/>
@@ -41,21 +41,48 @@
                           allow-half
                           show-score
                           text-color="#ff9900"
-                          :score-template="Number(user_score) !== -1 ? Number(user_score).toFixed(1)+ 'points' : ''"
+                          :score-template="Number(user_score) !== -1 ? Number(user_score).toFixed(1)+ '分' : ''"
                           :colors="rate_colors"
                           @click="handleScoring"
                       />
                       <div style="padding: 8px;"></div>
                     </el-card>
+                    <div>
+                      <el-divider border-style="dashed"/>
+                      <div v-if="blogs.length > 0">
+                        <h3>关联日志</h3>
+                        <el-row
+                            :gutter="20"
+                        >
+                          <el-col :span="24" v-for="(result, index) in blogs" :key="index">
+                            <ListItem type="blog" :id="result.blog_id.blog_id"
+                                      :text_only="true"
+                                      :name="result.blog_id.blog_title"
+                                      :description="result.blog_id.content"
+                                      :date="result.date"
+                                      :author_name="result.user_name"
+                                      :author_id="result.blog_id.user_id"
+                            ></ListItem>
+                          </el-col>
+                        </el-row>
+                      </div>
+                      <div v-else>
+                        <el-text size="small">暂时没有日志...</el-text>
+                      </div>
+                    </div>
                   </el-aside>
 
                   <el-main>
                     <h3>简介</h3>
-                    <p v-for="(line, index) in bangumi_intro.split('\n')" :key="index"
-                       style="text-align: left;white-space: pre-wrap;text-indent: 2em;"
-                    >
-                      {{ line }}
-                    </p>
+                    <el-descriptions>
+                      <el-descriptions-item>
+                        <p v-for="(line, index) in bangumi_intro.split('\n')" :key="index"
+                           style="text-align: left;white-space: pre-wrap;text-indent: 2em;"
+                        >
+                          {{ line }}
+                        </p>
+                      </el-descriptions-item>
+                    </el-descriptions>
                     <el-divider border-style="dashed"/>
                     <h3>角色</h3>
                     <CharacterCard :id=bangumi_id></CharacterCard>
@@ -74,45 +101,7 @@
                       </el-row>
                       <el-divider border-style="dashed"/>
                     </div>
-                    <div v-if="comments.length > 0">
-                      <h3>评论</h3>
-                      <el-row
-                          :gutter="20"
-                      >
-                        <el-col :span="24" v-for="(result, index) in comments" :key="index">
-                          <CommentItem :comment_id="result.comment_id"></CommentItem>
-                        </el-col>
-                      </el-row>
-                      <el-divider border-style="dashed"/>
-                    </div>
-                    <div v-if="user_id!=null &&String(user_id)!==''">
-                      <el-card>
-                        <el-row>
-                          <div class="main_left_style">
-                            <el-avatar :src="avatar" :size="32" style="margin-left: -0px;" class="avatar"/>
-                          </div>
-                        </el-row>
-                        <div style="padding: 8px"></div>
-                        <el-input
-                            v-model="new_comment_area"
-                            maxlength="400"
-                            :autosize="{ minRows: 4, maxRows: 6 }"
-                            placeholder="畅所欲言..."
-                            show-word-limit
-                            type="textarea"
-                            rows="3"
-                            clearable
-                        >
-                        </el-input>
-                        <div style="padding: 8px"></div>
-                        <el-button :icon="Position" type="primary" @click=commentInsert>
-                          发送评论
-                        </el-button>
-                      </el-card>
-                    </div>
-                    <div v-else>
-                      <p>登录后即可发表评论</p>
-                    </div>
+                    <CommentArea object_type="bangumi" :object_id="bangumi_id"></CommentArea>
                   </el-main>
 
                 </el-container>
@@ -128,12 +117,6 @@
 
   </el-container>
 </template>
-<script lang="ts" setup>
-import {
-  Position
-
-} from '@element-plus/icons-vue'
-</script>
 <script lang="ts">
 import VerticalMenu from '../components/VerticalMenu.vue'
 import Footer from '../components/Footer.vue'
@@ -141,7 +124,10 @@ import CharacterCard from '../components/CharacterCard.vue'
 import http from "../utils/http";
 import ListItem from '../components/ListItem.vue'
 import CommentItem from "../components/CommentItem.vue";
+import CommentArea from "../components/CommentArea.vue";
 import {ref} from 'vue'
+import {format} from "date-fns";
+import {ElNotification} from "element-plus";
 
 export default {
   data() {
@@ -156,6 +142,7 @@ export default {
       rate_colors: ref(['#99A9BF', '#F7BA2A', '#FF9900']),
       bangumi_relationships: [],
       comments: [],
+      blogs: [],
       new_comment_area: ref(''),
       user_name: '',
       avatar: '',
@@ -168,6 +155,7 @@ export default {
     this.bangumiRelationShipQuery();
     this.userScoreQuery();
     this.bangumiScoreQuery();
+    this.bangumiBlogQuery();
     this.user_id = ref(localStorage.getItem('user_id'))
     if (this.user_id != null) {
       this.userQuery();
@@ -242,10 +230,31 @@ export default {
         }
         console.log("this.comments")
         console.log(this.comments)
-      })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-          });
+      }).catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    },
+    bangumiBlogQuery() {
+      this.blogs = []
+      http.get(
+          "http://127.0.0.1:8000/bangumi_blog_query/",
+          {
+            params: {
+              "bangumi_id": this.bangumi_id,
+            }
+          }
+      ).then(response => {
+        for (let item of response.data.blogs) {
+          this.blogs.push({
+            'blog_id': item.blog_id,
+            'avatar': item.avatar,
+            'date': format(item.blog_id.time, 'yyyy-MM-dd HH:mm'),
+            'user_name': item.user_name,
+          })
+        }
+      }).catch(error => {
+        console.error('Error fetching data:', error);
+      });
     },
     commentInsert() {
       http.post(
@@ -336,6 +345,11 @@ export default {
           },
       ).then(response => {
         console.log("submitted score")
+        ElNotification({
+          title: '操作成功',
+          message: '已为番组"'+this.bangumi_name+'"评分',
+          type: 'success',
+        })
       }).catch(error => {
         alert("新增评分失败")
         console.error('Error posting data:', error);
@@ -351,6 +365,11 @@ export default {
           },
       ).then(response => {
         console.log("updated score")
+        ElNotification({
+          title: '操作成功',
+          message: '已为番组"'+this.bangumi_name+'"评分',
+          type: 'success',
+        })
       }).catch(error => {
         alert("修改评分失败")
         console.error('Error posting data:', error);
@@ -364,6 +383,7 @@ export default {
     CharacterCard,
     ListItem,
     Footer,
+    CommentArea
   }
 }
 </script>

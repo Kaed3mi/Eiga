@@ -11,7 +11,7 @@ from eiga_backend.settings import ASSETS_ROOT
 
 
 # TODO 这里的操作需要核验权限组是否达标，不过呢我还没写。
-class BangumiCreate(APIView):
+class BangumiInsert(APIView):
     def post(self, request):
         bangumi_name = str(request.data.get('bangumi_name'))
         bangumi_intro = str(request.data.get('bangumi_intro'))

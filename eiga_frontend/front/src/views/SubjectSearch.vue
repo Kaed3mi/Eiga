@@ -133,7 +133,7 @@ export default {
         this.bangumi_search()
         this.blog_search()
       }
-
+      this.search_page = 1;
     },
     bangumi_search() {
       http.get(

@@ -17,7 +17,7 @@
 }
 .bangumi_width {
     width: var(--bangumi-width);
-    max-width: 1100px;
+    max-width: 1000px;
 }
 .main_flex_style {
     display: flex;

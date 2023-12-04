@@ -48,7 +48,7 @@ class BangumiCharaterUpdate(APIView):
         return Response(1)
 
 
-class StarringQuery(APIView):
+class CharacterBangumiQuery(APIView):
     def get(self, request):
         character_id = request.GET.get('character_id')
         print('角色id：' + str(character_id))
@@ -59,6 +59,7 @@ class StarringQuery(APIView):
             starring_bangumis.append({
                 'bangumi_id': starring_bangumi.bangumi_id,
                 'bangumi_name': starring_bangumi.bangumi_name,
+                'bangumi_intro': starring_bangumi.bangumi_intro,
                 'image': urlToImgDate(starring_bangumi.image)
             })
         print('出演番组表：' + str(starring_bangumis))

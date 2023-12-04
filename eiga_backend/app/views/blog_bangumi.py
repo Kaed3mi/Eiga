@@ -2,8 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models import Bangumi, Blog
 from app.models import BlogBangumi
-from app.serializers import BangumiModelSerializer
+from app.serializers import BangumiModelSerializer, BlogModelSerializer
 from app.utils.utils import urlToImgDate
+
 
 class BlogBangumiQuery(APIView):
     def get(self, request):
@@ -24,6 +25,29 @@ class BlogBangumiQuery(APIView):
         print('BlogBangumiQuery succeed')
         return Response({
             'bangumis': obj_list_data
+        })
+
+
+class BangumiBlogQuery(APIView):
+    def get(self, request):
+        bangumi_id = int(request.GET.get('bangumi_id'))
+        obj_list_data = []
+        print('search BangumiBlogQuery: bangumi_id=', bangumi_id)
+        try:
+            list = BlogBangumi.objects.filter(bangumi_id=bangumi_id)
+            print(list)
+            for obj in list:
+                obj_list_data.append({
+                    "blog_id": BlogModelSerializer(obj.blog_id).data,
+                    "avatar": urlToImgDate(obj.blog_id.user_id.avatar),
+                    "user_name": obj.blog_id.user_id.user_name,
+                })
+        except Exception as e:
+            print('BangumiBlogQuery failed', e)
+            return Response(1)
+        print('BangumiBlogQuery succeed, results of:', len(obj_list_data))
+        return Response({
+            'blogs': obj_list_data
         })
 
 

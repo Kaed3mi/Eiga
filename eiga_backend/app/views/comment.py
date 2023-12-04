@@ -19,9 +19,9 @@ class CommentInsert(APIView):
         print(request.data)
         try:
             user = User.objects.get(user_id=user_id)
-            bangumi = Bangumi.objects.get(bangumi_id=bangumi_id)
-            blog = Blog.objects.get(blog_id=blog_id) if blog_id is not '' else None
-            character = Character.objects.get(character_id=character_id) if character_id is not '' else None
+            bangumi = Bangumi.objects.get(bangumi_id=bangumi_id) if bangumi_id != '' else None
+            blog = Blog.objects.get(blog_id=blog_id) if blog_id != '' else None
+            character = Character.objects.get(character_id=character_id) if character_id != '' else None
             obj = Comment(
                 content=content,
                 time=datetime.datetime.fromtimestamp(time / 1000),
@@ -68,7 +68,7 @@ class CommentQuery(APIView):
             'user_id': UserModelSerializer(obj.user_id).data if user is not None else '',
             'avatar': urlToImgDate(obj.user_id.avatar) if user is not None else '',
             'bangumi_id': BangumiModelSerializer(obj.bangumi_id).data if bangumi is not None else '',
-            'blog_id': BlogModelSerializer(blog.blog_id).data if blog is not None else '',
+            'blog_id': BlogModelSerializer(obj.blog_id).data if blog is not None else '',
             'character_id': CharacterModelSerializer(obj.character_id).data if character is not None else '',
         })
 
@@ -79,7 +79,7 @@ class CommentSearch(APIView):
         bangumi_id = request.GET.get('bangumi_id')
         blog_id = request.GET.get('blog_id')
         character_id = request.GET.get('character_id')
-        print(f'query comment user_id={user_id},bangumi_id={bangumi_id},blog_id={blog_id},character_id={character_id}')
+        print(f'search comment user_id={user_id},bangumi_id={bangumi_id},blog_id={blog_id},character_id={character_id}')
         filter_conditions = Q()
         if user_id is not None:
             filter_conditions &= Q(user_id=user_id)
@@ -104,7 +104,7 @@ class CommentSearch(APIView):
                     'time': obj.time,
                     'user_id': UserModelSerializer(obj.user_id).data if user is not None else '',
                     'bangumi_id': BangumiModelSerializer(obj.bangumi_id).data if bangumi is not None else '',
-                    'blog_id': BlogModelSerializer(blog.blog_id).data if blog is not None else '',
+                    'blog_id': BlogModelSerializer(obj.blog_id).data if blog is not None else '',
                     'character_id': CharacterModelSerializer(obj.character_id).data if character is not None else '',
                 })
         except Exception as e:

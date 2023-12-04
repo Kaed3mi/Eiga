@@ -344,7 +344,7 @@ export default {
       this.$router.push('/character_create')
     },
     routeToCreateBangumi() {
-      this.$router.push('/bangumi_create')
+      this.$router.push('/bangumi_insert')
     },
   }
 }

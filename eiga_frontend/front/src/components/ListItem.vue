@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%"></div>
+  <div style="padding: 5px"></div>
   <el-card :body-style="{ padding: '1.5%' }" style="position: relative">
     <div v-if="rank" class="tag">
       <el-tag size="large" round plain type="primary">
@@ -8,12 +8,13 @@
     </div>
     <div class="main_left_style">
       <el-container>
-        <el-aside width="120px">
-          <el-card v-if="image" :body-style="{ padding: '3px' }" style="width: 110px">
-            <el-image :src="image" fit="cover" style="width: 100px; height: auto;;margin-bottom: -5px"/>
-          </el-card>
-
-        </el-aside>
+        <div v-if="!text_only">
+          <el-aside width="120px">
+            <el-card v-if="image" :body-style="{ padding: '3px' }" style="width: 110px">
+              <el-image :src="image" fit="cover" style="width: 100px; height: auto;;margin-bottom: -5px"/>
+            </el-card>
+          </el-aside>
+        </div>
         <el-main>
           <el-row>
             <div class="main_left_style">
@@ -29,10 +30,30 @@
               </router-link>
             </div>
           </el-row>
-          <div v-if="description">
+          <div v-if="author_id">
             <div style="padding: 3px"></div>
             <el-row>
               <div class="main_left_style" style="width: 80%;">
+                <el-text size="small" style="color: gray ;margin-top:3px;margin-right: 3px;white-space: nowrap;">
+                  &nbsp;&nbsp;&nbsp; by
+                </el-text>
+                <router-link :to="'/user/'+ author_id">
+                  <el-button link size="small" type="primary" class="button">
+
+                    {{ author_name }}
+
+                  </el-button>
+                </router-link>
+              <el-text size="small" style="font-size: 10px;color: gray ;margin-top:3px;white-space: nowrap;">
+                @{{ date }}
+              </el-text>
+              </div>
+            </el-row>
+          </div>
+          <div v-if="description">
+            <div style="padding: 3px"></div>
+            <el-row>
+              <div class="main_left_style" style="width: 90%;">
                 <el-text truncated>{{ description }}</el-text>
               </div>
             </el-row>
@@ -73,7 +94,7 @@
 
 <script lang="ts" setup>
 import {
-  Connection, Calendar
+  Connection, Calendar, ChatLineRound
 
 } from '@element-plus/icons-vue'
 </script>
@@ -87,7 +108,21 @@ import axios from "axios";
 import http from "../utils/http";
 
 export default {
-  props: ['type', 'id', 'name', 'image', 'description', 'rank', 'score', 'rater_cnt', 'relation', 'date'],
+  props: {
+    type: {},
+    id: {},
+    name: {},
+    image: {},
+    description: {},
+    rank: {},
+    score: {},
+    rater_cnt: {},
+    relation: {},
+    date: {},
+    text_only: {default: false},
+    author_name: {},
+    author_id: {}
+  },
   data() {
     return {
       score_model: this.score,

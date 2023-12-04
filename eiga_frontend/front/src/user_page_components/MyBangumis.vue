@@ -17,14 +17,17 @@
               :key="bangumi">
             <el-container class="row-content">
               <el-card
-                  style="width: 140px; height: 240px; margin: 30px"
+                  style="width: 140px; height: 230px; margin: 30px"
               >
                 <el-col>
                   <el-row>
-                    <el-image
-                        style="width: 100px; height: 134px"
-                        :src="bangumi.image"/>
+                    <el-card :body-style="{padding: '3px'}">
+                      <el-image
+                          style="width: 100px; height: 134px;margin-bottom: -5px;margin-left: -3px"
+                          :src="bangumi.image"/>
+                    </el-card>
                   </el-row>
+                  <div style="padding: 3px"></div>
                   <el-row>
                     <router-link :to="{ name: 'bangumi-view', params: { bangumiId: bangumi.bangumi_id }}">
                       <el-text class="w-80px" type="primary" truncated>{{ bangumi.bangumi_name }}</el-text>

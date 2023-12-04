@@ -339,7 +339,7 @@ export default {
               console.log(this.bangumi_intro);
               console.log(this.$route.params.bangumiId);
               http.post(
-                  "http://127.0.0.1:8000/bangumi_create/", {
+                  "http://127.0.0.1:8000/bangumi_insert/", {
                     bangumi_name: this.bangumi_name,
                     bangumi_intro: this.bangumi_intro,
                     image: base64
