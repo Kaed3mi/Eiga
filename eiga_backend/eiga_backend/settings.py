@@ -101,9 +101,13 @@ WSGI_APPLICATION = "eiga_backend.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db21373512',  # 数据库名
+        'USER': '21373512',  # 用户名
+        'PASSWORD': 'Aa589304',  # 密码
+        'HOST': '120.46.80.149',  # 虚拟机ip
+        'PORT': 3306  # openGauss数据口的端口
     }
 }
 
@@ -142,6 +146,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-ASSETS_ROOT = "assets/"
+ASSETS_ROOT = "eiga_backend/assets/"
 RANK_PAGE_SIZE = 4
 SEARCH_PAGE_SIZE = 10
