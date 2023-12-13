@@ -84,7 +84,7 @@ import http from "../utils/http";
 import UserAvatar from "../user_page_components/UserAvatar.vue";
 import MyBangumis from "../user_page_components/MyBangumis.vue";
 import Footer from "../components/Footer.vue";
-import {format} from "date-fns";
+import {addHours, format} from "date-fns";
 
 export default {
   name: 'UserPage',
@@ -168,10 +168,11 @@ export default {
           }
       ).then(response => {
         for (let item of response.data.blogs) {
+          let beijing = addHours(item.blog_id.time, -8)
           this.blogs.push({
             'blog_id': item.blog_id,
             'avatar': item.avatar,
-            'date': format(item.blog_id.time, 'yyyy-MM-dd HH:mm'),
+            'date': format(beijing, 'yyyy-MM-dd HH:mm'),
             'user_name': item.user_name,
           })
         }

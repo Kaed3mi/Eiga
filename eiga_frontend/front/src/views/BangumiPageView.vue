@@ -52,7 +52,6 @@
                       <div v-if="blogs.length > 0">
                         <h3>关联日志</h3>
                         <el-row
-                            :gutter="20"
                         >
                           <el-col :span="24" v-for="(result, index) in blogs" :key="index">
                             <ListItem type="blog" :id="result.blog_id.blog_id"
@@ -128,6 +127,7 @@ import CommentArea from "../components/CommentArea.vue";
 import {ref} from 'vue'
 import {format} from "date-fns";
 import {ElNotification} from "element-plus";
+import {addHours} from "date-fns";
 
 export default {
   data() {
@@ -245,10 +245,11 @@ export default {
           }
       ).then(response => {
         for (let item of response.data.blogs) {
+          let beijing = addHours(item.blog_id.time, -8)
           this.blogs.push({
             'blog_id': item.blog_id,
             'avatar': item.avatar,
-            'date': format(item.blog_id.time, 'yyyy-MM-dd HH:mm'),
+            'date': format(beijing, 'yyyy-MM-dd HH:mm'),
             'user_name': item.user_name,
           })
         }

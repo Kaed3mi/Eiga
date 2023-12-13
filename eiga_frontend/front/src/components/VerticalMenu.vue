@@ -5,7 +5,7 @@
         <el-link href="/home/">
           <el-image src="/src/assets/mukamuka.svg" style="width: 24px">
           </el-image>
-          <h3 class="mb-2">Eiga映画计划</h3>
+          <h3 class="mb-2">Eiga番组计划</h3>
         </el-link>
         <el-menu
             active-text-color="#007f7f"

@@ -37,7 +37,7 @@ import {Delete} from '@element-plus/icons-vue'
 <script lang="ts">
 import axios from "axios";
 import http from "../utils/http";
-import {format} from 'date-fns';
+import {format, addHours} from 'date-fns';
 import {ElMessage, ElNotification} from "element-plus";
 
 export default {
@@ -57,9 +57,7 @@ export default {
   mounted() {
     this.commentQuery(); // 在组件挂载后调用 fetchData 方法
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
     commentQuery() {
       console.log("i'm " + this.comment_id)
@@ -72,7 +70,8 @@ export default {
           }
       ).then(response => {
         this.content = response.data.content;
-        this.time = format(response.data.time, "yyyy-MM-dd HH:mm");
+        let beijing = addHours(response.data.time, -8)
+        this.time = format(beijing, "yyyy-MM-dd HH:mm");
         this.user_id = response.data.user_id;
         this.avatar = `data:image/png;base64,${response.data.avatar}`;
         this.bangumi_id = response.data.bangumi_id;
@@ -107,7 +106,7 @@ export default {
       let user_id = localStorage.getItem("user_id")
       let permission = localStorage.getItem("permission")
       return (
-        user_id && (permission === "admin" || user_id == this.user_id.user_id)
+          user_id && (permission === "admin" || user_id == this.user_id.user_id)
       );
     },
   },

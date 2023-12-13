@@ -11,8 +11,10 @@
             <div>
               <el-card :body-style="{ padding: '2px'}">
                 <el-image style="width: 100%;margin-bottom: -5px"
+                          :height="computedHeight"
                           :src="character.image"
                           class="image"
+                          fit="fill"
                 />
               </el-card>
             </div>
@@ -68,6 +70,13 @@ export default {
       imageUrl: '',
       characters: []
     }
+  },
+  computed: {
+    computedHeight() {
+      // 计算高度为宽度的3倍
+      const width = this.$el.clientWidth; // 获取el-image的宽度
+      return width * 3;
+    },
   },
   mounted() {
     this.bangumiQuery(); // 在组件挂载后调用 fetchData 方法

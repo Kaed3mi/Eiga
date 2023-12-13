@@ -72,6 +72,7 @@ import http from "../utils/http";
 import ListItem from "./ListItem.vue";
 import CommentArea from "../components/CommentArea.vue";
 import {format} from "date-fns";
+import {addHours} from "date-fns";
 
 export default {
   props: ['blog_id'],
@@ -101,7 +102,8 @@ export default {
           }
       ).then(response => {
         this.content = response.data.content;
-        this.time = format(response.data.time, "yyyy-MM-dd HH:mm");
+        let beijing = addHours(response.data.time, -8)
+        this.time = format(beijing, "yyyy-MM-dd HH:mm");
         this.avatar = `data:image/png;base64,${response.data.avatar}`;
         this.user_id = response.data.user_id;
         this.blog_title = response.data.blog_title;

@@ -186,7 +186,7 @@ def upload_avatar(request):
             print(file_path)
             if user_info.avatar == "avatars/default.jpg":
                 print("the user has the default avatar and we change it to " + str(file_path))
-                user_info.avatar = str(file_path)
+                user_info.avatar = str(file_path)[len(ASSETS_ROOT):]
                 user_info.save()
             else:
                 print("now we will delete the original avatar")
